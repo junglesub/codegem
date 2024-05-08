@@ -1,0 +1,43 @@
+<!---->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+</head>
+<body>
+회원가입
+아이디
+<input type="text" id="create_username" />
+비밀번호
+<input type="password" id="create_password" />
+<a href="javascript:create();">등록해줘요.</a>
+<script>
+
+    function create(){
+        $.ajax({
+            url : '/api/tbuser',
+            type : 'POST',
+            contentType:'application/json; charset=utf-8',
+            data: JSON.stringify({
+                'username' : $("#create_username").val(),
+                'password' : $("#create_password").val()
+            }),
+            beforeSend:function(){
+                //
+            },
+            success : function(data){
+                alert(JSON.stringify(data));
+            },
+            error : function(request, status, error){
+                alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+            },
+            complete:function(){
+                //
+            }
+        });
+    }
+</script>
+</body>
+</html>

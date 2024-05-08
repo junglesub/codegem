@@ -1,0 +1,70 @@
+<!---->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+</head>
+<body>
+회원정보 조회
+Id
+<input type="text" id="detail_id" />
+아이디
+<input type="text" id="detail_username" />
+이름
+<input type="text" id="detail_name" />
+nick
+<input type="text" id="detail_nick" />
+phone
+<input type="text" id="detail_phone" />
+<a href="javascript:detail();">조회해줘요.</a>
+<a href="javascript:update();">등록해줘요.</a>
+<script>
+
+    function detail(){
+        $.ajax({
+            url : '/api/tbuser/get/' + $("#detail_id").val(),
+            type : 'GET',
+            beforeSend:function(){
+                //
+            },
+            success : function(data){
+                alert(JSON.stringify(data));
+            },
+            error : function(request, status, error){
+                alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+            },
+            complete:function(){
+                //
+            }
+        });
+    }
+    function update(){
+        $.ajax({
+            url : '/api/tbuser',
+            type : 'PUT',
+            contentType:'application/json; charset=utf-8',
+            data: JSON.stringify({
+                'name' : $("#detail_name").val()
+                ,'nick' : $("#detail_nick").val()
+                ,'phone' : $("#detail_phone").val()
+                ,'id' : $("#detail_id").val()
+            }),
+            beforeSend:function(){
+                //
+            },
+            success : function(data){
+                alert(JSON.stringify(data));
+            },
+            error : function(request, status, error){
+                alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+            },
+            complete:function(){
+                //
+            }
+        });
+    }
+</script>
+</body>
+</html>
