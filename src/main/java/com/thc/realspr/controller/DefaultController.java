@@ -9,7 +9,7 @@ import java.util.Map;
 
 @RestController
 public class DefaultController {
-    @GetMapping("/")
+    @GetMapping("/aaa")
     public String create(){
 
         return "Hello World";
