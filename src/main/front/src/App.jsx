@@ -7,7 +7,7 @@ function App() {
 
   const getAllData = async () => {
     const data = await (await fetch("/api/feed/get")).json();
-    setAllFeed(data);
+    setAllFeed(Array.isArray(data) ? data : []);
   };
 
   useEffect(() => {
