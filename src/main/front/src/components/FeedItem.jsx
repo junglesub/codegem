@@ -17,12 +17,12 @@ function formatTimestamp(timestamp) {
 
 function FeedItem({ item, getAllData }) {
   return (
-    <div>
-      <div className="title">{item.title}</div>
+    <div className="FeedItem">
       <div className="moreinfo">
         <div className="author">{item.author}</div>
         <div className="date">{formatTimestamp(item.createdAt)}</div>
       </div>
+      <div className="title">{item.title}</div>
       <div className="content">{item.content}</div>
       <div className="deletebtn">
         <button

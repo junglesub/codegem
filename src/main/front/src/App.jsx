@@ -41,15 +41,18 @@ function App() {
             });
           }}
         >
-          <div className="field-title">
-            <input name="title" required placeholder="title" />
+          <div className="uppersec">
+            <div className="field-title">
+              <input name="title" required placeholder="title" />
+            </div>
+            <div className="field-author">
+              <input name="author" required placeholder="author" type="text" />
+            </div>
           </div>
           <div className="field-content">
             <textarea name="content" placeholder="content"></textarea>
           </div>
-          <div className="field-author">
-            <input name="author" required placeholder="author" type="text" />
-          </div>
+
           <div className="field-btn">
             <button type="submit">등록</button>
           </div>
