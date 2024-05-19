@@ -82,10 +82,14 @@ body,
   margin-top: 16px;
   padding: 8px;
 }
+.FeedItem .author {
+  line-height: 1;
+}
 
 .FeedItem .moreinfo {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   font-size: 0.8em;
   color: #444;
 }
@@ -103,4 +107,14 @@ body,
 
 .FeedItem .deletebtn {
   margin-top: 8px;
+}
+
+.FeedItem .date {
+  line-height: 1;
+  margin-right: 8px;
+}
+
+.FeedItem .rightflx {
+  display: flex;
+  align-items: center;
 }

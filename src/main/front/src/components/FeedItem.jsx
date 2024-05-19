@@ -20,21 +20,22 @@ function FeedItem({ item, getAllData }) {
     <div className="FeedItem">
       <div className="moreinfo">
         <div className="author">{item.author}</div>
-        <div className="date">{formatTimestamp(item.createdAt)}</div>
+        <div className="rightflx">
+          <div className="date">{formatTimestamp(item.createdAt)}</div>
+          <button
+            onClick={() => {
+              fetch(`/api/feed/${item.id}`, { method: "DELETE" })
+                .then(getAllData)
+                .catch((e) => alert(e));
+            }}
+          >
+            삭제
+          </button>
+        </div>
       </div>
       <div className="title">{item.title}</div>
       <div className="content">{item.content}</div>
-      <div className="deletebtn">
-        <button
-          onClick={() => {
-            fetch(`/api/feed/${item.id}`, { method: "DELETE" })
-              .then(getAllData)
-              .catch((e) => alert(e));
-          }}
-        >
-          Delete
-        </button>
-      </div>
+      <div className="deletebtn"></div>
     </div>
   );
 }
