@@ -28,6 +28,11 @@ public class TbfeedController {
         System.out.println(param);
         return tbfeedService.update(param);
     }
+    @DeleteMapping("/{id}")
+    public String delete(@PathVariable("id") String id){
+        tbfeedService.delete(id);
+        return "";
+    }
     @GetMapping("/get")
     public List<Map<String, Object>> getAll() {
         return tbfeedService.getAll();
