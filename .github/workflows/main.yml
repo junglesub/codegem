@@ -1,6 +1,11 @@
 name: Build Spring Boot Artifact
 
-on: [push]
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - '**/*.md'
 
 jobs:
   # 작업 환경 = 우분투 최신 버전
