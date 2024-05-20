@@ -105,6 +105,10 @@ body,
   margin-top: 8px;
 }
 
+.FeedItem .content {
+  white-space: pre;
+}
+
 .FeedItem .deletebtn {
   margin-top: 8px;
 }
