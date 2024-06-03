@@ -46,7 +46,7 @@ jobs:
       # 현재 날짜와 시간을 가져오기
       - name: Get current date and time
         id: date
-        run: echo "CURRENT_DATE=$(date -u +"%Y%m%d_%H%M%S")" >> $GITHUB_ENV
+        run: echo "CURRENT_DATE=$(TZ=Asia/Seoul date +"%Y%m%d_%H%M%S")" >> $GITHUB_ENV
 
       # 릴리즈 생성
       - name: Create Release
