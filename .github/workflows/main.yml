@@ -8,7 +8,6 @@ on:
       - '**/*.md'
 
 jobs:
-  # 작업 환경 = 우분투 최신 버전
   build:
     runs-on: ubuntu-latest
 
@@ -35,9 +34,30 @@ jobs:
         with:
           arguments: build
 
-      # 빌드해서 생긴 JAR 파일을 깃허브 아티팩트로 업로드!!
-      - name: Upload build artifact
-        uses: actions/upload-artifact@v2
+      # 현재 날짜와 시간을 가져오기
+      - name: Get current date and time
+        id: date
+        run: echo "CURRENT_DATE=$(date -u +"%Y-%m-%dT%H:%M:%SZ")" >> $GITHUB_ENV
+
+      # 릴리즈 생성
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          name: server
-          path: build/libs/realspr-0.0.1-SNAPSHOT.jar
+          tag_name: ${{ env.CURRENT_DATE }}
+          release_name: 'Release ${{ env.CURRENT_DATE }}'
+          draft: false
+          prerelease: false
+
+      # 릴리즈 아티팩트 업로드
+      - name: Upload Release Asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: build/libs/realspr-0.0.1-SNAPSHOT.jar
+          asset_name: realspr-0.0.1-SNAPSHOT.jar
+          asset_content_type: application/java-archive
