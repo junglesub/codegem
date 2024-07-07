@@ -20,6 +20,10 @@ function App() {
       <div className="header">
         <h1>Handong Feed</h1>
       </div>
+      <div className="tryNew">
+        <br />
+        새로운 UI 디자인을 보고 싶다면: <a href="/newui">/newui</a>
+      </div>
       <div className="create">
         <form
           onSubmit={(e) => {
