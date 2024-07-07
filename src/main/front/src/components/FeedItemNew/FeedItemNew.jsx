@@ -25,7 +25,7 @@ function FeedItemNew({ item, getAllData }) {
     <div className="FeedItem">
       <div className="moreinfo">
         <div className="leftflx">
-          <img className="authorpic" src={kakaotalk} />
+          <img className="authorpic" src={kakaotalk} alt="authorpic" />
           <div className="authordate">
             <div className="author">{item.author}</div>
             <div className="date">{formatTimestamp(item.createdAt)}</div>

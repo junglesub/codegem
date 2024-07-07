@@ -1,5 +1,3 @@
-import { useEffect, useState } from "react";
-
 import "./NewUI.css";
 import FeedItemNew from "../components/FeedItemNew/FeedItemNew";
 
