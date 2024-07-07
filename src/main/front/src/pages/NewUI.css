@@ -1,124 +1,180 @@
 html,
 body,
 .root {
-  background-color: #999;
+  background-color: #eef0f3;
   margin: 0;
   padding: 0;
 }
 
-.App {
+.NewUI {
   /* border: 1px solid black; */
-  background-color: white;
+  background-color: #eef0f3;
   max-width: 800px;
   margin: auto;
-  padding: 16px;
+  /* padding: 16px; */
+  padding: 0;
   --radius: 5px;
   min-height: 100vh;
   box-sizing: border-box;
 }
 
-.header {
-  background-color: #eee;
+.NewUI .header {
+  background-color: white;
   padding: 16px;
   line-height: 0;
   text-align: center;
   text-transform: uppercase;
 }
-.create {
+.NewUI .create {
   margin-top: 16px;
-  /* background-color: #fffcf4; */
+  /* background-color: #fffcf4;
+  */
   padding: 16px;
   border: 1px solid black;
   border-radius: 15px;
 }
-
-.create input {
+.NewUI .create input {
   font-size: 16px;
   padding: 8px;
   border-width: 1px;
 }
-
-.uppersec {
+.NewUI .uppersec {
   display: flex;
 }
-
-.field-title {
+.NewUI .field-title {
   flex-grow: 1;
   margin-right: 25px;
 }
-.field-title input {
+.NewUI .field-title input {
   width: 100%;
   border-radius: var(--radius) 0 0 0;
 }
-
-.field-author input {
+.NewUI .field-author input {
   width: 80px;
   border-radius: 0 var(--radius) 0 0;
 }
-
-.field-content {
+.NewUI .field-content {
   margin-top: 8px;
 }
-
-.field-content textarea {
+.NewUI .field-content textarea {
   width: 100%;
   box-sizing: border-box;
   border-radius: 0 0 var(--radius) var(--radius);
   font-size: 16px;
-  /* margin: 0; */
-  /* padding: 0; */
+  /* margin: 0;
+  */
+  /* padding: 0;
+  */
 }
-.field-btn {
+.NewUI .field-btn {
   margin-top: 8px;
   text-align: center;
 }
-.field-btn button {
+.NewUI .field-btn button {
   width: 100px;
   height: 30px;
 }
-
-.FeedItem {
-  border: 1px solid black;
-  margin-top: 16px;
-  padding: 8px;
+.NewUI .FeedItem {
+  background-color: white;
+  /* border: 1px solid black;
+  */
+  padding: 0;
+  padding-top: 20px;
+  padding-bottom: 4px;
+  border: none;
+  margin-top: 8px;
+  border-radius: 4px;
 }
-.FeedItem .author {
+.NewUI .FeedItem:last-child {
+  margin-bottom: 16px;
+}
+.NewUI .FeedItem > * {
+  padding: 0 24px;
+}
+.NewUI .FeedItem .leftflx {
+  display: flex;
+  align-items: center;
+}
+.NewUI .FeedItem .authorpic {
+  margin-right: 4px;
+  padding: 2px;
+}
+.NewUI .FeedItem .author {
   line-height: 1;
+  font-size: 1.5em;
+  color: #2d2d2d;
+  font-weight: bold;
 }
-
-.FeedItem .moreinfo {
+.NewUI .FeedItem .moreinfo {
   display: flex;
   justify-content: space-between;
   align-items: center;
   font-size: 0.8em;
   color: #444;
 }
-
-.FeedItem .title,
-.FeedItem .content {
+.NewUI .FeedItem .title,
+.NewUI .FeedItem .content {
   line-height: 1.5;
 }
-
-.FeedItem .title {
+.NewUI .FeedItem .title {
   font-weight: bold;
   font-size: 1.1em;
   margin-top: 8px;
 }
-
-.FeedItem .content {
+.NewUI .FeedItem .content {
   white-space: pre;
+  padding-top: 16px;
+  padding-bottom: 16px;
 }
-
-.FeedItem .deletebtn {
+.NewUI .FeedItem .image,
+.NewUI .FeedItem .image img {
+  padding: 0;
+  margin: 0;
+  width: 100%;
+}
+.NewUI .FeedItem .deletebtn {
   margin-top: 8px;
 }
-
-.FeedItem .date {
+.NewUI .FeedItem .date {
   line-height: 1;
-  margin-right: 8px;
+  margin-top: 8px;
 }
-
-.FeedItem .rightflx {
+.NewUI .FeedItem .rightflx {
   display: flex;
   align-items: center;
+}
+.NewUI .FeedItem .bottomMenu {
+  display: flex;
+  justify-content: space-between;
+}
+.NewUI .FeedItem .bottomMenu > div:hover {
+  /* background-color: #f2f2f2;
+  */
+  border: 1px solid #333;
+}
+.NewUI .FeedItem .bottomMenu > div {
+  width: 100%;
+  text-align: center;
+  font-weight: bold;
+  padding: 4px;
+  border-radius: 4px;
+  /* box-sizing: content-box;
+  */
+  border: 1px solid transparent;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  cursor: pointer;
+  -webkit-user-select: none;
+  /* Safari */
+  -ms-user-select: none;
+  /* IE 10 and IE 11 */
+  user-select: none;
+  /* Standard syntax */
+}
+.NewUI .FeedItem .bottomMenu > div > span {
+  font-size: 0.95em;
+  line-height: 1;
+  margin-bottom: 2.5px;
+  margin-left: 4px;
 }

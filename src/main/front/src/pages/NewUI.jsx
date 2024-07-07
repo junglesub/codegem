@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
 
 import "./NewUI.css";
-import FeedItem from "../components/FeedItem";
-import FeedItemNew from "../components/FeedItemNew";
+import FeedItemNew from "../components/FeedItemNew/FeedItemNew";
 
 const allFeeds = [
   {
@@ -30,6 +29,7 @@ https://open.kakao.com/o/
     author: "실명카톡방2",
     createdAt: "2024-07-05",
     id: 2,
+    img: "pard.jpg",
     content: `
 ✨PARD 3기 데모데이 D-7✨
 
@@ -50,7 +50,7 @@ https://open.kakao.com/o/
 function NewUI() {
   // const [allFeeds, setAllFeed] = useState([]);
   return (
-    <div className="App">
+    <div className="NewUI">
       <div className="header">
         <h1>Handong Feed</h1>
       </div>
