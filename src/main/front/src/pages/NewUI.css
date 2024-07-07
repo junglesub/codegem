@@ -1,0 +1,124 @@
+html,
+body,
+.root {
+  background-color: #999;
+  margin: 0;
+  padding: 0;
+}
+
+.App {
+  /* border: 1px solid black; */
+  background-color: white;
+  max-width: 800px;
+  margin: auto;
+  padding: 16px;
+  --radius: 5px;
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+.header {
+  background-color: #eee;
+  padding: 16px;
+  line-height: 0;
+  text-align: center;
+  text-transform: uppercase;
+}
+.create {
+  margin-top: 16px;
+  /* background-color: #fffcf4; */
+  padding: 16px;
+  border: 1px solid black;
+  border-radius: 15px;
+}
+
+.create input {
+  font-size: 16px;
+  padding: 8px;
+  border-width: 1px;
+}
+
+.uppersec {
+  display: flex;
+}
+
+.field-title {
+  flex-grow: 1;
+  margin-right: 25px;
+}
+.field-title input {
+  width: 100%;
+  border-radius: var(--radius) 0 0 0;
+}
+
+.field-author input {
+  width: 80px;
+  border-radius: 0 var(--radius) 0 0;
+}
+
+.field-content {
+  margin-top: 8px;
+}
+
+.field-content textarea {
+  width: 100%;
+  box-sizing: border-box;
+  border-radius: 0 0 var(--radius) var(--radius);
+  font-size: 16px;
+  /* margin: 0; */
+  /* padding: 0; */
+}
+.field-btn {
+  margin-top: 8px;
+  text-align: center;
+}
+.field-btn button {
+  width: 100px;
+  height: 30px;
+}
+
+.FeedItem {
+  border: 1px solid black;
+  margin-top: 16px;
+  padding: 8px;
+}
+.FeedItem .author {
+  line-height: 1;
+}
+
+.FeedItem .moreinfo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.8em;
+  color: #444;
+}
+
+.FeedItem .title,
+.FeedItem .content {
+  line-height: 1.5;
+}
+
+.FeedItem .title {
+  font-weight: bold;
+  font-size: 1.1em;
+  margin-top: 8px;
+}
+
+.FeedItem .content {
+  white-space: pre;
+}
+
+.FeedItem .deletebtn {
+  margin-top: 8px;
+}
+
+.FeedItem .date {
+  line-height: 1;
+  margin-right: 8px;
+}
+
+.FeedItem .rightflx {
+  display: flex;
+  align-items: center;
+}
