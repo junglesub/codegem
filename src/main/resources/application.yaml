@@ -41,6 +41,9 @@ spring:
     cache: false
   sql.init.mode: always
   #sql.init.mode: never
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
 springdoc:
   swagger-ui:
     operations-sorter: alpha
