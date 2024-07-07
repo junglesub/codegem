@@ -33,4 +33,21 @@ https://feed.handong.app/
 - React
 - MYSQL
 
+## 개발환경 - 실행 방법
+
+### IntelliJ 사용
+
+gradle dependencies 설치 후에 `RealsprApplication.java` 실행.
+
+### 직접 실행
+
+```sh
+./gradlew bootRun
+```
+
+### 프론트 실행 방법
+
+front 에서 `npm start` 이후 http://localhost:3000 바로 접속.
+
+#2024-하계 웹캠프  
 #2024-1 코딩클리닉 - 실전코딩/서버편
