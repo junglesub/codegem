@@ -123,6 +123,7 @@ body,
 }
 .NewUI .FeedItem .content {
   white-space: pre;
+  text-wrap: pretty;
   padding-top: 16px;
   padding-bottom: 16px;
 }
