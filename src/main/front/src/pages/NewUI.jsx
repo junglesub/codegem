@@ -1,5 +1,6 @@
 import "./NewUI.css";
 import FeedItemNew from "../components/FeedItemNew/FeedItemNew";
+import WeatherData from "../components/FeedItemNew/WeatherData";
 
 const allFeeds = [
   {
@@ -54,6 +55,7 @@ function NewUI() {
       </div>
 
       <div className="list">
+        <WeatherData />
         {allFeeds.length === 0 && <div>No Entry..</div>}
         {allFeeds
           .sort((a, b) => (a.createdAt < b.createdAt ? 1 : -1))
