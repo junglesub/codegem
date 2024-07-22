@@ -4,6 +4,7 @@ import "./index.css";
 import App from "./App";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import NewUI from "./pages/NewUI";
+import Admin from "./pages/Admin";
 
 const router = createBrowserRouter([
   {
@@ -13,6 +14,10 @@ const router = createBrowserRouter([
   {
     path: "/newui",
     element: <NewUI />,
+  },
+  {
+    path: "/admin",
+    element: <Admin />,
   },
 ]);
 

@@ -97,6 +97,7 @@ body,
 .FeedItem .title,
 .FeedItem .content {
   line-height: 1.5;
+  text-wrap: pretty !important;
 }
 
 .FeedItem .title {
