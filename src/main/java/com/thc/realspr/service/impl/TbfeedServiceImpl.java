@@ -17,19 +17,20 @@ import java.util.Map;
 public class TbfeedServiceImpl implements TbfeedService {
 
     private final TbfeedRepository tbfeedRepository;
+
     public TbfeedServiceImpl(
             TbfeedRepository tbfeedRepository
     ) {
         this.tbfeedRepository = tbfeedRepository;
     }
 
-    public Map<String, Object> create(Map<String, Object> param){
+    public Map<String, Object> create(Map<String, Object> param) {
         Map<String, Object> returnMap = new HashMap<String, Object>();
         System.out.println(param);
 //        Tbuser tbuser = Tbuser.of(param.get("username") + "", param.get("password") + "");
 //        tbuserRepository.save(tbuser);
         System.out.println(param);
-        Tbfeed tbfeed = Tbfeed.of(param.get("title") + "", param.get("author") + "", param.get("content") + "");
+        Tbfeed tbfeed = Tbfeed.of(param.get("id") + "", param.get("title") + "", param.get("author") + "", param.get("content") + "");
         tbfeedRepository.save(tbfeed);
         returnMap.put("id", tbfeed.getId());
         returnMap.put("title", tbfeed.getTitle());
@@ -39,13 +40,16 @@ public class TbfeedServiceImpl implements TbfeedService {
         returnMap.put("modifiedAt", tbfeed.getModifiedDate());
         return returnMap;
     }
+
     public void delete(String id) {
-        Tbfeed tbfeed = tbfeedRepository.findById(id).orElseThrow(() -> new RuntimeException(""));
-        tbfeed.setDeleted("Y");
-        tbfeedRepository.save(tbfeed);
+//        Tbfeed tbfeed = tbfeedRepository.findById(id).orElseThrow(() -> new RuntimeException(""));
+//        tbfeed.setDeleted("Y");
+//        tbfeedRepository.save(tbfeed);
+        tbfeedRepository.deleteById(id);
 
     }
-    public Map<String, Object> update(Map<String, Object> param){
+
+    public Map<String, Object> update(Map<String, Object> param) {
 //        Map<String, Object> returnMap = new HashMap<String, Object>();
 //        System.out.println(param);
 //        Tbuser tbuser = tbuserRepository.findById(param.get("id") + "").orElseThrow(() -> new RuntimeException(""));
@@ -62,10 +66,10 @@ public class TbfeedServiceImpl implements TbfeedService {
 //        tbuserRepository.save(tbuser);
 //        returnMap.put("id", tbuser.getId());
 //        return returnMap;
-   return null;
+        return null;
     }
 
-    public Map<String, Object> get(String id){
+    public Map<String, Object> get(String id) {
         Map<String, Object> returnMap = new HashMap<String, Object>();
         System.out.println(id);
         Tbfeed tbfeed = tbfeedRepository.findById(id).orElseThrow(() -> new RuntimeException(""));
@@ -83,9 +87,9 @@ public class TbfeedServiceImpl implements TbfeedService {
     public List<Map<String, Object>> getAll() {
         List<Map<String, Object>> result = new ArrayList<>();
 //        List<Tbfeed> allFeed  = tbfeedRepository.findAll();
-        List<Tbfeed> allFeed  = tbfeedRepository.findByDeletedNot("Y");
+        List<Tbfeed> allFeed = tbfeedRepository.findByDeletedNot("Y");
 
-        for(Tbfeed tbfeed : allFeed) {
+        for (Tbfeed tbfeed : allFeed) {
             Map<String, Object> returnMap = new HashMap<String, Object>();
             returnMap.put("id", tbfeed.getId());
             returnMap.put("title", tbfeed.getTitle());

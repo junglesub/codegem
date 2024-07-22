@@ -46,6 +46,22 @@ public class TbKaFeedServiceImpl implements TbKaFeedService {
             returnMap.put("sentAt", 0);
         }
         return returnMap;
+    }
 
+    public List<Map<String, Object>> getAll() {
+        List<Map<String, Object>> result = new ArrayList<>();
+        List<TbKaFeed> allFeed = tbKaFeedRepository.findByDeletedNot("Y");
+
+        for (TbKaFeed entry : allFeed) {
+            Map<String, Object> returnMap = new HashMap<String, Object>();
+            returnMap.put("id", entry.getId());
+            returnMap.put("message", entry.getMessage());
+            returnMap.put("sentAt", entry.getSentAt());
+            returnMap.put("createdAt", entry.getCreatedDate());
+            returnMap.put("modifiedAt", entry.getModifiedDate());
+            result.add(returnMap);
+        }
+
+        return result;
     }
 }

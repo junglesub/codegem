@@ -29,4 +29,9 @@ public class TbKaFeedController {
         return tbKaFeedService.getLastKaFeed();
     }
 
+    @GetMapping("/all")
+    public List<Map<String, Object>> getAllKaFeed() {
+        return tbKaFeedService.getAll();
+    }
+
 }

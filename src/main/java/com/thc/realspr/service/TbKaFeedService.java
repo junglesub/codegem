@@ -10,9 +10,10 @@ public interface TbKaFeedService {
     public Map<String, Object> create(Map<String, Object> param);
 
     public Map<String, Object> getLastKaFeed();
-//    public Map<String, Object> update(Map<String, Object> param);
+
+    //    public Map<String, Object> update(Map<String, Object> param);
 //    public Map<String, Object> get(String id);
 //    public void delete(String id);
-//    public List<Map<String, Object>> getAll();
+    public List<Map<String, Object>> getAll();
 
 }
