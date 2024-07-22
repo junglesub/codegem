@@ -30,6 +30,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     //db
     runtimeOnly 'com.mysql:mysql-connector-j'
+    implementation 'org.mariadb.jdbc:mariadb-java-client:3.1.2'
     // 추가 종료
 
     compileOnly 'org.projectlombok:lombok'
@@ -47,7 +48,8 @@ def frontendDir = "$projectDir/src/main/front"
 
 sourceSets {
     main {
-        resources { srcDirs = ["$projectDir/src/main/resources"]
+        resources {
+            srcDirs = ["$projectDir/src/main/resources"]
         }
     }
 }
@@ -60,8 +62,8 @@ task installReact(type: Exec) {
     group = BasePlugin.BUILD_GROUP
     if (System.getProperty('os.name').toLowerCase(Locale.ROOT).contains('windows')) {
         commandLine "npm.cmd", "audit", "fix"
-        commandLine 'npm.cmd', 'install' }
-    else {
+        commandLine 'npm.cmd', 'install'
+    } else {
         commandLine "npm", "audit", "fix" commandLine 'npm', 'install'
     }
 }

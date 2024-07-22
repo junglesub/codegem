@@ -8,11 +8,13 @@ logging:
     org.hibernate.type.descriptor.sql.BasicBinder: trace
 
 spring:
+  config:
+    import: optional:file:.env[.properties]
   datasource:
-    url: jdbc:mysql://www.adapter-gwangalli.com:3306/scjavajjang?characterEncoding=UTF-8&serverTimezone=Asia/Seoul
-    username: root
-    password: ivill0080@
-    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: ${DB_HOST}/${DB_NAME}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    driver-class-name: ${DB_CLASSNAME}
   jpa:
     defer-datasource-initialization: true
     hibernate.ddl-auto: update
