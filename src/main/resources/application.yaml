@@ -11,10 +11,10 @@ spring:
   config:
     import: optional:file:.env[.properties]
   datasource:
-    url: ${DB_HOST}/${DB_NAME}
-    username: ${DB_USERNAME}
-    password: ${DB_PASSWORD}
-    driver-class-name: ${DB_CLASSNAME}
+    url: ${DB_HOST:${DB_HOST_DEFAULT}}/${DB_NAME:${DB_NAME_DEFAULT}}
+    username: ${DB_USERNAME:${DB_USERNAME_DEFAULT}}
+    password: ${DB_PASSWORD:${DB_PASSWORD_DEFAULT}}
+    driver-class-name: ${DB_CLASSNAME:${DB_CLASSNAME_DEFAULT}}
   jpa:
     defer-datasource-initialization: true
     hibernate.ddl-auto: update
