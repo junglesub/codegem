@@ -23,6 +23,8 @@ https://feed.handong.app/
 
 ## 향후 방향
 
+![HandongApp](https://github.com/user-attachments/assets/8708b75a-3e82-4976-95e1-466138e6aa5a)
+
 1. 기본적인 MVP 를 만들어 한동대학교 구성원 대상 유저 테스트 및 피드백 시작.
 2. 일반화(generalize) 작업을 하고 다른 커뮤니티에서도 사용할 수 있도록 HSF (Handong Software Foundation)에 지원.
 3. [Handong Newsletter](https://github.com/junglesub/handong-newsletter) 서비스와 연동하여 이메일로 피드 내용을 보내줄 수 있도록 개발.
