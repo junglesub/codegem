@@ -8,6 +8,8 @@ logging:
     org.hibernate.type.descriptor.sql.BasicBinder: trace
 
 spring:
+  profiles:
+    include: oauth
   config:
     import: optional:file:.env[.properties]
   datasource:
