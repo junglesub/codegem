@@ -12,4 +12,10 @@ public class TbuserPageController {
     public String page(@PathVariable("page") String page){
         return "tbuser/" + page;
     }
+
+    @GetMapping("/index")
+    public String index(){
+        return "tbuser/index";
+    }
+
 }

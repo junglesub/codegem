@@ -36,6 +36,9 @@ dependencies {
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+    // 구글 로그인을 위함
+    implementation 'com.google.api-client:google-api-client:2.0.0'
 }
 
 tasks.named('test') {
