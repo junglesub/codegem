@@ -1,8 +1,15 @@
 package com.thc.realspr.service.impl;
 
 import com.thc.realspr.domain.Tbuser;
+import com.thc.realspr.dto.DefaultDto;
+import com.thc.realspr.dto.GoogleLoginRequest;
+import com.thc.realspr.dto.GoogleLoginResponse;
+import com.thc.realspr.dto.TbuserDto;
+import com.thc.realspr.mapper.TbuserMapper;
 import com.thc.realspr.repository.TbuserRepository;
 import com.thc.realspr.service.TbuserService;
+import com.thc.realspr.util.JwtTokenUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -12,6 +19,18 @@ import java.util.Map;
 public class TbuserServiceImpl implements TbuserService {
 
     private final TbuserRepository tbuserRepository;
+
+    private final TbuserMapper tbuserMapper;
+    private final TbuserRepository tbuserRepository;
+    private final JwtTokenUtil jwtTokenUtil;
+
+    @Autowired
+    public TbuserServiceImpl(TbuserMapper tbuserMapper, TbuserRepository tbuserRepository, JwtTokenUtil jwtTokenUtil) {
+        this.tbuserMapper = tbuserMapper;
+        this.tbuserRepository = tbuserRepository;
+        this.jwtTokenUtil = jwtTokenUtil;
+    }
+
     public TbuserServiceImpl(
             TbuserRepository tbuserRepository
     ) {
@@ -57,4 +76,33 @@ public class TbuserServiceImpl implements TbuserService {
 
         return returnMap;
     }
+
+    @Override
+    public TbuserDto.CreateResDto access(String param) throws Exception {
+        return null;
+    }
+
+    @Override
+    public GoogleLoginResponse loginWithGoogle(GoogleLoginRequest request) {
+            // Google에서 인증된 사용자 이메일 가져오기
+            String email = tbuserMapper.findByEmail(request.getCredential());
+
+            // 이메일이 null이거나 @handong.ac.kr 도메인이 아니면 예외 발생
+            if (email == null || !email.endsWith("@handong.ac.kr")) {
+                throw new NoAuthorizationException("Unauthorized user");
+            }
+
+            // 사용자 엔티티 생성 및 저장
+            Tbuser user = new Tbuser();
+            user.setUsername(email);
+            tbuserRepository.save(user);
+
+            // JWT 토큰 생성
+            String token = jwtTokenUtil.generateToken(email);
+
+            // 응답 DTO 생성 및 반환
+            return new GoogleLoginResponse(true, "Login successful", token);
+    }
+
+
 }

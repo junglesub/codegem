@@ -2,36 +2,41 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-
-<body>
-<div style="width: 200px;">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Login</title>
     <script src="https://accounts.google.com/gsi/client" async defer></script>
-    <div id="g_id_onload"
-         data-client_id="542164017545-c6tsebe44kpkpk43b7u8njouir63oqq8.apps.googleusercontent.com"
-         data-login_uri="/tbuser/login/google"
-         data-auto_prompt="false"
-         data-context="use">
-    </div>
-    <div class="g_id_signin"
-         data-type="standard"
-         data-size="large"
-         data-theme="outline"
-         data-text="sign_in_with"
-         data-shape="rectangular"
-         data-logo_alignment="left">
-    </div>
+    <script>
+        function handleCredentialResponse(response) {
+            console.log("Encoded JWT ID token: " + response.credential);
+            // AJAX 요청으로 서버에 Google ID Token을 보냅니다
+            fetch('/api/tbuser/login/google', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({credential: response.credential})
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log("Response from server:", data);
+                    if (data.success) {
+                        alert("Login successful! Token: " + data.token);
+                    } else {
+                        alert("Login failed: " + data.message);
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+        }
+    </script>
+</head>
+<body>
+<div id="g_id_onload"
+     data-client_id="542164017545-c6tsebe44kpkpk43b7u8njouir63oqq8.apps.googleusercontent.com"
+     data-callback="handleCredentialResponse">
 </div>
-
-<div>
-    <p>
-        <b style="background-color:yellow;">
-            <span th:if="${isValidUser != null and isValidUser}">Welcome! Your ID is valid.</span>
-            <span th:if="${isValidUser == null or !isValidUser}">Your ID is not valid. Please try again.</span>
-        </b>
-    </p>
+<div class="g_id_signin"
+     data-type="standard"
+     data-size="large">
 </div>
-
 </body>
 </html>

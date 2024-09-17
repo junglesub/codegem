@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thc.realspr.mapper.TbuserMapper">
+
+    <!-- 로그인 쿼리: 사용자 아이디와 비밀번호를 사용하여 인증 -->
+    <select id="findByEmail" parameterType="String" resultType="com.thc.realspr.dto.TbuserDto$DetailResDto">
+        SELECT tbuser.id, tbuser.username, tbuser.email
+        FROM tbuser
+        WHERE tbuser.email = #{email}
+    </select>
+
+</mapper>

@@ -1,16 +1,17 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Login</title>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
-
 <body>
 <div style="width: 200px;">
-    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <!-- Google One Tap Login -->
     <div id="g_id_onload"
          data-client_id="542164017545-c6tsebe44kpkpk43b7u8njouir63oqq8.apps.googleusercontent.com"
-         data-login_uri="/tbuser/login/google"
+         data-login_uri="/api/tbuser/login/google"
          data-auto_prompt="false"
          data-context="use">
     </div>
@@ -24,17 +25,21 @@
     </div>
 </div>
 
-<!-- 여기서 백엔드에서 전달된 isValidUser 값을 사용합니다 -->
+<!-- 로그인 결과를 보여줄 영역 -->
 <div>
     <p>
-        <!-- 타임리프 문법을 사용하여 유효한 사용자 여부를 표시 -->
         <b style="background-color:yellow;">
-            <!-- 타임리프 조건문 -->
+            <!-- 타임리프 문법을 사용하여 유효한 사용자 여부를 표시 -->
             <span th:if="${isValidUser != null and isValidUser}">Welcome! Your ID is valid.</span>
             <span th:if="${isValidUser == null or !isValidUser}">Your ID is not valid. Please try again.</span>
-
         </b>
     </p>
+</div>
+
+<!-- 추가적으로 로그인 성공 시 추가 정보 표시 (이메일 등) -->
+<div th:if="${isValidUser != null and isValidUser}">
+    <p>Login Successful!</p>
+    <p th:text="'Email: ' + ${email}">User's Email</p>
 </div>
 
 </body>
