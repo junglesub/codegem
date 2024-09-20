@@ -2,19 +2,16 @@ package com.thc.realspr.controller;
 
 import com.thc.realspr.dto.GoogleLoginRequest;
 import com.thc.realspr.dto.GoogleLoginResponse;
-import com.thc.realspr.exception.NoAuthorizationException;
-import com.thc.realspr.service.GoogleAuthService;
+import com.thc.realspr.mapper.TbuserMapper;
 import com.thc.realspr.service.TbuserService;
-import com.thc.realspr.util.JwtTokenUtil;
+import org.antlr.v4.runtime.TokenFactory;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.Map;
 
 @RequestMapping("/api/tbuser")
 @RestController
 public class TbuserController {
-
 
     private final TbuserService tbuserService;
 
@@ -44,6 +41,8 @@ public class TbuserController {
     public GoogleLoginResponse loginWithGoogle(@RequestBody GoogleLoginRequest request) {
         return tbuserService.loginWithGoogle(request);
     }
+
+
 
 
 }

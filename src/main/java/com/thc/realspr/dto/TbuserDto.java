@@ -215,4 +215,21 @@ public class TbuserDto {
         private String phone;
     }
 
+    @Getter
+    @Setter
+    public static class GoogleLoginRequest{
+        private String credential;
+
+    }
+
+    @Getter
+    @Setter
+    public class GoogleLoginResponse {
+        private String token;
+
+        public GoogleLoginResponse(String token) {
+            this.token = token;
+        }
+    }
+
 }

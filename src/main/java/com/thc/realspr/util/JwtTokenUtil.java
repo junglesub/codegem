@@ -15,7 +15,7 @@ public class JwtTokenUtil {
         return Jwts.builder()
                 .setSubject(email)
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10)) // 10시간 유효
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10))  // 10시간 유효
                 .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
                 .compact();
     }

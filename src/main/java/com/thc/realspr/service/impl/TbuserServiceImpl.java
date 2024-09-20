@@ -20,15 +20,10 @@ public class TbuserServiceImpl implements TbuserService {
 
     private final TbuserRepository tbuserRepository;
 
-    private final TbuserMapper tbuserMapper;
-    private final TbuserRepository tbuserRepository;
-    private final JwtTokenUtil jwtTokenUtil;
 
     @Autowired
     public TbuserServiceImpl(TbuserMapper tbuserMapper, TbuserRepository tbuserRepository, JwtTokenUtil jwtTokenUtil) {
-        this.tbuserMapper = tbuserMapper;
         this.tbuserRepository = tbuserRepository;
-        this.jwtTokenUtil = jwtTokenUtil;
     }
 
     public TbuserServiceImpl(
@@ -82,27 +77,21 @@ public class TbuserServiceImpl implements TbuserService {
         return null;
     }
 
-    @Override
-    public GoogleLoginResponse loginWithGoogle(GoogleLoginRequest request) {
-            // Google에서 인증된 사용자 이메일 가져오기
-            String email = tbuserMapper.findByEmail(request.getCredential());
+    /*
+    * private final TbuserRepository tbuserRepository;
 
-            // 이메일이 null이거나 @handong.ac.kr 도메인이 아니면 예외 발생
-            if (email == null || !email.endsWith("@handong.ac.kr")) {
-                throw new NoAuthorizationException("Unauthorized user");
-            }
-
-            // 사용자 엔티티 생성 및 저장
-            Tbuser user = new Tbuser();
-            user.setUsername(email);
-            tbuserRepository.save(user);
-
-            // JWT 토큰 생성
-            String token = jwtTokenUtil.generateToken(email);
-
-            // 응답 DTO 생성 및 반환
-            return new GoogleLoginResponse(true, "Login successful", token);
+    public TbuserService(TbuserRepository tbuserRepository) {
+        this.tbuserRepository = tbuserRepository;
     }
+
+    public Tbuser findOrCreateUserByEmail(String email) {
+        return tbuserRepository.findByEmail(email)
+                .orElseGet(() -> {
+                    Tbuser newUser = new Tbuser();
+                    newUser.setUsername(email);
+                    return tbuserRepository.save(newUser);
+                });
+    }*/
 
 
 }
