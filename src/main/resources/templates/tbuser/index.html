@@ -19,8 +19,11 @@
                 .then(response => response.json())
                 .then(data => {
                     console.log("Response from server:", data);
-                    if (data.success) {
-                        alert("Login successful! Token: " + data.token);
+                    if (data.token) { // 서버로부터 토큰을 받으면
+                        // 토큰을 쿼리 파라미터로 현재 URL에 추가
+                        const currentUrl = window.location.href.split('?')[0]; // 기존 쿼리 파라미터 제거
+                        const newUrl = `${currentUrl}?token=${data.token}`; // 새로운 쿼리 파라미터 추가
+                        window.location.href = newUrl; // URL을 변경하고 페이지를 리로드
                     } else {
                         alert("Login failed: " + data.message);
                     }

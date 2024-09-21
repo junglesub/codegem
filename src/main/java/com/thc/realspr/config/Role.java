@@ -1,4 +1,4 @@
-package com.thc.realspr.domain;
+package com.thc.realspr.config;
 
 
 import lombok.Getter;

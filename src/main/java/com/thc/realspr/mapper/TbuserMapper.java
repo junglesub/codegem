@@ -1,6 +1,6 @@
 package com.thc.realspr.mapper;
 
-import com.thc.realspr.dto.TbuserDto$DetailResDto;
+import com.thc.realspr.dto.TbuserDto;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 

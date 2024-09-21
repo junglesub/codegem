@@ -1,5 +1,6 @@
 package com.thc.realspr.domain;
 
+import com.thc.realspr.config.Role;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;

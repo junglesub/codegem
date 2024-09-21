@@ -1,16 +1,18 @@
 package com.thc.realspr.service.impl;
 
 import com.thc.realspr.domain.Tbuser;
-import com.thc.realspr.dto.DefaultDto;
 import com.thc.realspr.dto.GoogleLoginRequest;
 import com.thc.realspr.dto.GoogleLoginResponse;
 import com.thc.realspr.dto.TbuserDto;
 import com.thc.realspr.mapper.TbuserMapper;
 import com.thc.realspr.repository.TbuserRepository;
 import com.thc.realspr.service.TbuserService;
-import com.thc.realspr.util.JwtTokenUtil;
+import com.thc.realspr.util.TokenFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+//import com.thc.realspr.util.TokenFactory;
+
+
 
 import java.util.HashMap;
 import java.util.Map;
@@ -22,7 +24,7 @@ public class TbuserServiceImpl implements TbuserService {
 
 
     @Autowired
-    public TbuserServiceImpl(TbuserMapper tbuserMapper, TbuserRepository tbuserRepository, JwtTokenUtil jwtTokenUtil) {
+    public TbuserServiceImpl(TbuserMapper tbuserMapper, TbuserRepository tbuserRepository) {
         this.tbuserRepository = tbuserRepository;
     }
 
@@ -74,24 +76,16 @@ public class TbuserServiceImpl implements TbuserService {
 
     @Override
     public TbuserDto.CreateResDto access(String param) throws Exception {
+        TokenFactory tokenFactory = new TokenFactory();
+        String tbuserId = tokenFactory.issueAccessToken(param);
+
+        return null;
+    }
+    @Override
+    public GoogleLoginResponse loginWithGoogle(GoogleLoginRequest request) {
         return null;
     }
 
-    /*
-    * private final TbuserRepository tbuserRepository;
-
-    public TbuserService(TbuserRepository tbuserRepository) {
-        this.tbuserRepository = tbuserRepository;
-    }
-
-    public Tbuser findOrCreateUserByEmail(String email) {
-        return tbuserRepository.findByEmail(email)
-                .orElseGet(() -> {
-                    Tbuser newUser = new Tbuser();
-                    newUser.setUsername(email);
-                    return tbuserRepository.save(newUser);
-                });
-    }*/
 
 
 }
