@@ -1,5 +1,6 @@
 package com.thc.realspr.service;
 
+import com.thc.realspr.dto.TbmessageDto;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,4 +17,5 @@ public interface TbKaFeedService {
 //    public void delete(String id);
     public List<Map<String, Object>> getAll();
 
+    List<TbmessageDto.Detail> scrollList();
 }

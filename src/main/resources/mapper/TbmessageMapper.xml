@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0/EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thc.realspr.mapper.TbmessageMapper">
+
+    <!---->
+    <select id="scrollList" parameterType="hashMap" resultType="com.thc.realspr.dto.TbmessageDto$Detail">
+        SELECT subject.id           AS subjectId,
+               message.id           AS id,
+               message.last_sent_at AS sentAt,
+               message.message      AS message
+        FROM (SELECT *
+              FROM TbSubject
+              ORDER BY last_sent_at DESC
+              LIMIT 15) AS subject
+                 JOIN TbKaMessage AS message ON message.chat_id = subject.last_sent_chat_id
+    </select>
+
+    <select id="fileDetails" parameterType="string" resultType="com.thc.realspr.dto.TbmessageDto$FileDetail">
+        SELECT file.hash AS hash,
+               file.ext  AS ext
+        FROM (SELECT file_hash
+              FROM TbFileMessageRelation
+              WHERE message_id = #{messageId}) as fml
+                 LEFT JOIN TbKaFile AS file
+                           ON file.hash = fml.file_hash
+    </select>
+
+</mapper>

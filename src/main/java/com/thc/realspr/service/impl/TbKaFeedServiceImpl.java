@@ -1,10 +1,10 @@
 package com.thc.realspr.service.impl;
 
 import com.thc.realspr.domain.TbKaFeed;
-import com.thc.realspr.domain.Tbfeed;
+import com.thc.realspr.dto.TbmessageDto;
+import com.thc.realspr.mapper.TbmessageMapper;
 import com.thc.realspr.repository.TbKaFeedRepository;
 import com.thc.realspr.service.TbKaFeedService;
-import com.thc.realspr.service.TbfeedService;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -16,11 +16,14 @@ import java.util.Map;
 public class TbKaFeedServiceImpl implements TbKaFeedService {
 
     private final TbKaFeedRepository tbKaFeedRepository;
+    private final TbmessageMapper tbmessageMapper;
 
     public TbKaFeedServiceImpl(
-            TbKaFeedRepository tbKaFeedRepository
+            TbKaFeedRepository tbKaFeedRepository,
+            TbmessageMapper tbmessageMapper
     ) {
         this.tbKaFeedRepository = tbKaFeedRepository;
+        this.tbmessageMapper = tbmessageMapper;
     }
 
     public Map<String, Object> create(Map<String, Object> param) {
@@ -50,7 +53,7 @@ public class TbKaFeedServiceImpl implements TbKaFeedService {
 
     public List<Map<String, Object>> getAll() {
         List<Map<String, Object>> result = new ArrayList<>();
-        List<TbKaFeed> allFeed = tbKaFeedRepository.findByDeletedNot("Y");
+        List<TbKaFeed> allFeed = tbKaFeedRepository.findAllByDeletedNotOrderBySentAtDesc("Y");
 
         for (TbKaFeed entry : allFeed) {
             Map<String, Object> returnMap = new HashMap<String, Object>();
@@ -62,6 +65,19 @@ public class TbKaFeedServiceImpl implements TbKaFeedService {
             result.add(returnMap);
         }
 
+        return result;
+    }
+
+    public List<TbmessageDto.Detail> scrollList() {
+        List<TbmessageDto.Detail> result = tbmessageMapper.scrollList();
+
+        for (TbmessageDto.Detail message : result) {
+            List<String> files = new ArrayList<>();
+            for (TbmessageDto.FileDetail file : tbmessageMapper.fileDetails(message.getId())) {
+                files.add(file.getHash() + "link");
+            }
+            message.setFiles(files);
+        }
         return result;
     }
 }

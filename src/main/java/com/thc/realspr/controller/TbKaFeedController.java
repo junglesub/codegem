@@ -1,5 +1,6 @@
 package com.thc.realspr.controller;
 
+import com.thc.realspr.dto.TbmessageDto;
 import com.thc.realspr.service.TbKaFeedService;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,5 +34,11 @@ public class TbKaFeedController {
     public List<Map<String, Object>> getAllKaFeed() {
         return tbKaFeedService.getAll();
     }
+
+    @GetMapping("/test")
+    public List<TbmessageDto.Detail> getListAll() {
+        return tbKaFeedService.scrollList();
+    }
+
 
 }
