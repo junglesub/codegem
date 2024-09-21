@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
+import java.util.stream.Collectors;
 
 @Service
 public class TbKaFeedServiceImpl implements TbKaFeedService {
@@ -75,13 +77,35 @@ public class TbKaFeedServiceImpl implements TbKaFeedService {
     public List<TbmessageDto.Detail> scrollList() {
         List<TbmessageDto.Detail> result = tbmessageMapper.scrollList();
 
-        for (TbmessageDto.Detail message : result) {
-            List<String> files = new ArrayList<>();
-            for (TbmessageDto.FileDetail file : tbmessageMapper.fileDetails(message.getId())) {
-                files.add(firebaseService.getSignedUrl("KaFile/" + file.getHash() + "." + file.getExt()));
-            }
-            message.setFiles(files);
-        }
-        return result;
+        // Process each TbmessageDto.Detail asynchronously
+        List<CompletableFuture<TbmessageDto.Detail>> futures = result.stream()
+                .map(message -> {
+                    // Fetch file details asynchronously
+                    CompletableFuture<List<TbmessageDto.FileDetail>> fileDetailsFuture = tbmessageMapper.fileDetailsAsync(message.getId());
+
+                    // When file details are retrieved, process them asynchronously to get signed URLs
+                    return fileDetailsFuture.thenCompose(fileDetails -> {
+                        // Asynchronously fetch signed URLs for each file
+                        List<CompletableFuture<String>> fileFutures = fileDetails.stream()
+                                .map(file -> firebaseService.getSignedUrlAsync("KaFile/" + file.getHash() + "." + file.getExt()))
+                                .toList();
+
+                        // Combine all futures for signed URLs and update the message when complete
+                        return CompletableFuture.allOf(fileFutures.toArray(new CompletableFuture[0]))
+                                .thenApply(v -> {
+                                    List<String> signedUrls = fileFutures.stream()
+                                            .map(CompletableFuture::join)
+                                            .collect(Collectors.toList());
+                                    message.setFiles(signedUrls);
+                                    return message;  // Return updated message
+                                });
+                    });
+                })
+                .toList();
+
+        // Wait for all tasks to complete and return the updated list
+        return futures.stream()
+                .map(CompletableFuture::join)
+                .collect(Collectors.toList());
     }
 }
