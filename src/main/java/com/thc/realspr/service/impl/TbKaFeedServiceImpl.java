@@ -103,9 +103,14 @@ public class TbKaFeedServiceImpl implements TbKaFeedService {
                 })
                 .toList();
 
-        // Wait for all tasks to complete and return the updated list
-        return futures.stream()
+        // Wait for all tasks to complete and collect the results
+        List<TbmessageDto.Detail> completedMessages = futures.stream()
                 .map(CompletableFuture::join)
+                .toList();
+
+        // Sort by sentAt in descending order
+        return completedMessages.stream()
+                .sorted((m1, m2) -> Integer.compare(m2.getSentAt(), m1.getSentAt()))  // Sorting in descending order
                 .collect(Collectors.toList());
     }
 }
