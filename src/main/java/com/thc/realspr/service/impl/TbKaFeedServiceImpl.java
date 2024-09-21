@@ -4,6 +4,7 @@ import com.thc.realspr.domain.TbKaFeed;
 import com.thc.realspr.dto.TbmessageDto;
 import com.thc.realspr.mapper.TbmessageMapper;
 import com.thc.realspr.repository.TbKaFeedRepository;
+import com.thc.realspr.service.FirebaseService;
 import com.thc.realspr.service.TbKaFeedService;
 import org.springframework.stereotype.Service;
 
@@ -17,13 +18,16 @@ public class TbKaFeedServiceImpl implements TbKaFeedService {
 
     private final TbKaFeedRepository tbKaFeedRepository;
     private final TbmessageMapper tbmessageMapper;
+    private final FirebaseService firebaseService;
 
     public TbKaFeedServiceImpl(
             TbKaFeedRepository tbKaFeedRepository,
-            TbmessageMapper tbmessageMapper
+            TbmessageMapper tbmessageMapper,
+            FirebaseService firebaseService
     ) {
         this.tbKaFeedRepository = tbKaFeedRepository;
         this.tbmessageMapper = tbmessageMapper;
+        this.firebaseService = firebaseService;
     }
 
     public Map<String, Object> create(Map<String, Object> param) {
@@ -74,7 +78,7 @@ public class TbKaFeedServiceImpl implements TbKaFeedService {
         for (TbmessageDto.Detail message : result) {
             List<String> files = new ArrayList<>();
             for (TbmessageDto.FileDetail file : tbmessageMapper.fileDetails(message.getId())) {
-                files.add(file.getHash() + "link");
+                files.add(firebaseService.getSignedUrl("KaFile/" + file.getHash() + "." + file.getExt()));
             }
             message.setFiles(files);
         }

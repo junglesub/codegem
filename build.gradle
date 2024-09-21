@@ -37,6 +37,9 @@ dependencies {
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2' //swagger 사용을 위함.
     // 추가 종료
 
+    //firebase stuff
+    implementation group: 'com.google.firebase', name: 'firebase-admin', version: '8.1.0'
+
     //devtool hotreload
     implementation 'org.springframework.boot:spring-boot-devtools'
 
