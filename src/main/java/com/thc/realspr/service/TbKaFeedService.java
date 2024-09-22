@@ -18,4 +18,6 @@ public interface TbKaFeedService {
     public List<Map<String, Object>> getAll();
 
     List<TbmessageDto.Detail> scrollList();
+
+    List<TbmessageDto.Detail> scrollList(int afterSentAt);
 }

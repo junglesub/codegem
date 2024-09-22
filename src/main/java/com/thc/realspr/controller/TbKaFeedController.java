@@ -36,8 +36,10 @@ public class TbKaFeedController {
     }
 
     @GetMapping("/test")
-    public List<TbmessageDto.Detail> getListAll() {
-        return tbKaFeedService.scrollList();
+    public List<TbmessageDto.Detail> getListAll(@RequestParam Map<String, String> param) {
+        if (param.containsKey("afterSentAt"))
+            return tbKaFeedService.scrollList(Integer.parseInt(param.get("afterSentAt")));
+        else return tbKaFeedService.scrollList();
     }
 
 

@@ -3,13 +3,14 @@
 <mapper namespace="com.thc.realspr.mapper.TbmessageMapper">
 
     <!---->
-    <select id="scrollList" parameterType="hashMap" resultType="com.thc.realspr.dto.TbmessageDto$Detail">
+    <select id="scrollList" parameterType="int" resultType="com.thc.realspr.dto.TbmessageDto$Detail">
         SELECT subject.id           AS subjectId,
                message.id           AS id,
                message.last_sent_at AS sentAt,
                message.message      AS message
         FROM (SELECT *
               FROM TbSubject
+              WHERE last_sent_at &lt; #{afterSentAt}
               ORDER BY last_sent_at DESC
               LIMIT 15) AS subject
                  JOIN TbKaMessage AS message ON message.chat_id = subject.last_sent_chat_id
