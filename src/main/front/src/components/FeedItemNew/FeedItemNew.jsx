@@ -4,6 +4,9 @@ import kakaotalk from "./kakaotalk.png";
 import comment from "./comment.png";
 import like from "./like.png";
 import share from "./share.png";
+import { convertTextToLinks } from "../../tools/tools";
+import FeedItemGallery from "./FeedItemGallery";
+import ReactShowMoreText from "react-show-more-text";
 
 function formatTimestamp(timestamp) {
   // Parse the timestamp into a Date object
@@ -35,10 +38,15 @@ function FeedItemNew({ item, getAllData }) {
           <button onClick={() => {}}>Bookmark</button>
         </div>
       </div>
-      <div className="content">{item.content.trim()}</div>
-      {item.img && (
+      <div className="content">
+        <ReactShowMoreText lines={3} truncatedEndingComponent="">
+          {convertTextToLinks(item.content.trim())}
+        </ReactShowMoreText>
+      </div>
+      {item.files && (
         <div className="image">
-          <img src={`/${item.img}`} alt="ss" />
+          <FeedItemGallery images={item.files} />
+          {/* <img src={`${item.img}`} alt="ss" /> */}
         </div>
       )}
       <div className="bottomMenu">
