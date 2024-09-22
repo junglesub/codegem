@@ -3,6 +3,7 @@ import React from "react";
 import "./FeedItemGallery.css";
 
 const FeedItemGallery = ({ images = [] }) => {
+  if (images.length === 0) return <></>;
   return (
     <div className={`post-images images-${images.length}`}>
       {images.slice(0, 3).map((image, index) => (
