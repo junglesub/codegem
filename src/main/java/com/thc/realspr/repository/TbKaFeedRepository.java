@@ -11,5 +11,7 @@ import java.util.List;
 public interface TbKaFeedRepository extends JpaRepository<TbKaFeed, String> {
     List<TbKaFeed> findByDeletedNot(String deleted);
 
+    List<TbKaFeed> findAllByDeletedNotOrderBySentAtDesc(String deleted);
+
     TbKaFeed findTopByOrderBySentAtDesc();
 }

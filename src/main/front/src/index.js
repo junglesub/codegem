@@ -9,11 +9,11 @@ import Admin from "./pages/Admin";
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <App />,
+    element: <NewUI />,
   },
   {
     path: "/newui",
-    element: <NewUI />,
+    element: <App />,
   },
   {
     path: "/admin",

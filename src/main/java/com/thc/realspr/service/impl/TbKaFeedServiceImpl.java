@@ -1,26 +1,35 @@
 package com.thc.realspr.service.impl;
 
 import com.thc.realspr.domain.TbKaFeed;
-import com.thc.realspr.domain.Tbfeed;
+import com.thc.realspr.dto.TbmessageDto;
+import com.thc.realspr.mapper.TbmessageMapper;
 import com.thc.realspr.repository.TbKaFeedRepository;
+import com.thc.realspr.service.FirebaseService;
 import com.thc.realspr.service.TbKaFeedService;
-import com.thc.realspr.service.TbfeedService;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
+import java.util.stream.Collectors;
 
 @Service
 public class TbKaFeedServiceImpl implements TbKaFeedService {
 
     private final TbKaFeedRepository tbKaFeedRepository;
+    private final TbmessageMapper tbmessageMapper;
+    private final FirebaseService firebaseService;
 
     public TbKaFeedServiceImpl(
-            TbKaFeedRepository tbKaFeedRepository
+            TbKaFeedRepository tbKaFeedRepository,
+            TbmessageMapper tbmessageMapper,
+            FirebaseService firebaseService
     ) {
         this.tbKaFeedRepository = tbKaFeedRepository;
+        this.tbmessageMapper = tbmessageMapper;
+        this.firebaseService = firebaseService;
     }
 
     public Map<String, Object> create(Map<String, Object> param) {
@@ -50,7 +59,7 @@ public class TbKaFeedServiceImpl implements TbKaFeedService {
 
     public List<Map<String, Object>> getAll() {
         List<Map<String, Object>> result = new ArrayList<>();
-        List<TbKaFeed> allFeed = tbKaFeedRepository.findByDeletedNot("Y");
+        List<TbKaFeed> allFeed = tbKaFeedRepository.findAllByDeletedNotOrderBySentAtDesc("Y");
 
         for (TbKaFeed entry : allFeed) {
             Map<String, Object> returnMap = new HashMap<String, Object>();
@@ -63,5 +72,49 @@ public class TbKaFeedServiceImpl implements TbKaFeedService {
         }
 
         return result;
+    }
+
+    public List<TbmessageDto.Detail> scrollList() {
+        return scrollList(Integer.MAX_VALUE);
+    }
+
+    public List<TbmessageDto.Detail> scrollList(int afterSentAt) {
+        List<TbmessageDto.Detail> result = tbmessageMapper.scrollList(afterSentAt);
+
+        // Process each TbmessageDto.Detail asynchronously
+        List<CompletableFuture<TbmessageDto.Detail>> futures = result.stream()
+                .map(message -> {
+                    // Fetch file details asynchronously
+                    CompletableFuture<List<TbmessageDto.FileDetail>> fileDetailsFuture = tbmessageMapper.fileDetailsAsync(message.getId());
+
+                    // When file details are retrieved, process them asynchronously to get signed URLs
+                    return fileDetailsFuture.thenCompose(fileDetails -> {
+                        // Asynchronously fetch signed URLs for each file
+                        List<CompletableFuture<String>> fileFutures = fileDetails.stream()
+                                .map(file -> firebaseService.getSignedUrlAsync("KaFile/" + file.getHash() + "." + file.getExt()))
+                                .toList();
+
+                        // Combine all futures for signed URLs and update the message when complete
+                        return CompletableFuture.allOf(fileFutures.toArray(new CompletableFuture[0]))
+                                .thenApply(v -> {
+                                    List<String> signedUrls = fileFutures.stream()
+                                            .map(CompletableFuture::join)
+                                            .collect(Collectors.toList());
+                                    message.setFiles(signedUrls);
+                                    return message;  // Return updated message
+                                });
+                    });
+                })
+                .toList();
+
+        // Wait for all tasks to complete and collect the results
+        List<TbmessageDto.Detail> completedMessages = futures.stream()
+                .map(CompletableFuture::join)
+                .toList();
+
+        // Sort by sentAt in descending order
+        return completedMessages.stream()
+                .sorted((m1, m2) -> Integer.compare(m2.getSentAt(), m1.getSentAt()))  // Sorting in descending order
+                .collect(Collectors.toList());
     }
 }

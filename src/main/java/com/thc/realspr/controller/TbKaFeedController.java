@@ -1,5 +1,6 @@
 package com.thc.realspr.controller;
 
+import com.thc.realspr.dto.TbmessageDto;
 import com.thc.realspr.service.TbKaFeedService;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,5 +34,14 @@ public class TbKaFeedController {
     public List<Map<String, Object>> getAllKaFeed() {
         return tbKaFeedService.getAll();
     }
+
+    @GetMapping("/scrolllist")
+    public List<TbmessageDto.Detail> getListAll(@RequestParam Map<String, String> param) {
+        String afterSentAt = param.get("afterSentAt");
+        if (afterSentAt != null && !afterSentAt.equals("-1"))
+            return tbKaFeedService.scrollList(Integer.parseInt(afterSentAt));
+        else return tbKaFeedService.scrollList();
+    }
+
 
 }
