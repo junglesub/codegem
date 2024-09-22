@@ -4,7 +4,7 @@ import kakaotalk from "./kakaotalk.png";
 import comment from "./comment.png";
 import like from "./like.png";
 import share from "./share.png";
-import { convertTextToLinks } from "../../tools/converter";
+import { convertTextToLinks } from "../../tools/tools";
 
 function formatTimestamp(timestamp) {
   // Parse the timestamp into a Date object

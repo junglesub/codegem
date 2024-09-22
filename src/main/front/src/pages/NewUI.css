@@ -25,6 +25,11 @@ body,
   text-align: center;
   text-transform: uppercase;
 }
+
+.NewUI .list {
+  overflow: auto;
+}
+
 .NewUI .create {
   margin-top: 16px;
   /* background-color: #fffcf4;
@@ -124,6 +129,8 @@ body,
 .NewUI .FeedItem .content {
   white-space: pre;
   text-wrap: pretty !important;
+  word-break: break-all;
+  overflow-wrap: break-word;
   padding-top: 16px;
   padding-bottom: 16px;
 }

@@ -17,3 +17,15 @@ export const convertTextToLinks = (text) => {
     return <span key={index}>{part}</span>;
   });
 };
+
+export const removeDuplicates = (arr, key) => {
+  const seen = new Set();
+  return arr.filter((item) => {
+    const val = item[key]; // Get the property value to check
+    if (seen.has(val)) {
+      return false; // Skip if it's already in the set
+    }
+    seen.add(val); // Otherwise, add to set and keep the item
+    return true;
+  });
+};
