@@ -41,7 +41,7 @@ dependencies {
     implementation group: 'com.google.firebase', name: 'firebase-admin', version: '8.1.0'
 
     //devtool hotreload
-    implementation 'org.springframework.boot:spring-boot-devtools'
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
 
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
@@ -64,7 +64,7 @@ sourceSets {
     }
 }
 
-//processResources { dependsOn "copyReactBuildFiles" }
+processResources { dependsOn "copyReactBuildFiles" }
 
 task installReact(type: Exec) {
     workingDir "$frontendDir"
