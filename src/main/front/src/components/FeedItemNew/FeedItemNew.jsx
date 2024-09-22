@@ -4,6 +4,7 @@ import kakaotalk from "./kakaotalk.png";
 import comment from "./comment.png";
 import like from "./like.png";
 import share from "./share.png";
+import { convertTextToLinks } from "../../tools/converter";
 
 function formatTimestamp(timestamp) {
   // Parse the timestamp into a Date object
@@ -35,10 +36,10 @@ function FeedItemNew({ item, getAllData }) {
           <button onClick={() => {}}>Bookmark</button>
         </div>
       </div>
-      <div className="content">{item.content.trim()}</div>
+      <div className="content">{convertTextToLinks(item.content.trim())}</div>
       {item.img && (
         <div className="image">
-          <img src={`/${item.img}`} alt="ss" />
+          <img src={`${item.img}`} alt="ss" />
         </div>
       )}
       <div className="bottomMenu">

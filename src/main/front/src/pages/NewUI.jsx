@@ -51,13 +51,15 @@ function NewUI() {
   const [allFeeds, setAllFeed] = useState([]);
   useEffect(() => {
     (async () => {
-      const data = await (await fetch("/api/feed/get")).json();
+      const data = await (await fetch("/api/kafeed/scrolllist")).json();
       setAllFeed(
         data.map((dd) => ({
           author: "실명카톡방2",
-          createdAt: dd.createdAt,
-          id: 1,
-          content: dd.content,
+          createdAt: new Date(dd.sentAt * 1000),
+          id: dd.id,
+          content: dd.message,
+          files: dd.files,
+          img: dd.files[0], // Temp just for testing
         }))
       );
     })();
