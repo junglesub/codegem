@@ -5,6 +5,7 @@ import comment from "./comment.png";
 import like from "./like.png";
 import share from "./share.png";
 import { convertTextToLinks } from "../../tools/tools";
+import FeedItemGallery from "./FeedItemGallery";
 
 function formatTimestamp(timestamp) {
   // Parse the timestamp into a Date object
@@ -37,9 +38,25 @@ function FeedItemNew({ item, getAllData }) {
         </div>
       </div>
       <div className="content">{convertTextToLinks(item.content.trim())}</div>
-      {item.img && (
+      {item.files && (
         <div className="image">
-          <img src={`${item.img}`} alt="ss" />
+          <FeedItemGallery images={item.files} />
+          {/* <img src={`${item.img}`} alt="ss" /> */}
+          {/* <Gallery>
+            {item.files.map((image, index) => (
+              <Item
+                key={index}
+                original={image}
+                thumbnail={image}
+                width="200"
+                height="200"
+              >
+                {({ ref, open }) => (
+                  <img ref={ref} onClick={open} src={image} />
+                )}
+              </Item>
+            ))}
+          </Gallery> */}
         </div>
       )}
       <div className="bottomMenu">
