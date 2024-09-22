@@ -10,6 +10,7 @@ import org.springframework.core.io.ClassPathResource;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
 @Configuration
 public class FirebaseConfig {
@@ -20,17 +21,30 @@ public class FirebaseConfig {
     private String storageBucketUrl;
 
     @Bean
-    public FirebaseApp firebaseApp() throws IOException {
+    public FirebaseApp firebaseApp() throws Exception {
 
         if (FirebaseApp.getApps().isEmpty()) {
             FirebaseOptions options = FirebaseOptions.builder()
-                    .setCredentials(GoogleCredentials.fromStream(new ClassPathResource(firebaseConfigPath).getInputStream()))
+                    .setCredentials(GoogleCredentials.fromStream(loadFirebaseConfig()))
                     .setStorageBucket(storageBucketUrl)
                     .build();
 
             return FirebaseApp.initializeApp(options);
         } else {
             return FirebaseApp.getInstance();
+        }
+    }
+
+    private InputStream loadFirebaseConfig() throws Exception {
+        // Check if running in development or production
+        boolean isProduction = System.getenv("ENV") != null && System.getenv("ENV").equalsIgnoreCase("PRODUCTION");
+
+        if (isProduction) {
+            // Use absolute path in production
+            return new FileInputStream(firebaseConfigPath);
+        } else {
+            // Use ClassPathResource in development
+            return new ClassPathResource(firebaseConfigPath).getInputStream();
         }
     }
 }
