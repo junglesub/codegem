@@ -6,6 +6,7 @@ import like from "./like.png";
 import share from "./share.png";
 import { convertTextToLinks } from "../../tools/tools";
 import FeedItemGallery from "./FeedItemGallery";
+import ReactShowMoreText from "react-show-more-text";
 
 function formatTimestamp(timestamp) {
   // Parse the timestamp into a Date object
@@ -37,7 +38,11 @@ function FeedItemNew({ item, getAllData }) {
           <button onClick={() => {}}>Bookmark</button>
         </div>
       </div>
-      <div className="content">{convertTextToLinks(item.content.trim())}</div>
+      <div className="content">
+        <ReactShowMoreText lines={3} truncatedEndingComponent="">
+          {convertTextToLinks(item.content.trim())}
+        </ReactShowMoreText>
+      </div>
       {item.files && (
         <div className="image">
           <FeedItemGallery images={item.files} />

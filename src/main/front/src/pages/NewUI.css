@@ -134,6 +134,13 @@ body,
   padding-top: 16px;
   padding-bottom: 16px;
 }
+
+.NewUI .show-more-less-clickable {
+  display: block;
+  color: #6699cc;
+  cursor: pointer;
+}
+
 .NewUI .FeedItem .image,
 .NewUI .FeedItem .image img {
   padding: 0;
