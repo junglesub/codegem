@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import kakaotalk from "./kakaotalk.png";
 import comment from "./comment.png";
@@ -42,21 +42,6 @@ function FeedItemNew({ item, getAllData }) {
         <div className="image">
           <FeedItemGallery images={item.files} />
           {/* <img src={`${item.img}`} alt="ss" /> */}
-          {/* <Gallery>
-            {item.files.map((image, index) => (
-              <Item
-                key={index}
-                original={image}
-                thumbnail={image}
-                width="200"
-                height="200"
-              >
-                {({ ref, open }) => (
-                  <img ref={ref} onClick={open} src={image} />
-                )}
-              </Item>
-            ))}
-          </Gallery> */}
         </div>
       )}
       <div className="bottomMenu">
