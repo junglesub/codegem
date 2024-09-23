@@ -8,6 +8,8 @@ logging:
     org.hibernate.type.descriptor.sql.BasicBinder: trace
 
 spring:
+  profiles:
+    include: oauth
   config:
     import: optional:file:.env[.properties]
   datasource:
@@ -50,3 +52,13 @@ springdoc:
   swagger-ui:
     operations-sorter: alpha
     tags-sorter: alpha
+
+external:
+  jwt:
+    tokenSecretKey: cfc6f8968e16e357e2a588674174bc2ca34b538e9f759d081d48721fd0aa1f626188fca140ca58a5b88d6e98b3302c52f49f7fa1dc06924c34ecd45b31ba675e  # 비밀 키
+    tokenPrefix: "Bearer "  # 토큰 앞에 붙을 접두사
+    accessKey: Authorization  # 액세스 토큰을 담는 헤더
+    accessTokenExpirationTime: 180000  # 액세스 토큰 유효 기간 (30분)
+    refreshKey: RefreshToken  # 리프레시 토큰을 담는 헤더
+    refreshTokenExpirationTime: 1209600000  # 리프레시 토큰 유효 기간 (2주)
+
