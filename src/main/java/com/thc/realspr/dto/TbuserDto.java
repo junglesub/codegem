@@ -9,8 +9,6 @@ import jakarta.validation.constraints.Size;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
-import java.time.LocalDateTime;
-
 public class TbuserDto {
 
     @Builder
@@ -25,6 +23,74 @@ public class TbuserDto {
         @NotEmpty
         private String refreshToken;
     }
+    @Builder
+    @Schema
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class ConfirmReqDto{
+        @Schema(description = "username", example="")
+        @NotNull
+        @NotEmpty
+        @Size(max=400)
+        private String username;
+        @Schema(description = "number", example="")
+        @NotNull
+        @NotEmpty
+        private String number;
+    }
+    @Builder
+    @Schema
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class UidReqDto{
+        @Schema(description = "username", example="")
+        @NotNull
+        @NotEmpty
+        @Size(max=400)
+        private String username;
+    }
+
+    @Builder
+    @Schema
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class LoginReqDto{
+        @Schema(description = "username", example="")
+        @NotNull
+        @NotEmpty
+        @Size(max=400)
+        private String username;
+        @Schema(description = "password", example="")
+        @NotNull
+        @NotEmpty
+        @Size(max=100)
+        private String password;
+    }
+
+    @Builder
+    @Schema
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class SignupReqDto{
+        @Schema(description = "username", example="")
+        @NotNull
+        @NotEmpty
+        @Size(max=400)
+        private String username;
+        @Schema(description = "password", example="")
+        @NotNull
+        @NotEmpty
+        @Size(max=100)
+        private String password;
+    }
 
     @Builder
     @Schema
@@ -33,51 +99,19 @@ public class TbuserDto {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class CreateReqDto{
-//        @Schema(description = "username", example="")
-//        @NotNull
-//        @NotEmpty
-//        @Size(max=400)
-//        private String username;
-//        @Schema(description = "password", example="")
-//        @NotNull
-//        @NotEmpty
-//        @Size(max=100)
-//        private String password;
-//
-//        public Tbuser toEntity(){
-//            return Tbuser.of(username, password);
-//        }
+        @Schema(description = "username", example="")
+        @NotNull
+        @NotEmpty
+        @Size(max=400)
+        private String username;
+        @Schema(description = "password", example="")
+        @NotNull
+        @NotEmpty
+        @Size(max=100)
+        private String password;
 
-        @Schema(description = "사용자 이메일", example = "")
-        @NotNull(message = "email cannot be null")
-        @NotEmpty(message = "email cannot be empty")
-        @Size(max = 36, message = "email must be less than 36 characters")
-        private String id;
-
-
-        @Schema(description = "사용자 아이디(UUID)", example = "")
-        @NotNull(message = "UUID cannot be null")
-        @NotEmpty(message = "UUID cannot be empty")
-        @Size(max = 36, message = "UUID must be less than 36 characters")
-        private String uuid;
-
-        @Schema(description = "유저 이름", example = "")
-        @NotNull(message = "Name cannot be null")
-        @NotEmpty(message = "Name cannot be empty")
-        @Size(max = 100, message = "Name must be less than 100 characters")
-        private String name;
-
-        @Schema(description = "마지막 로그인 시간", example = "")
-        @NotNull(message = "Last login time cannot be null")
-        private LocalDateTime lastLoginTime;
-
-        @Schema(description = "생성 시간", example = "")
-        @NotNull(message = "Created at time cannot be null")
-        private LocalDateTime createdAt;
-
-        // Tbuser 엔티티로 변환하는 메서드
-        public Tbuser toEntity() {
-            return Tbuser.of(id ,uuid, name, lastLoginTime, createdAt);
+        public Tbuser toEntity(){
+            return Tbuser.of(username, password);
         }
     }
     @Builder

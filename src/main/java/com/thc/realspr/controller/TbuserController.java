@@ -1,14 +1,17 @@
 package com.thc.realspr.controller;
 
-import com.thc.realspr.domain.Tbuser;
 import com.thc.realspr.dto.GoogleLoginRequest;
 import com.thc.realspr.dto.GoogleLoginResponse;
+import com.thc.realspr.exception.NoAuthorizationException;
 import com.thc.realspr.service.GoogleAuthService;
 import com.thc.realspr.service.TbuserService;
 import com.thc.realspr.util.TokenFactory;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 
 @RequestMapping("/api/tbuser")
@@ -19,72 +22,48 @@ public class TbuserController {
 
     private final GoogleAuthService googleAuthService;
 
-
     public TbuserController(TbuserService tbuserService, GoogleAuthService googleAuthService) {
         this.tbuserService = tbuserService;
         this.googleAuthService = googleAuthService;
     }
 
 
-    // CREATE: POST 요청으로 새로운 사용자 생성
     @PostMapping("")
-    public ResponseEntity<Tbuser> create(@RequestBody Map<String, Object> param) {
+    public Map<String, Object> create(@RequestBody Map<String, Object> param){
         System.out.println(param);
-        // Tbuser response = tbuserService.create(param);
-        return ResponseEntity.ok(response);
+        return tbuserService.create(param);
     }
-
-//    @PutMapping("")
-//    public Map<String, Object> update(@RequestBody Map<String, Object> param){
-//        System.out.println(param);
-//        return tbuserService.update(param);
-//    }
+    @PutMapping("")
+    public Map<String, Object> update(@RequestBody Map<String, Object> param){
+        System.out.println(param);
+        return tbuserService.update(param);
+    }
     @GetMapping("/get/{id}")
-    public ResponseEntity<Tbuser> detail(@PathVariable("id") String id) {
+    public Map<String, Object> detail(@PathVariable("id") String id){
         System.out.println(id);
-        Tbuser response = tbuserService.get(id);
-        return ResponseEntity.ok(response);
+        return tbuserService.get(id);
     }
 
 
     //  Google 로그인 처리
-//    @PostMapping("/login/google")
-//    public ResponseEntity<GoogleLoginResponse> loginWithGoogle(@RequestBody GoogleLoginRequest request) {
-//        String email = googleAuthService.verifyGoogleToken(request.getCredential());
-//        String name = googleAuthService.verifyGoogleToken(request.getCredential());
-//        LocalDateTime now = LocalDateTime.now();
-//        String uuid = UUID.randomUUID().toString().replace("-", "");
-//        Tbuser tbuser = Tbuser.of(uuid, name, now, now);
-//
-//        System.out.println("동작중입니다.");
-//        System.out.println("이메일: " + email);
-//        System.out.println("이름: " + name);
-//        System.out.println("UUID: " + uuid);
-//
-//
-//        System.out.println("동작중입니다. ");
-//
-//        if (email == null || !email.endsWith("@handong.ac.kr")) {
-//            throw new NoAuthorizationException("Unauthorized user");
-//        }
-//
-//
-//        String refreshToken = TokenFactory.issueRefreshToken(email);  // 리프레시 토큰 발급
-//
-//        System.out.println(refreshToken);
-//        return ResponseEntity.ok(new GoogleLoginResponse(refreshToken));
-//
-//    }
-
+    @PostMapping("/login/google")
     public ResponseEntity<GoogleLoginResponse> loginWithGoogle(@RequestBody GoogleLoginRequest request) {
-        // 서비스 계층에서 유저 로그인 처리
-        Tbuser tbuser = tbuserService.loginWithGoogle(request.getCredential());
+        String email = googleAuthService.verifyGoogleToken(request.getCredential());
 
-        // 리프레시 토큰 발급
-        String refreshToken = TokenFactory.issueRefreshToken(tbuser.getId());
+        System.out.println("동작중입니다. ");
 
-        // 응답 리턴
+        System.out.println(email);
+
+        if (email == null || !email.endsWith("@handong.ac.kr")) {
+            throw new NoAuthorizationException("Unauthorized user");
+        }
+
+
+        String refreshToken = TokenFactory.issueRefreshToken(email);  // 리프레시 토큰 발급
+
+        System.out.println(refreshToken);
         return ResponseEntity.ok(new GoogleLoginResponse(refreshToken));
+
     }
 
 //    @ResponseBody

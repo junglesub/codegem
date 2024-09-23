@@ -9,10 +9,4 @@
         WHERE tbuser.email = #{email}
     </select>
 
-    !-- 사용자 생성 (Insert) 쿼리 -->
-    <insert id="createUser" parameterType="com.thc.realspr.dto.TbuserDto$CreateReqDto">
-        INSERT INTO tbuser (id, uuid, name, last_login_time, modified_at, created_at)
-        VALUES (#{id}, #{uuid}, #{name}, #{lastLoginTime}, #{modifiedAt}, #{createdAt})
-    </insert>
-
 </mapper>
