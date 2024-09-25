@@ -1,77 +1,49 @@
 package com.thc.realspr.service.impl;
 
 import com.thc.realspr.domain.Tbuser;
+import com.thc.realspr.dto.DefaultDto;
 import com.thc.realspr.dto.GoogleLoginRequest;
 import com.thc.realspr.dto.GoogleLoginResponse;
 import com.thc.realspr.dto.TbuserDto;
-import com.thc.realspr.mapper.TbuserMapper;
+import com.thc.realspr.exception.NoAuthorizationException;
 import com.thc.realspr.repository.TbuserRepository;
+import com.thc.realspr.service.GoogleAuthService;
 import com.thc.realspr.service.TbuserService;
 import com.thc.realspr.util.TokenFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 //import com.thc.realspr.util.TokenFactory;
 
 
-
-import java.util.HashMap;
-import java.util.Map;
+import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Service
 public class TbuserServiceImpl implements TbuserService {
 
     private final TbuserRepository tbuserRepository;
+    private final GoogleAuthService googleAuthService;
 
 
-    @Autowired
-    public TbuserServiceImpl(TbuserMapper tbuserMapper, TbuserRepository tbuserRepository) {
+
+    public TbuserServiceImpl(TbuserRepository tbuserRepository, GoogleAuthService googleAuthService) {
         this.tbuserRepository = tbuserRepository;
+        this.googleAuthService = googleAuthService;
     }
 
-    public TbuserServiceImpl(
-            TbuserRepository tbuserRepository
-    ) {
-        this.tbuserRepository = tbuserRepository;
+
+
+    @Override
+    public TbuserDto.CreateResDto create(TbuserDto.CreateReqDto param) {
+
+        Tbuser tbuser
+        //사용자 등록 완료!
+        tbuser = tbuserRepository.save(param.toEntity());
+        return tbuser.toCreateResDto();
     }
 
-    public Map<String, Object> create(Map<String, Object> param){
-        Map<String, Object> returnMap = new HashMap<String, Object>();
-        System.out.println(param);
-        Tbuser tbuser = Tbuser.of(param.get("username") + "", param.get("password") + "");
-        tbuserRepository.save(tbuser);
-        returnMap.put("id", tbuser.getId());
-        return returnMap;
-    }
-    public Map<String, Object> update(Map<String, Object> param){
-        Map<String, Object> returnMap = new HashMap<String, Object>();
-        System.out.println(param);
-        Tbuser tbuser = tbuserRepository.findById(param.get("id") + "").orElseThrow(() -> new RuntimeException(""));
-        if(param.get("name") != null) {
-            tbuser.setName(param.get("name") + "");
-        }
-        if(param.get("nick") != null) {
-            tbuser.setNick(param.get("nick") + "");
-        }
-        if(param.get("phone") != null) {
-            tbuser.setPhone(param.get("phone") + "");
-        }
-
-        tbuserRepository.save(tbuser);
-        returnMap.put("id", tbuser.getId());
-        return returnMap;
-    }
-    public Map<String, Object> get(String id){
-        Map<String, Object> returnMap = new HashMap<String, Object>();
-        System.out.println(id);
-        Tbuser tbuser = tbuserRepository.findById(id).orElseThrow(() -> new RuntimeException(""));
-
-        returnMap.put("id", tbuser.getId());
-        returnMap.put("username", tbuser.getUsername());
-        returnMap.put("name", tbuser.getName());
-        returnMap.put("nick", tbuser.getNick());
-        returnMap.put("phone", tbuser.getPhone());
-
-        return returnMap;
+    @Override
+    public TbuserDto.DetailResDto detail(DefaultDto.DetailReqDto param) {
+        return null;
     }
 
     @Override
@@ -81,11 +53,29 @@ public class TbuserServiceImpl implements TbuserService {
 
         return null;
     }
+
     @Override
     public GoogleLoginResponse loginWithGoogle(GoogleLoginRequest request) {
         return null;
     }
 
+    @Override
+    public Tbuser loginWithGoogle(String credential) {
+        String email = googleAuthService.verifyGoogleToken(credential);
+        String name = googleAuthService.verifyGoogleToken(credential);
+        LocalDateTime now = LocalDateTime.now();
+        String uuid = UUID.randomUUID().toString().replace("-", "");
+
+        // 유저 객체 생성
+        Tbuser tbuser = Tbuser.of(uuid, name, name, now, now);
+
+        // 유저가 @handong.ac.kr 이메일이 아니면 예외 처리
+        if (email == null || !email.endsWith("@handong.ac.kr")) {
+            throw new NoAuthorizationException("Unauthorized user");
+        }
+
+        return tbuser;
+    }
 
 
 }

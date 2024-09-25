@@ -9,6 +9,8 @@ import jakarta.validation.constraints.Size;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
+import java.time.LocalDateTime;
+
 public class TbuserDto {
 
     @Builder
@@ -17,111 +19,122 @@ public class TbuserDto {
     @Setter
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class AccessReqDto{
-        @Schema(description = "refreshToken", example="")
+    public static class AccessReqDto {
+        @Schema(description = "refreshToken", example = "")
         @NotNull
         @NotEmpty
         private String refreshToken;
     }
-    @Builder
-    @Schema
-    @Getter
-    @Setter
-    @AllArgsConstructor
-    @NoArgsConstructor
-    public static class ConfirmReqDto{
-        @Schema(description = "username", example="")
-        @NotNull
-        @NotEmpty
-        @Size(max=400)
-        private String username;
-        @Schema(description = "number", example="")
-        @NotNull
-        @NotEmpty
-        private String number;
-    }
-    @Builder
-    @Schema
-    @Getter
-    @Setter
-    @AllArgsConstructor
-    @NoArgsConstructor
-    public static class UidReqDto{
-        @Schema(description = "username", example="")
-        @NotNull
-        @NotEmpty
-        @Size(max=400)
-        private String username;
-    }
 
+    //    @Builder
+//    @Schema
+//    @Getter
+//    @Setter
+//    @AllArgsConstructor
+//    @NoArgsConstructor
+//    public static class CreateReqDto{
+////        @Schema(description = "username", example="")
+////        @NotNull
+////        @NotEmpty
+////        @Size(max=400)
+////        private String username;
+////        @Schema(description = "password", example="")
+////        @NotNull
+////        @NotEmpty
+////        @Size(max=100)
+////        private String password;
+////
+////        public Tbuser toEntity(){
+////            return Tbuser.of(username, password);
+////        }
+//
+//        @Schema(description = "사용자 이메일", example = "")
+//        @NotNull(message = "email cannot be null")
+//        @NotEmpty(message = "email cannot be empty")
+//        @Size(max = 36, message = "email must be less than 36 characters")
+//        private String email;
+//
+//
+//        @Schema(description = "사용자 아이디(UUID)", example = "")
+//        @NotNull(message = "UUID cannot be null")
+//        @NotEmpty(message = "UUID cannot be empty")
+//        @Size(max = 36, message = "UUID must be less than 36 characters")
+//        private String uuid;
+//
+//        @Schema(description = "유저 이름", example = "")
+//        @NotNull(message = "Name cannot be null")
+//        @NotEmpty(message = "Name cannot be empty")
+//        @Size(max = 100, message = "Name must be less than 100 characters")
+//        private String name;
+//
+//        @Schema(description = "마지막 로그인 시간", example = "")
+//        @NotNull(message = "Last login time cannot be null")
+//        private LocalDateTime lastLoginTime;
+//
+//        @Schema(description = "생성 시간", example = "")
+//        @NotNull(message = "Created at time cannot be null")
+//        private LocalDateTime createdAt;
+//
+//        // Tbuser 엔티티로 변환하는 메서드
+//        public Tbuser toEntity() {
+//            return Tbuser.of(email ,uuid, name, lastLoginTime, createdAt);
+//        }
+//    }
     @Builder
     @Schema
     @Getter
     @Setter
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class LoginReqDto{
-        @Schema(description = "username", example="")
-        @NotNull
-        @NotEmpty
-        @Size(max=400)
-        private String username;
-        @Schema(description = "password", example="")
-        @NotNull
-        @NotEmpty
-        @Size(max=100)
-        private String password;
-    }
+    public static class CreateReqDto {
 
-    @Builder
-    @Schema
-    @Getter
-    @Setter
-    @AllArgsConstructor
-    @NoArgsConstructor
-    public static class SignupReqDto{
-        @Schema(description = "username", example="")
+        /*
+        *  this.email = email;
+        this.uuid = uuid;
+        this.name = name;
+        this.last_login_time = last_login_time;
+        this.modified_at = modified_at;
+        this.created_at = created_at;*/
+        @Schema(description = "email", example = "")
         @NotNull
         @NotEmpty
-        @Size(max=400)
-        private String username;
-        @Schema(description = "password", example="")
+        @Size(max = 400)
+        private String email;
+        @Schema(description = "uuid", example = "")
         @NotNull
         @NotEmpty
-        @Size(max=100)
-        private String password;
-    }
+        @Size(max = 100)
+        private String uuid;
+        @Schema(description = "name", example = "")
+        @NotNull
+        @NotEmpty
+        @Size(max = 100)
+        private String name;
+        @Schema(description = "last_login_time", example = "")
+        @NotNull
+        @NotEmpty
+        @Size(max = 100)
+        private LocalDateTime last_login_time;
+        @Schema(description = "created_at", example = "")
+        @NotNull
+        @NotEmpty
+        @Size(max = 100)
+        private LocalDateTime created_at;
 
-    @Builder
-    @Schema
-    @Getter
-    @Setter
-    @AllArgsConstructor
-    @NoArgsConstructor
-    public static class CreateReqDto{
-        @Schema(description = "username", example="")
-        @NotNull
-        @NotEmpty
-        @Size(max=400)
-        private String username;
-        @Schema(description = "password", example="")
-        @NotNull
-        @NotEmpty
-        @Size(max=100)
-        private String password;
-
-        public Tbuser toEntity(){
-            return Tbuser.of(username, password);
+        public Tbuser toEntity() {
+            return Tbuser.of(email, uuid, name, last_login_time, created_at);
         }
     }
+
+
     @Builder
     @Schema
     @Getter
     @Setter
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class CreateResDto{
-        private String id;
+    public static class CreateResDto {
+        private String email;
     }
 
     @SuperBuilder
@@ -130,19 +143,19 @@ public class TbuserDto {
     @Setter
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class UpdateReqDto extends DefaultDto.UpdateReqDto{
-        @Schema(description = "name", example="")
+    public static class UpdateReqDto extends DefaultDto.UpdateReqDto {
+        @Schema(description = "name", example = "")
         private String name;
-        @Schema(description = "nick", example="")
+        @Schema(description = "nick", example = "")
         private String nick;
-        @Schema(description = "phone", example="")
+        @Schema(description = "phone", example = "")
         private String phone;
-        @Schema(description = "gender", example="")
+        @Schema(description = "gender", example = "")
         private String gender;
-        @Schema(description = "content", example="")
-        @Size(max=4000)
+        @Schema(description = "content", example = "")
+        @Size(max = 4000)
         private String content;
-        @Schema(description = "img", example="")
+        @Schema(description = "img", example = "")
         private String img;
     }
 
@@ -150,23 +163,23 @@ public class TbuserDto {
     @Schema
     @Getter
     @Setter
-    public static class DetailResDto extends DefaultDto.DetailResDto{
+    public static class DetailResDto extends DefaultDto.DetailResDto {
 
-        @Schema(description = "username", example="")
+        @Schema(description = "username", example = "")
         private String username;
         /*@Schema(description = "password", example="")
         private String password;*/
-        @Schema(description = "name", example="")
+        @Schema(description = "name", example = "")
         private String name;
-        @Schema(description = "nick", example="")
+        @Schema(description = "nick", example = "")
         private String nick;
-        @Schema(description = "phone", example="")
+        @Schema(description = "phone", example = "")
         private String phone;
-        @Schema(description = "gender", example="")
+        @Schema(description = "gender", example = "")
         private String gender;
-        @Schema(description = "content", example="")
+        @Schema(description = "content", example = "")
         private String content;
-        @Schema(description = "img", example="")
+        @Schema(description = "img", example = "")
         private String img;
     }
 
@@ -176,12 +189,12 @@ public class TbuserDto {
     @Setter
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class ListReqDto extends DefaultDto.ListReqDto{
-        @Schema(description = "name", example="")
+    public static class ListReqDto extends DefaultDto.ListReqDto {
+        @Schema(description = "name", example = "")
         private String name;
-        @Schema(description = "nick", example="")
+        @Schema(description = "nick", example = "")
         private String nick;
-        @Schema(description = "phone", example="")
+        @Schema(description = "phone", example = "")
         private String phone;
     }
 
@@ -191,12 +204,12 @@ public class TbuserDto {
     @Setter
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class PagedListReqDto extends DefaultDto.PagedListReqDto{
-        @Schema(description = "name", example="")
+    public static class PagedListReqDto extends DefaultDto.PagedListReqDto {
+        @Schema(description = "name", example = "")
         private String name;
-        @Schema(description = "nick", example="")
+        @Schema(description = "nick", example = "")
         private String nick;
-        @Schema(description = "phone", example="")
+        @Schema(description = "phone", example = "")
         private String phone;
     }
 
@@ -206,18 +219,18 @@ public class TbuserDto {
     @Setter
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class ScrollListReqDto extends DefaultDto.ScrollListReqDto{
-        @Schema(description = "name", example="")
+    public static class ScrollListReqDto extends DefaultDto.ScrollListReqDto {
+        @Schema(description = "name", example = "")
         private String name;
-        @Schema(description = "nick", example="")
+        @Schema(description = "nick", example = "")
         private String nick;
-        @Schema(description = "phone", example="")
+        @Schema(description = "phone", example = "")
         private String phone;
     }
 
     @Getter
     @Setter
-    public static class GoogleLoginRequest{
+    public static class GoogleLoginRequest {
         private String credential;
 
     }

@@ -1,58 +1,78 @@
 package com.thc.realspr.domain;
 
-import com.thc.realspr.config.Role;
+import com.thc.realspr.dto.TbuserDto;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
-import org.antlr.v4.runtime.misc.NotNull;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Getter
 @Entity
 public class Tbuser {
-    @Id private String id;
-    @Setter @Column(nullable = false) private String deleted; // 삭제여부
-
-    @Setter @Column(nullable = false) private String username; // 사용자아이디
-    @Setter @Column(nullable = false) private String password; // 비번
+    /*
+    * - email
+- uuid
+- 이름
+- last login time
+- modified_at
+- created_at*/
+    @Id private String email; // 이메일
+    @Setter @Column(nullable = false) private String uuid; // 사용자아이디
     @Setter @Column(nullable = false) private String name;
-    @Setter @Column(nullable = false) private String nick;
-    @Setter @Column(nullable = false) private String phone;
-    @Setter @Column(nullable = false) private String mpic; // 프로필 사진
-    @Setter @Column(nullable = false, length=2000000) @Lob private String content; // 본문
-
-    @Enumerated(EnumType.STRING)
-    @NotNull
-    private Role role;
+    @Setter @Column(nullable = false) private LocalDateTime last_login_time; // 최근 로그인 시간
+    @Setter @Column(nullable = false) private LocalDateTime modified_at; // 수정날짜
+    @Setter @Column(nullable = false) private LocalDateTime created_at; // 생성 날짜
 
 
-    protected Tbuser(){}
-    private Tbuser(String username, String password, String name, String nick, String phone, String mpic, String content, Role role) {
-        this.username = username;
-        this.password = password;
+    protected Tbuser() {
+    }
+
+    private Tbuser(String email, String uuid, String name, LocalDateTime last_login_time, LocalDateTime modified_at, LocalDateTime created_at) {
+        this.email = email;
+        this.uuid = uuid;
         this.name = name;
-        this.nick = nick;
-        this.phone = phone;
-        this.mpic = mpic;
-        this.content = content;
-        this.role = role;
+        this.last_login_time = last_login_time;
+        this.modified_at = modified_at;
+        this.created_at = created_at;
     }
+
+    public Tbuser(String email, String uuid, String name, LocalDateTime last_login_time, LocalDateTime created_at) {
+        this.email = email;
+        this.uuid = uuid;
+        this.name = name;
+        this.last_login_time = last_login_time;
+        this.created_at = created_at;
+    }
+
+    public Tbuser(String email) {
+        this.email = email;
+    }
+
+
     // TODO: role 추가 해야 함 .
-    public static Tbuser of(String username, String password){
-        return new Tbuser(username, password, "", "", "", "", "", null);
+    public static Tbuser of(String email, String uuid, String name, LocalDateTime last_login_time, LocalDateTime created_at) {
+        return new Tbuser(email, uuid, name, last_login_time, null, created_at);
     }
+
 
     @PrePersist
     public void onPrePersist() {
-        this.id = UUID.randomUUID().toString().replace("-", "");
-        this.deleted = "N";
+        this.uuid = UUID.randomUUID().toString().replace("-", "");
     }
 
-    public String getRoleKey(){
-        return this.role.getKey();
+    public TbuserDto.CreateResDto toCreateResDto() {
+        return TbuserDto.CreateResDto.builder().email(this.getEmail()).build();
     }
 
+
+//    public String getRoleKey(){
+//        return this.role.getKey();
+//    }
 
 
 }
