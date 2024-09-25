@@ -30,7 +30,7 @@ public class TbuserController {
 
 
     // CREATE: POST 요청으로 새로운 사용자 생성
-    @GetMapping("/create")
+    @GetMapping("")
     public Map<String, Object> create(@RequestParam Map<String, Object> params) {
         return tbuserService.create(params);
     }
@@ -77,10 +77,11 @@ public class TbuserController {
 //
 //    }
 
+
+    @PostMapping("/login/google")
     public ResponseEntity<GoogleLoginResponse> loginWithGoogle(@RequestBody GoogleLoginRequest request) {
         // 서비스 계층에서 유저 로그인 처리
         Tbuser tbuser = tbuserService.loginWithGoogle(request.getCredential());
-
 
         // 리프레시 토큰 발급
         String refreshToken = TokenFactory.issueRefreshToken(tbuser.getEmail());

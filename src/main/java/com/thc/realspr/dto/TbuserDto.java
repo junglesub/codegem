@@ -120,9 +120,14 @@ public class TbuserDto {
         @NotEmpty
         @Size(max = 100)
         private LocalDateTime created_at;
+        @Schema(description = "created_at", example = "")
+        @NotNull
+        @NotEmpty
+        @Size(max = 100)
+        private LocalDateTime modified_at;
 
         public Tbuser toEntity() {
-            return Tbuser.of(email, uuid, name, last_login_time, created_at);
+            return Tbuser.of(email, uuid, name, last_login_time, modified_at ,created_at);
         }
     }
 

@@ -20,7 +20,6 @@ public interface TbuserService {
     TbuserDto.CreateResDto access(String param) throws Exception;
 
     //    TbuserDto.CreateResDto access(String param) throws Exception;
-    GoogleLoginResponse loginWithGoogle(GoogleLoginRequest request);
 
     Tbuser loginWithGoogle(String credential);
 }

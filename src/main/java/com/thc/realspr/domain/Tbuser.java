@@ -21,7 +21,10 @@ public class Tbuser {
 - last login time
 - modified_at
 - created_at*/
-    @Id private String email; // 이메일
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    @Setter @Column(nullable = false) private String email; // 이메일
     @Setter @Column(nullable = false) private String uuid; // 사용자아이디
     @Setter @Column(nullable = false) private String name;
     @Setter @Column(nullable = false) private LocalDateTime last_login_time; // 최근 로그인 시간
@@ -56,9 +59,11 @@ public class Tbuser {
 
 
     // TODO: role 추가 해야 함 .
-    public static Tbuser of(String email, String uuid, String name, LocalDateTime last_login_time, LocalDateTime created_at) {
-        return new Tbuser(email, uuid, name, last_login_time, null, created_at);
+    public static Tbuser of(String email, String uuid, String name, LocalDateTime last_login_time, LocalDateTime modified_at, LocalDateTime created_at) {
+        return new Tbuser(email, uuid, name, last_login_time, modified_at, created_at);
     }
+
+
 
 
     @PrePersist
@@ -69,6 +74,7 @@ public class Tbuser {
     public TbuserDto.CreateResDto toCreateResDto() {
         return TbuserDto.CreateResDto.builder().email(this.getEmail()).build();
     }
+
 
 
 //    public String getRoleKey(){

@@ -43,27 +43,17 @@ public class TbuserServiceImpl implements TbuserService {
 
     @Override
     public Map<String, Object> create(Map<String, Object> params) {
-        System.out.println("create");
-        Map<String, Object> result = new HashMap<String, Object>();
 
         String email = (String) params.get("email");
-
-        Tbuser user = tbuserRepository.findByUsername(email);
-        if (user == null) {
-//            TODO: Fix below
-//            user = new Tbuser();
-//            user.setName((String) params.get("name"));
-//            user.setCreated_at(LocalDateTime.now());
-//            user.setLast_login_time(LocalDateTime.now());
-//            user.setUuid((String) params.get("uuid"));
-//            user = TbuserRepository.save(user);
-
-            Tbuser tbuser = Tbuser.of(params.get("email") + "", params.get("uuid") + "", params.get("name") + "", null, null);
-            result.put("email", user.getEmail());
-        } else {
-            result.put("id duplicated", user.getName());
-        }
-        return result;
+        String uuid = (String) params.get("uuid");
+        String name = (String) params.get("name");
+        LocalDateTime lastLoginTime = (LocalDateTime) params.get("last_login_time");
+        Map<String, Object> returnMap = new HashMap<String, Object>();
+        System.out.println(params);
+        Tbuser tbuser = Tbuser.of(email, uuid, name, LocalDateTime.now(), LocalDateTime.now(),LocalDateTime.now() );
+        tbuserRepository.save(tbuser);
+        returnMap.put("id", tbuser.getId());
+        return returnMap;
     }
 
 
@@ -75,28 +65,42 @@ public class TbuserServiceImpl implements TbuserService {
         return null;
     }
 
-    @Override
-    public GoogleLoginResponse loginWithGoogle(GoogleLoginRequest request) {
-        return null;
-    }
+
 
     @Override
     public Tbuser loginWithGoogle(String credential) {
         String email = googleAuthService.verifyGoogleToken(credential);
-        String name = googleAuthService.verifyGoogleToken(credential);
+        String name = googleAuthService.verifyGoogleName(credential);
         LocalDateTime now = LocalDateTime.now();
         String uuid = UUID.randomUUID().toString().replace("-", "");
 
+        System.out.println("email string is " + email);
+        System.out.println("email name is " + name);
+
         // 유저 객체 생성
-        Tbuser tbuser = Tbuser.of(uuid, name, name, now, now);
+        Tbuser tbuser = Tbuser.of(email, uuid, name, now ,now, now);
 
         // 유저가 @handong.ac.kr 이메일이 아니면 예외 처리
         if (email == null || !email.endsWith("@handong.ac.kr")) {
             throw new NoAuthorizationException("Unauthorized user");
         }
-        TbuserDto.CreateReqDto param = TbuserDto.CreateReqDto.builder().email(email).build();
-        tbuser = tbuserRepository.save(param.toEntity());
 
+        Tbuser tbuser2 = tbuserRepository.findByEmail(email);
+
+        if (tbuser2 != null && tbuser2.getEmail().equals(email)) {
+            // 유저가 있으면 이메일 출력
+            System.out.println("user " + tbuser2.getEmail());
+        } else {
+            // 유저가 없는 경우 신규 가입
+            tbuserRepository.save(tbuser);
+        }
+
+//        Map<String, Object> params = new HashMap<>();
+//        params.put("email", email);
+//        params.put("uuid", uuid);
+//        params.put("name", name);
+//
+//        Map<String, Object> createResult = create(params);
         return tbuser;
     }
 
