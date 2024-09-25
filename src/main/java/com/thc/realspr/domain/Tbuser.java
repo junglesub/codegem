@@ -32,6 +32,7 @@ public class Tbuser {
     protected Tbuser() {
     }
 
+
     private Tbuser(String email, String uuid, String name, LocalDateTime last_login_time, LocalDateTime modified_at, LocalDateTime created_at) {
         this.email = email;
         this.uuid = uuid;

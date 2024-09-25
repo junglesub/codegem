@@ -7,11 +7,15 @@ import com.thc.realspr.dto.GoogleLoginResponse;
 import com.thc.realspr.dto.TbuserDto;
 import org.springframework.stereotype.Service;
 
+import java.util.Map;
+
 @Service
 public interface TbuserService {
-    TbuserDto.CreateResDto create(TbuserDto.CreateReqDto param);
+
 
     TbuserDto.DetailResDto detail(DefaultDto.DetailReqDto param);
+
+    Map<String, Object> create(Map<String, Object> params);
 
     TbuserDto.CreateResDto access(String param) throws Exception;
 

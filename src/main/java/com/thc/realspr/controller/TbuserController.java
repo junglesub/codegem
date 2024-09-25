@@ -12,6 +12,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @RequestMapping("/api/tbuser")
 @RestController
 public class TbuserController {
@@ -28,9 +30,9 @@ public class TbuserController {
 
 
     // CREATE: POST 요청으로 새로운 사용자 생성
-    @PostMapping("")
-    public ResponseEntity<TbuserDto.CreateResDto> create(@Valid @RequestBody TbuserDto.CreateReqDto param){
-        return ResponseEntity.status(HttpStatus.CREATED).body(tbuserService.create(param));
+    @GetMapping("/create")
+    public Map<String, Object> create(@RequestParam Map<String, Object> params){
+        return TbuserService.create(params);
     }
 
 //    @PutMapping("")

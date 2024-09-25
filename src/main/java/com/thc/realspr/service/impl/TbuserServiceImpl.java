@@ -1,5 +1,6 @@
 package com.thc.realspr.service.impl;
 
+import com.thc.realspr.domain.TbKaFeed;
 import com.thc.realspr.domain.Tbuser;
 import com.thc.realspr.dto.DefaultDto;
 import com.thc.realspr.dto.GoogleLoginRequest;
@@ -10,16 +11,20 @@ import com.thc.realspr.repository.TbuserRepository;
 import com.thc.realspr.service.GoogleAuthService;
 import com.thc.realspr.service.TbuserService;
 import com.thc.realspr.util.TokenFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 //import com.thc.realspr.util.TokenFactory;
 
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 @Service
 public class TbuserServiceImpl implements TbuserService {
 
+    @Autowired
     private final TbuserRepository tbuserRepository;
     private final GoogleAuthService googleAuthService;
 
@@ -31,20 +36,31 @@ public class TbuserServiceImpl implements TbuserService {
     }
 
 
-
     @Override
-    public TbuserDto.CreateResDto create(TbuserDto.CreateReqDto param) {
+    public Map<String, Object> create(Map<String, Object> params) {
+        System.out.println("create");
+        Map<String, Object> result = new HashMap<String, Object>();
 
-        Tbuser tbuser;
-        //사용자 등록 완료!
-        tbuser = tbuserRepository.save(param.toEntity());
-        return tbuser.toCreateResDto();
+        String email = (String) params.get("email");
+
+        Tbuser user = TbuserRepository.findByUsername(email);
+        if(user == null){
+            user = new Tbuser();
+            user.setName((String) params.get("name"));
+            user.setCreated_at(LocalDateTime.now());
+            user.setLast_login_time(LocalDateTime.now());
+            user.setUuid((String) params.get("uuid"));
+            user = TbuserRepository.save(user);
+
+            Tbuser tbuser = Tbuser.of(params.get("email") + "", params.get("uuid") + "", params.get("name") + "", params.get("last_login_time") + "", params.get("created_at"));
+            result.put("email", user.getEmail());
+        } else {
+            result.put("id duplicated", user.getName());
+        }
+        return result;
     }
 
-    @Override
-    public TbuserDto.DetailResDto detail(DefaultDto.DetailReqDto param) {
-        return null;
-    }
+
 
     @Override
     public TbuserDto.CreateResDto access(String param) throws Exception {
@@ -73,6 +89,8 @@ public class TbuserServiceImpl implements TbuserService {
         if (email == null || !email.endsWith("@handong.ac.kr")) {
             throw new NoAuthorizationException("Unauthorized user");
         }
+        TbuserDto.CreateReqDto param = TbuserDto.CreateReqDto.builder().email(email).build();
+        tbuser = tbuserRepository.save(param.toEntity());
 
         return tbuser;
     }
