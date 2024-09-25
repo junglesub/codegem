@@ -7,6 +7,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
+import org.checkerframework.common.aliasing.qual.Unique;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -22,10 +23,8 @@ public class Tbuser {
 - modified_at
 - created_at*/
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    @Setter @Column(nullable = false) private String email; // 이메일
-    @Setter @Column(nullable = false) private String uuid; // 사용자아이디
+    @Setter @Column(nullable = false) private String id; // 사용자아이디
+    @Unique @Setter @Column(nullable = false) private String email; // 이메일
     @Setter @Column(nullable = false) private String name;
     @Setter @Column(nullable = false) private LocalDateTime last_login_time; // 최근 로그인 시간
     @Setter @Column(nullable = false) private LocalDateTime modified_at; // 수정날짜
@@ -38,7 +37,7 @@ public class Tbuser {
 
     private Tbuser(String email, String uuid, String name, LocalDateTime last_login_time, LocalDateTime modified_at, LocalDateTime created_at) {
         this.email = email;
-        this.uuid = uuid;
+        this.id = uuid;
         this.name = name;
         this.last_login_time = last_login_time;
         this.modified_at = modified_at;
@@ -47,7 +46,7 @@ public class Tbuser {
 
     public Tbuser(String email, String uuid, String name, LocalDateTime last_login_time, LocalDateTime created_at) {
         this.email = email;
-        this.uuid = uuid;
+        this.id = uuid;
         this.name = name;
         this.last_login_time = last_login_time;
         this.created_at = created_at;
@@ -68,7 +67,7 @@ public class Tbuser {
 
     @PrePersist
     public void onPrePersist() {
-        this.uuid = UUID.randomUUID().toString().replace("-", "");
+        this.id = UUID.randomUUID().toString().replace("-", "");
     }
 
     public TbuserDto.CreateResDto toCreateResDto() {
