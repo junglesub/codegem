@@ -22,11 +22,13 @@ public class GoogleAuthService {
                 .build();
     }
 
-    public String verifyGoogleToken(String credential) {
+    public String[] verifyGoogleToken(String credential) {
         try { // 받은 구글 토큰을 검증하고 이메일을 추출하는 코드
             GoogleIdToken idToken = verifier.verify(credential);
             if (idToken != null) {
-                return idToken.getPayload().getEmail();
+                GoogleIdToken.Payload payload = idToken.getPayload();
+                String[] out ={idToken.getPayload().getEmail(),payload.getEmail() };
+                return out;
             } else {
                 throw new RuntimeException("Invalid ID token");
             }
@@ -41,7 +43,7 @@ public class GoogleAuthService {
             if (idToken != null) {
                 // 페이로드 추출
                 GoogleIdToken.Payload payload = idToken.getPayload();
-
+                //
                 // "name" 필드 추출
                 String name = (String) payload.get("name");
 

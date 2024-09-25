@@ -21,5 +21,5 @@ public interface TbuserService {
 
     //    TbuserDto.CreateResDto access(String param) throws Exception;
 
-    Tbuser loginWithGoogle(String credential);
+    TbuserDto.CreateResDto loginWithGoogle(String credential);
 }
