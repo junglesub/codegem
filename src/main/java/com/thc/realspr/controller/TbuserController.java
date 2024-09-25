@@ -79,7 +79,6 @@ public class TbuserController {
         // 서비스 계층에서 유저 로그인 처리
         Tbuser tbuser = tbuserService.loginWithGoogle(request.getCredential());
 
-        tbuser = tbuserService.create(tb)
 
         // 리프레시 토큰 발급
         String refreshToken = TokenFactory.issueRefreshToken(tbuser.getEmail());

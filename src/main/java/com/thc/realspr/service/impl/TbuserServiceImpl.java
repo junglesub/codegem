@@ -35,7 +35,7 @@ public class TbuserServiceImpl implements TbuserService {
     @Override
     public TbuserDto.CreateResDto create(TbuserDto.CreateReqDto param) {
 
-        Tbuser tbuser
+        Tbuser tbuser;
         //사용자 등록 완료!
         tbuser = tbuserRepository.save(param.toEntity());
         return tbuser.toCreateResDto();
