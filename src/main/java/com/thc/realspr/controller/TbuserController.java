@@ -31,8 +31,8 @@ public class TbuserController {
 
     // CREATE: POST 요청으로 새로운 사용자 생성
     @GetMapping("/create")
-    public Map<String, Object> create(@RequestParam Map<String, Object> params){
-        return TbuserService.create(params);
+    public Map<String, Object> create(@RequestParam Map<String, Object> params) {
+        return tbuserService.create(params);
     }
 
 //    @PutMapping("")
@@ -101,9 +101,6 @@ public class TbuserController {
 //    }
 
 
-
-
-
 //    @PostMapping("/token/refresh")
 //    public ResponseEntity<String> refreshAccessToken(@RequestBody String refreshToken) {
 //        // 리프레시 토큰 검증 후 액세스 토큰 생성
@@ -111,9 +108,6 @@ public class TbuserController {
 //        String accessToken = TokenFactory.generateToken(email);  // 액세스 토큰 발급
 //        return ResponseEntity.ok(accessToken);
 //    }
-
-
-
 
 
 }

@@ -29,12 +29,17 @@ public class TbuserServiceImpl implements TbuserService {
     private final GoogleAuthService googleAuthService;
 
 
-
     public TbuserServiceImpl(TbuserRepository tbuserRepository, GoogleAuthService googleAuthService) {
         this.tbuserRepository = tbuserRepository;
         this.googleAuthService = googleAuthService;
     }
 
+
+    @Override
+    public TbuserDto.DetailResDto detail(DefaultDto.DetailReqDto param) {
+        // TODO: implement detail
+        return null;
+    }
 
     @Override
     public Map<String, Object> create(Map<String, Object> params) {
@@ -43,23 +48,23 @@ public class TbuserServiceImpl implements TbuserService {
 
         String email = (String) params.get("email");
 
-        Tbuser user = TbuserRepository.findByUsername(email);
-        if(user == null){
-            user = new Tbuser();
-            user.setName((String) params.get("name"));
-            user.setCreated_at(LocalDateTime.now());
-            user.setLast_login_time(LocalDateTime.now());
-            user.setUuid((String) params.get("uuid"));
-            user = TbuserRepository.save(user);
+        Tbuser user = tbuserRepository.findByUsername(email);
+        if (user == null) {
+//            TODO: Fix below
+//            user = new Tbuser();
+//            user.setName((String) params.get("name"));
+//            user.setCreated_at(LocalDateTime.now());
+//            user.setLast_login_time(LocalDateTime.now());
+//            user.setUuid((String) params.get("uuid"));
+//            user = TbuserRepository.save(user);
 
-            Tbuser tbuser = Tbuser.of(params.get("email") + "", params.get("uuid") + "", params.get("name") + "", params.get("last_login_time") + "", params.get("created_at"));
+            Tbuser tbuser = Tbuser.of(params.get("email") + "", params.get("uuid") + "", params.get("name") + "", null, null);
             result.put("email", user.getEmail());
         } else {
             result.put("id duplicated", user.getName());
         }
         return result;
     }
-
 
 
     @Override
