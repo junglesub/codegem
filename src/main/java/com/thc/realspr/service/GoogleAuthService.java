@@ -27,7 +27,7 @@ public class GoogleAuthService {
             GoogleIdToken idToken = verifier.verify(credential);
             if (idToken != null) {
                 GoogleIdToken.Payload payload = idToken.getPayload();
-                String[] out ={idToken.getPayload().getEmail(),payload.getEmail() };
+                String[] out = {idToken.getPayload().getEmail(), payload.getEmail()};
                 return out;
             } else {
                 throw new RuntimeException("Invalid ID token");
@@ -36,6 +36,7 @@ public class GoogleAuthService {
             throw new RuntimeException("Failed to verify ID token", e);
         }
     }
+
     public String verifyGoogleName(String credential) {
         try {
             // 받은 구글 토큰을 검증하고 페이로드를 추출하는 코드
@@ -43,7 +44,7 @@ public class GoogleAuthService {
             if (idToken != null) {
                 // 페이로드 추출
                 GoogleIdToken.Payload payload = idToken.getPayload();
-                //
+
                 // "name" 필드 추출
                 String name = (String) payload.get("name");
 
