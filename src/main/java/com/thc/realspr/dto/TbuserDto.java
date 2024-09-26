@@ -127,7 +127,7 @@ public class TbuserDto {
         private LocalDateTime modified_at;
 
         public Tbuser toEntity() {
-            return Tbuser.of(email, uuid, name, last_login_time, modified_at ,created_at);
+            return Tbuser.of(email, uuid, name, last_login_time, modified_at, created_at);
         }
     }
 

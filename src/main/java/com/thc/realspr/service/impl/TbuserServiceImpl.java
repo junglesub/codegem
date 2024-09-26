@@ -68,9 +68,11 @@ public class TbuserServiceImpl implements TbuserService {
 
 
     @Override
-    public Tbuser loginWithGoogle(String credential) {
-        String email = googleAuthService.verifyGoogleToken(credential);
-        String name = googleAuthService.verifyGoogleName(credential);
+    public TbuserDto.CreateResDto loginWithGoogle(String credential) {
+        String[] out = googleAuthService.verifyGoogleToken(credential);
+        String email = out[0];
+        String name = out[1];
+
         LocalDateTime now = LocalDateTime.now();
         String uuid = UUID.randomUUID().toString().replace("-", "");
 
@@ -78,22 +80,24 @@ public class TbuserServiceImpl implements TbuserService {
         System.out.println("email name is " + name);
 
         // 유저 객체 생성
-        Tbuser tbuser = Tbuser.of(email, uuid, name, now ,now, now);
+
 
         // 유저가 @handong.ac.kr 이메일이 아니면 예외 처리
         if (email == null || !email.endsWith("@handong.ac.kr")) {
             throw new NoAuthorizationException("Unauthorized user");
         }
 
-        Tbuser tbuser2 = tbuserRepository.findByEmail(email);
+        Tbuser tbuser = tbuserRepository.findByEmail(email);
 
-        if (tbuser2 != null && tbuser2.getEmail().equals(email)) {
+        if (tbuser != null ) {
             // 유저가 있으면 이메일 출력
-            System.out.println("user " + tbuser2.getEmail());
+            System.out.println("user " + tbuser.getEmail());
+            tbuser.setLast_login_time(now);
         } else {
+            tbuser = Tbuser.of(email, uuid, name, now ,now, now);
             // 유저가 없는 경우 신규 가입
-            tbuserRepository.save(tbuser);
         }
+        tbuserRepository.save(tbuser);
 
 //        Map<String, Object> params = new HashMap<>();
 //        params.put("email", email);
@@ -101,7 +105,8 @@ public class TbuserServiceImpl implements TbuserService {
 //        params.put("name", name);
 //
 //        Map<String, Object> createResult = create(params);
-        return tbuser;
+
+        return TbuserDto.CreateResDto.builder().email(email).build();
     }
 
 
