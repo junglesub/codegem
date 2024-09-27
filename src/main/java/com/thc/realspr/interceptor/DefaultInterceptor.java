@@ -28,8 +28,8 @@ public class DefaultInterceptor implements HandlerInterceptor {
         logger.info("preHandle / accessToken [{}]", request.getHeader("Authorization"));
         if (request.getHeader("Authorization") != null) {
             TokenFactory tokenFactory = new TokenFactory();
-            String reqUserEmail = tokenFactory.verifyToken(request.getHeader("Authorization").replaceAll("Bearer ", ""));
-            request.setAttribute("reqUserEmail", reqUserEmail);
+            String reqUserId = tokenFactory.verifyToken(request.getHeader("Authorization").replaceAll("Bearer ", ""));
+            request.setAttribute("reqUserId", reqUserId);
         } else {
             throw new NoAuthenticatedException("Not Authenticated User");
         }

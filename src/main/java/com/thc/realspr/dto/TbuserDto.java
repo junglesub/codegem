@@ -140,6 +140,7 @@ public class TbuserDto {
     @NoArgsConstructor
     public static class CreateResDto {
         private String email;
+        private String uid;
     }
 
     @SuperBuilder
