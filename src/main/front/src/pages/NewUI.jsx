@@ -4,16 +4,17 @@ import WeatherData from "../components/FeedItemNew/WeatherData";
 import { useState } from "react";
 import InfiniteScroll from "react-infinite-scroller";
 import { removeDuplicates } from "../tools/tools";
+import { useFetchBe } from "../tools/api";
 
 function NewUI() {
   const [allFeeds, setAllFeed] = useState([]);
   const [hasMore, setHasMore] = useState(true);
+  const fetch = useFetchBe();
 
   const loadData = async () => {
     const lastTimestamp = allFeeds.at(-1)?.sentAtEpoch || -1;
-    const data = await (
-      await fetch(`/api/kafeed/scrolllist?afterSentAt=${lastTimestamp}`)
-    ).json();
+    const data = await fetch(`/kafeed/scrolllist?afterSentAt=${lastTimestamp}`);
+    if (!Array.isArray(data)) return;
     setAllFeed((prev) =>
       removeDuplicates(
         [

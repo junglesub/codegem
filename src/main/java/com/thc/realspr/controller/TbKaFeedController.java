@@ -19,21 +19,21 @@ public class TbKaFeedController {
         this.tbKaFeedService = tbKaFeedService;
     }
 
-    @PostMapping("")
-    public Map<String, Object> create(@RequestBody Map<String, Object> param) {
-        System.out.println(param);
-        return tbKaFeedService.create(param);
-    }
-
-    @GetMapping("/last")
-    public Map<String, Object> getLastKaFeed() {
-        return tbKaFeedService.getLastKaFeed();
-    }
-
-    @GetMapping("/all")
-    public List<Map<String, Object>> getAllKaFeed() {
-        return tbKaFeedService.getAll();
-    }
+//    @PostMapping("")
+//    public Map<String, Object> create(@RequestBody Map<String, Object> param) {
+//        System.out.println(param);
+//        return tbKaFeedService.create(param);
+//    }
+//
+//    @GetMapping("/last")
+//    public Map<String, Object> getLastKaFeed() {
+//        return tbKaFeedService.getLastKaFeed();
+//    }
+//
+//    @GetMapping("/all")
+//    public List<Map<String, Object>> getAllKaFeed() {
+//        return tbKaFeedService.getAll();
+//    }
 
     @GetMapping("/scrolllist")
     public List<TbmessageDto.Detail> getListAll(@RequestParam Map<String, String> param) {
