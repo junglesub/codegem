@@ -1,0 +1,16 @@
+{
+  "short_name": "한동피드",
+  "name": "한동피드",
+  "icons": [
+    {
+      "src": "favicon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#000000",
+  "description": "An example of a Progressive Web App using React."
+}
