@@ -27,6 +27,6 @@ public class UserInteractionServiceImpl implements UserInteractionService {
             throw new DuplicateEntityException("User with id " + userId + " already seen " + param.getSubjectId());
         }
 
-        return "";
+        return "{}";
     }
 }

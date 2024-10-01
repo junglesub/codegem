@@ -8,6 +8,7 @@ import { useFetchBe } from "../tools/api";
 
 function NewUI() {
   const [allFeeds, setAllFeed] = useState([]);
+  const [allSeenFeedId, setAllSeenFeedId] = useState(new Set());
   const [hasMore, setHasMore] = useState(true);
   const fetch = useFetchBe();
 
@@ -27,6 +28,7 @@ function NewUI() {
             content: dd.message,
             files: dd.files,
             img: dd.files[0], // Temp just for testing
+            subjectId: dd.subjectId,
           })),
         ],
         "id"
@@ -34,6 +36,10 @@ function NewUI() {
     );
     if (data.length === 0) setHasMore(false);
   };
+
+  const allFeedsToDisplay = allFeeds.filter(
+    (item) => !allSeenFeedId.has(item.subjectId)
+  );
 
   return (
     <div className="NewUI">
@@ -45,8 +51,12 @@ function NewUI() {
         <WeatherData />
         {allFeeds.length === 0 && <div>No Entry..</div>}
         <InfiniteScroll loadMore={loadData} hasMore={hasMore}>
-          {allFeeds.map((item) => (
-            <FeedItemNew key={item.id} item={item} />
+          {allFeedsToDisplay.map((item) => (
+            <FeedItemNew
+              key={item.id}
+              item={item}
+              setAllSeenFeedId={setAllSeenFeedId}
+            />
           ))}
         </InfiniteScroll>
       </div>

@@ -3,14 +3,19 @@
 <mapper namespace="com.thc.realspr.mapper.TbmessageMapper">
 
     <!---->
-    <select id="scrollList" parameterType="int" resultType="com.thc.realspr.dto.TbmessageDto$Detail">
+    <select id="scrollList" parameterType="map" resultType="com.thc.realspr.dto.TbmessageDto$Detail">
         SELECT subject.id           AS subjectId,
                message.id           AS id,
                message.last_sent_at AS sentAt,
                message.message      AS message
         FROM (SELECT *
-              FROM TbSubject
+              FROM TbSubject s
               WHERE last_sent_at &lt; #{afterSentAt}
+                AND last_sent_at &gt; (UNIX_TIMESTAMP() - (3 * 24 * 60 * 60))
+                AND NOT EXISTS (SELECT 1
+                                FROM mydb_TbUserInteraction m
+                                WHERE s.id = m.subjectId
+                                  AND #{userId} = m.userId)
               ORDER BY last_sent_at DESC
               LIMIT 15) AS subject
                  JOIN TbKaMessage AS message ON message.chat_id = subject.last_sent_chat_id
