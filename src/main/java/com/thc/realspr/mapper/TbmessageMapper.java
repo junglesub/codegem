@@ -8,7 +8,7 @@ import java.util.concurrent.CompletableFuture;
 
 public interface TbmessageMapper {
     /**/
-    List<TbmessageDto.Detail> scrollList(int afterSentAt);
+    List<TbmessageDto.Detail> scrollList(int afterSentAt, String userId);
 
     List<TbmessageDto.FileDetail> fileDetails(String messageId);
 

@@ -80,11 +80,11 @@ public class TbuserController {
 
     @PostMapping("/login/google")
     public ResponseEntity<GoogleLoginResponse> loginWithGoogle(@RequestBody GoogleLoginRequest request) {
-        String email = tbuserService.loginWithGoogle(request.getCredential()).getEmail();
+        String userId = tbuserService.loginWithGoogle(request.getCredential()).getUid();
         // 서비스 계층에서 유저 로그인 처리
 
         // 리프레시 토큰 발급
-        String refreshToken = TokenFactory.issueRefreshToken(email);
+        String refreshToken = TokenFactory.issueRefreshToken(userId);
 
         // 응답 리턴
         return ResponseEntity.ok(new GoogleLoginResponse(refreshToken));

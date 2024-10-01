@@ -2,6 +2,7 @@ package com.thc.realspr.controller;
 
 import com.thc.realspr.dto.TbmessageDto;
 import com.thc.realspr.service.TbKaFeedService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,28 +20,29 @@ public class TbKaFeedController {
         this.tbKaFeedService = tbKaFeedService;
     }
 
-    @PostMapping("")
-    public Map<String, Object> create(@RequestBody Map<String, Object> param) {
-        System.out.println(param);
-        return tbKaFeedService.create(param);
-    }
-
-    @GetMapping("/last")
-    public Map<String, Object> getLastKaFeed() {
-        return tbKaFeedService.getLastKaFeed();
-    }
-
-    @GetMapping("/all")
-    public List<Map<String, Object>> getAllKaFeed() {
-        return tbKaFeedService.getAll();
-    }
+//    @PostMapping("")
+//    public Map<String, Object> create(@RequestBody Map<String, Object> param) {
+//        System.out.println(param);
+//        return tbKaFeedService.create(param);
+//    }
+//
+//    @GetMapping("/last")
+//    public Map<String, Object> getLastKaFeed() {
+//        return tbKaFeedService.getLastKaFeed();
+//    }
+//
+//    @GetMapping("/all")
+//    public List<Map<String, Object>> getAllKaFeed() {
+//        return tbKaFeedService.getAll();
+//    }
 
     @GetMapping("/scrolllist")
-    public List<TbmessageDto.Detail> getListAll(@RequestParam Map<String, String> param) {
+    public List<TbmessageDto.Detail> getListAll(@RequestParam Map<String, String> param, HttpServletRequest request) {
+        final String reqUserId = request.getAttribute("reqUserId").toString();
         String afterSentAt = param.get("afterSentAt");
         if (afterSentAt != null && !afterSentAt.equals("-1"))
-            return tbKaFeedService.scrollList(Integer.parseInt(afterSentAt));
-        else return tbKaFeedService.scrollList();
+            return tbKaFeedService.scrollList(Integer.parseInt(afterSentAt), reqUserId);
+        else return tbKaFeedService.scrollList(reqUserId);
     }
 
 

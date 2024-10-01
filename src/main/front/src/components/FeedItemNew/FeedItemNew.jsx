@@ -7,6 +7,7 @@ import share from "./share.png";
 import { convertTextToLinks } from "../../tools/tools";
 import FeedItemGallery from "./FeedItemGallery";
 import ReactShowMoreText from "react-show-more-text";
+import { useFetchBe } from "../../tools/api";
 
 function formatTimestamp(timestamp) {
   // Parse the timestamp into a Date object
@@ -23,7 +24,8 @@ function formatTimestamp(timestamp) {
   return `${year}년 ${month}월 ${day}일 ${hours}:${minutes}`;
 }
 
-function FeedItemNew({ item, getAllData }) {
+function FeedItemNew({ item, setAllSeenFeedId }) {
+  const fetch = useFetchBe();
   return (
     <div className="FeedItem">
       <div className="moreinfo">
@@ -50,18 +52,24 @@ function FeedItemNew({ item, getAllData }) {
         </div>
       )}
       <div className="bottomMenu">
-        <div className="like">
+        {/* <div className="like">
           <img src={like} alt="" />
           <span>좋아요</span>
+        </div> */}
+        <div
+          className="comment"
+          onClick={() => {
+            fetch("/feeduser/seen", "POST", { subjectId: item.subjectId });
+            setAllSeenFeedId((prev) => new Set([...prev, item.subjectId]));
+          }}
+        >
+          {/* <img src={comment} alt="" /> */}
+          <span>읽음처리</span>
         </div>
-        <div className="comment">
-          <img src={comment} alt="" />
-          <span>댓글달기</span>
-        </div>
-        <div className="share">
+        {/* <div className="share">
           <img src={share} alt="" />
           <span>공유하기</span>
-        </div>
+        </div> */}
       </div>
     </div>
   );

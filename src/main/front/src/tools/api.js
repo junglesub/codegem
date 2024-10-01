@@ -19,18 +19,27 @@ export const fetchBe = (jwtValue, path, method = "GET", body) =>
     if (jwtValue) initStuff.headers.Authorization = `Bearer ${jwtValue}`;
 
     fetch(serverRootUrl + path, initStuff)
-      .then((doc) =>
+      .then((doc) => {
+        if (doc.status === 401) {
+          // user not logged in
+          localStorage.clear();
+          alert("로그인을 다시 해주세요");
+          window.location.href = "/"; // back to home screen.
+          return rej({ errorMsg: "로그인을 다시해주세요." });
+        }
         doc.json().then((json) => {
           // If User not exist (due to db reset, etc)
           if (path === "/user/get" && !json?.email) {
             alert("유저가 존재하지 않습니다. 로그인을 다시해주세요.");
             localStorage.clear();
             window.location.reload();
-            return rej("유저가 존재하지 않습니다. 로그인을 다시해주세요.");
+            return rej({
+              errorMsg: "유저가 존재하지 않습니다. 로그인을 다시해주세요.",
+            });
           }
           return res(json);
-        })
-      )
+        });
+      })
 
       .catch((err) => rej(err));
   });

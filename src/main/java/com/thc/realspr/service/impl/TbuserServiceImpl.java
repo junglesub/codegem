@@ -50,7 +50,7 @@ public class TbuserServiceImpl implements TbuserService {
         LocalDateTime lastLoginTime = (LocalDateTime) params.get("last_login_time");
         Map<String, Object> returnMap = new HashMap<String, Object>();
         System.out.println(params);
-        Tbuser tbuser = Tbuser.of(email, uuid, name, LocalDateTime.now(), LocalDateTime.now(),LocalDateTime.now() );
+        Tbuser tbuser = Tbuser.of(email, uuid, name, LocalDateTime.now(), LocalDateTime.now(), LocalDateTime.now());
         tbuserRepository.save(tbuser);
         returnMap.put("id", tbuser.getId());
         return returnMap;
@@ -64,7 +64,6 @@ public class TbuserServiceImpl implements TbuserService {
 
         return null;
     }
-
 
 
     @Override
@@ -89,12 +88,12 @@ public class TbuserServiceImpl implements TbuserService {
 
         Tbuser tbuser = tbuserRepository.findByEmail(email);
 
-        if (tbuser != null ) {
+        if (tbuser != null) {
             // 유저가 있으면 이메일 출력
             System.out.println("user " + tbuser.getEmail());
             tbuser.setLast_login_time(now);
         } else {
-            tbuser = Tbuser.of(email, uuid, name, now ,now, now);
+            tbuser = Tbuser.of(email, uuid, name, now, now, now);
             // 유저가 없는 경우 신규 가입
         }
         tbuserRepository.save(tbuser);
@@ -106,7 +105,7 @@ public class TbuserServiceImpl implements TbuserService {
 //
 //        Map<String, Object> createResult = create(params);
 
-        return TbuserDto.CreateResDto.builder().email(email).build();
+        return TbuserDto.CreateResDto.builder().uid(tbuser.getId()).email(email).build();
     }
 
 
