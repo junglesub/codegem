@@ -26,11 +26,12 @@
     <select id="fileDetails" parameterType="string" resultType="com.thc.realspr.dto.TbmessageDto$FileDetail">
         SELECT file.hash AS hash,
                file.ext  AS ext
-        FROM (SELECT file_hash
+        FROM (SELECT file_hash, appear_order
               FROM TbFileMessageRelation
               WHERE message_id = #{messageId}) as fml
                  LEFT JOIN TbKaFile AS file
                            ON file.hash = fml.file_hash
+        ORDER BY fml.appear_order
     </select>
 
 </mapper>
