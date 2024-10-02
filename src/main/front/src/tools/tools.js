@@ -29,3 +29,22 @@ export const removeDuplicates = (arr, key) => {
     return true;
   });
 };
+
+export const getExtensionFromUrl = (url) => {
+  const cleanUrl = url.split("?")[0]; // Remove anything after '?'
+  return cleanUrl.split(".").pop().toLowerCase(); // Get the file extension
+};
+
+// Function to check if the URL is an image
+export const isImage = (url) => {
+  const imageExtensions = ["jpg", "jpeg", "png", "gif", "bmp", "svg"];
+  const extension = getExtensionFromUrl(url); // Get cleaned extension
+  return imageExtensions.includes(extension);
+};
+
+// Function to check if the URL is a video
+export const isVideo = (url) => {
+  const videoExtensions = ["mp4", "webm", "ogg", "mov", "avi"];
+  const extension = getExtensionFromUrl(url); // Get cleaned extension
+  return videoExtensions.includes(extension);
+};
