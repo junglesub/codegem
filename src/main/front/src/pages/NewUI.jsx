@@ -53,7 +53,7 @@ function NewUI() {
 
       <div className="list">
         <WeatherData />
-        {allFeeds.length === 0 && <div>No Entry..</div>}
+        {allFeedsToDisplay.length === 0 && <div>No Entry..</div>}
         <InfiniteScroll loadMore={loadData} hasMore={hasMore}>
           {allFeedsToDisplay.map((item) => (
             <FeedItemNew
