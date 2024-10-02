@@ -1,6 +1,7 @@
 package com.thc.realspr.util;
 
 
+import com.thc.realspr.exception.InvalidTokenException;
 import com.thc.realspr.exception.NoAuthenticatedException;
 
 import java.util.Arrays;
@@ -67,7 +68,7 @@ public class TokenFactory {
             return tbuserId;
         } else {
             //만료!
-            throw new Exception("due....");
+            throw new InvalidTokenException("Token Expired");
         }
     }
 }

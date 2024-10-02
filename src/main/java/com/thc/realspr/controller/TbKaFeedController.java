@@ -38,8 +38,12 @@ public class TbKaFeedController {
 
     @GetMapping("/scrolllist")
     public List<TbmessageDto.Detail> getListAll(@RequestParam Map<String, String> param, HttpServletRequest request) {
-        final String reqUserId = request.getAttribute("reqUserId").toString();
-        String afterSentAt = param.get("afterSentAt");
+        String reqUserId = request.getAttribute("reqUserId").toString();
+        final String afterSentAt = param.get("afterSentAt");
+        final String all = param.get("all");
+
+        if (all.equalsIgnoreCase("y")) reqUserId = null;
+
         if (afterSentAt != null && !afterSentAt.equals("-1"))
             return tbKaFeedService.scrollList(Integer.parseInt(afterSentAt), reqUserId);
         else return tbKaFeedService.scrollList(reqUserId);

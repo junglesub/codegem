@@ -9,6 +9,7 @@ import LoginProtected from "./components/LoginProtected";
 import MainScreen from "./pages/MainScreen";
 
 import { register as registerServiceWorker } from "./serviceWorkerRegistration";
+import NewUIAll from "./pages/NewUIAll";
 
 const router = createBrowserRouter([
   {
@@ -18,6 +19,10 @@ const router = createBrowserRouter([
   {
     path: "/feed",
     element: <LoginProtected comp={NewUI} />,
+  },
+  {
+    path: "/feedall",
+    element: <LoginProtected comp={NewUIAll} />,
   },
   {
     path: "/admin",
