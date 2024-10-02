@@ -7,15 +7,16 @@ import { removeDuplicates } from "../tools/tools";
 import { useFetchBe } from "../tools/api";
 import { Link } from "react-router-dom";
 
-function NewUI() {
+function NewUIAll() {
   const [allFeeds, setAllFeed] = useState([]);
-  const [allSeenFeedId, setAllSeenFeedId] = useState(new Set());
   const [hasMore, setHasMore] = useState(true);
   const fetch = useFetchBe();
 
   const loadData = async () => {
     const lastTimestamp = allFeeds.at(-1)?.sentAtEpoch || -1;
-    const data = await fetch(`/kafeed/scrolllist?afterSentAt=${lastTimestamp}`);
+    const data = await fetch(
+      `/kafeed/scrolllist?afterSentAt=${lastTimestamp}&all=y`
+    );
     if (!Array.isArray(data)) return;
     setAllFeed((prev) =>
       removeDuplicates(
@@ -38,29 +39,22 @@ function NewUI() {
     if (data.length === 0) setHasMore(false);
   };
 
-  const allFeedsToDisplay = allFeeds.filter(
-    (item) => !allSeenFeedId.has(item.subjectId)
-  );
-
   return (
     <div className="NewUI">
       <div className="header">
         <h1>Handong Feed</h1>
       </div>
+
       <div>
-        <Link to="/feedall">See all feed</Link>
+        <Link to="/feed">Main feed</Link>
       </div>
 
       <div className="list">
         <WeatherData />
         {allFeeds.length === 0 && <div>No Entry..</div>}
         <InfiniteScroll loadMore={loadData} hasMore={hasMore}>
-          {allFeedsToDisplay.map((item) => (
-            <FeedItemNew
-              key={item.id}
-              item={item}
-              setAllSeenFeedId={setAllSeenFeedId}
-            />
+          {allFeeds.map((item) => (
+            <FeedItemNew key={item.id} item={item} />
           ))}
         </InfiniteScroll>
       </div>
@@ -68,4 +62,4 @@ function NewUI() {
   );
 }
 
-export default NewUI;
+export default NewUIAll;

@@ -56,16 +56,18 @@ function FeedItemNew({ item, setAllSeenFeedId }) {
           <img src={like} alt="" />
           <span>좋아요</span>
         </div> */}
-        <div
-          className="comment"
-          onClick={() => {
-            fetch("/feeduser/seen", "POST", { subjectId: item.subjectId });
-            setAllSeenFeedId((prev) => new Set([...prev, item.subjectId]));
-          }}
-        >
-          {/* <img src={comment} alt="" /> */}
-          <span>읽음처리</span>
-        </div>
+        {setAllSeenFeedId && (
+          <div
+            className="comment"
+            onClick={() => {
+              fetch("/feeduser/seen", "POST", { subjectId: item.subjectId });
+              setAllSeenFeedId((prev) => new Set([...prev, item.subjectId]));
+            }}
+          >
+            {/* <img src={comment} alt="" /> */}
+            <span>읽음처리</span>
+          </div>
+        )}
         {/* <div className="share">
           <img src={share} alt="" />
           <span>공유하기</span>
