@@ -12,7 +12,8 @@
   grid-template-columns: 1fr;
 }
 
-.images-1 img {
+.images-1 img,
+.images-1 video {
   width: 100%;
   height: auto;
   border-radius: 8px;
@@ -23,7 +24,8 @@
   grid-template-columns: 1fr 1fr;
 }
 
-.images-2 img {
+.images-2 img,
+.images-2 video {
   width: 100%;
   height: auto;
   border-radius: 8px;
@@ -35,11 +37,13 @@
   grid-template-rows: 1fr 1fr;
 }
 
-.images-3 img:first-child {
+.images-3 img:first-child,
+.images-3 video:first-child {
   grid-row: 1 / span 2;
 }
 
-.images-3 img {
+.images-3 img,
+.images-3 video {
   width: 100%;
   height: auto;
   border-radius: 8px;
@@ -51,7 +55,8 @@
   grid-template-rows: 1fr 1fr;
 }
 
-.images-4 img {
+.images-4 img,
+.images-4 video {
   width: 100%;
   height: auto;
   border-radius: 8px;
