@@ -4,7 +4,7 @@ import kakaotalk from "./kakaotalk.png";
 import comment from "./comment.png";
 import like from "./like.png";
 import share from "./share.png";
-import { convertTextToLinks } from "../../tools/tools";
+import { convertTextToLinks } from "../../tools/tools.jsx";
 import FeedItemGallery from "./FeedItemGallery";
 import ReactShowMoreText from "react-show-more-text";
 import { useFetchBe } from "../../tools/api";

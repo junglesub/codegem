@@ -1,7 +1,7 @@
 import React from "react";
 
 import "./FeedItemGallery.css";
-import { getExtensionFromUrl, isImage, isVideo } from "../../tools/tools";
+import { getExtensionFromUrl, isImage, isVideo } from "../../tools/tools.jsx";
 
 const FeedItemGallery = ({ images = [] }) => {
   if (images.length === 0) return <></>;

@@ -6,7 +6,7 @@ function WeatherData() {
   const [weatherInfo, setWeatherInfo] = useState();
   useEffect(() => {
     const url = `https://api.openweathermap.org/data/2.5/weather?lat=${36.103268}&lon=${129.388611}&appid=${
-      process.env.REACT_APP_WEATHER_KEY
+      import.meta.env.VITE_WEATHER_KEY
     }&units=metric`;
     fetch(url).then((doc) => doc.json().then((json) => setWeatherInfo(json)));
   }, []);

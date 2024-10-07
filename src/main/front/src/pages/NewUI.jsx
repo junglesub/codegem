@@ -3,7 +3,7 @@ import FeedItemNew from "../components/FeedItemNew/FeedItemNew";
 import WeatherData from "../components/FeedItemNew/WeatherData";
 import { useState } from "react";
 import InfiniteScroll from "react-infinite-scroller";
-import { removeDuplicates } from "../tools/tools";
+import { removeDuplicates } from "../tools/tools.jsx";
 import { useFetchBe } from "../tools/api";
 import { Link } from "react-router-dom";
 
