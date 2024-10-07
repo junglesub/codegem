@@ -2,14 +2,11 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import NewUI from "./pages/NewUI";
-import Admin from "./pages/Admin";
 import { RecoilRoot } from "recoil";
 import LoginProtected from "./components/LoginProtected";
 import MainScreen from "./pages/MainScreen";
 
 import { register as registerServiceWorker } from "./serviceWorkerRegistration";
-import NewUIAll from "./pages/NewUIAll";
 
 const router = createBrowserRouter([
   {
@@ -18,15 +15,11 @@ const router = createBrowserRouter([
   },
   {
     path: "/feed",
-    element: <LoginProtected comp={NewUI} />,
+    element: <LoginProtected comp={<div>Feed</div>} />,
   },
   {
     path: "/feedall",
-    element: <LoginProtected comp={NewUIAll} />,
-  },
-  {
-    path: "/admin",
-    element: <Admin />,
+    element: <LoginProtected comp={<div>Feed All</div>} />,
   },
 ]);
 
