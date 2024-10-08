@@ -14,9 +14,10 @@ import "./FeedCard.css";
 import FeedCardGallery from "./FeedCardGallery";
 import { Skeleton } from "@mui/material";
 
-export default function FeedCard({ loading, item, setAllSeenFeedId }) {
+export default function FeedCard({ loading, item }) {
   const [expanded, setExpanded] = React.useState(false);
 
+  // eslint-disable-next-line unused-imports/no-unused-vars
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };

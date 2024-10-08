@@ -30,6 +30,7 @@ function HideOnScroll(props) {
 function MyAppbar() {
   const [anchorElUser, setAnchorElUser] = useState(null);
 
+  // eslint-disable-next-line unused-imports/no-unused-vars
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
   };

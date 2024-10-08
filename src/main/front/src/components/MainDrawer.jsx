@@ -1,5 +1,5 @@
 import * as React from "react";
-import { styled, useTheme } from "@mui/material/styles";
+import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import MuiDrawer from "@mui/material/Drawer";
 
@@ -66,6 +66,7 @@ const closedMixin = (theme) => ({
   },
 });
 
+// eslint-disable-next-line unused-imports/no-unused-vars
 const DrawerHeader = styled("div")(({ theme }) => ({
   display: "flex",
   alignItems: "center",
@@ -101,7 +102,7 @@ const Drawer = styled(MuiDrawer, {
 }));
 
 export default function MainDrawer() {
-  const theme = useTheme();
+  // eslint-disable-next-line unused-imports/no-unused-vars
   const [open, setOpen] = React.useState(false);
 
   const location = useLocation();
@@ -223,9 +224,9 @@ export default function MainDrawer() {
           <BottomNavigation
             showLabels={true}
             value={currentMenuIndex}
-            onChange={(event, newValue) => {
-              // setValue(newValue);
-            }}
+            // onChange={(event, newValue) => {
+            //   // setValue(newValue);
+            // }}
           >
             {MENUS.map((menu) => (
               <BottomNavigationAction
