@@ -10,6 +10,7 @@ function MainDisplay({ children }) {
         display: {
           xs: "block",
           sm: "flex",
+          minHeight: "100vh",
         },
         backgroundColor: "#eef0f3",
       }}
