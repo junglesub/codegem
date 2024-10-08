@@ -10,7 +10,7 @@ const FeedCardGallery = ({ images = [] }) => {
       <div className={`post-images images-${images.length}`}>
         {images.slice(0, 3).map((url, index) =>
           isImage(url) ? (
-            <img key={index} src={url} alt={`${index + 1}`} />
+            <img key={index} src={url} alt={`${index + 1}`} loading="lazy" />
           ) : isVideo(url) ? (
             <video key={index} controls>
               <source src={url} type={`video/${getExtensionFromUrl(url)}`} />
@@ -23,7 +23,7 @@ const FeedCardGallery = ({ images = [] }) => {
         {images.length >= 4 && (
           <div className="more-images-overlay">
             {images.length > 5 && <span>+{images.length - 4}</span>}
-            <img key={1} src={images[3]} alt={`4`} />
+            <img key={1} src={images[3]} alt={`4`} loading="lazy" />
           </div>
         )}
       </div>
