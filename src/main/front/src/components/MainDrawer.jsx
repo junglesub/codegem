@@ -157,6 +157,7 @@ export default function MainDrawer() {
                       onClick={() => {
                         if (currentMenuIndex === index) {
                           console.log("reloading current page");
+                          scroll(0, 0);
                           navigate(0);
                         }
                       }}
@@ -244,6 +245,7 @@ export default function MainDrawer() {
                 onClick={() => {
                   if (currentMenuIndex === index) {
                     console.log("reloading current page");
+                    scroll(0, 0);
                     navigate(0);
                   }
                 }}
