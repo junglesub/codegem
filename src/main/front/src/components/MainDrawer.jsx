@@ -18,7 +18,7 @@ import {
   Paper,
   Tooltip,
 } from "@mui/material";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import MyAppbar from "./MyAppbar";
 import { useFeedCount } from "../hooks/useFeed";
 
@@ -81,6 +81,7 @@ const Drawer = styled(MuiDrawer, {
 }));
 
 export default function MainDrawer() {
+  const navigate = useNavigate();
   // eslint-disable-next-line unused-imports/no-unused-vars
   const [open, setOpen] = React.useState(false);
   const location = useLocation();
@@ -153,6 +154,12 @@ export default function MainDrawer() {
                     <ListItemButton
                       component={Link}
                       to={menu.link}
+                      onClick={() => {
+                        if (currentMenuIndex === index) {
+                          console.log("reloading current page");
+                          navigate(0);
+                        }
+                      }}
                       sx={[
                         {
                           minHeight: 48,
@@ -230,10 +237,16 @@ export default function MainDrawer() {
             //   // setValue(newValue);
             // }}
           >
-            {MENUS.map((menu) => (
+            {MENUS.map((menu, index) => (
               <BottomNavigationAction
                 key={menu.name}
                 component={Link}
+                onClick={() => {
+                  if (currentMenuIndex === index) {
+                    console.log("reloading current page");
+                    navigate(0);
+                  }
+                }}
                 to={menu.link}
                 // label={menu.name}  // disable label for clean
                 icon={menu.icon}
