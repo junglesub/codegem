@@ -22,6 +22,7 @@ import {
   Tooltip,
 } from "@mui/material";
 import { Link, useLocation } from "react-router-dom";
+import MyAppbar from "./MyAppbar";
 
 const MENUS = [
   {
@@ -216,8 +217,10 @@ export default function MainDrawer() {
           },
         }}
       >
+        <MyAppbar />
+        <Box sx={{ height: 60 }} />
         <Paper
-          sx={{ position: "fixed", bottom: 0, left: 0, right: 0 }}
+          sx={{ position: "fixed", bottom: 0, left: 0, right: 0, zIndex: 99 }}
           elevation={3}
         >
           <BottomNavigation
