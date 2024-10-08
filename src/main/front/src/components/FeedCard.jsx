@@ -56,18 +56,12 @@ export default function FeedCard({ loading, item, setAllSeenFeedId }) {
             }
             action={
               <IconButton aria-label="settings">
-                <MoreVertIcon />
+                <FavoriteIcon />
               </IconButton>
             }
             title="실명카톡방"
             subheader={formatTimestamp(item.createdAt)}
           />
-          {/* <CardMedia
-        component="img"
-        // height="194"
-        image="https://mui.com/static/images/cards/paella.jpg"
-        alt="Paella dish"
-      /> */}
           <CardMedia sx={{ width: "100%" }}>
             {item.files && <FeedCardGallery images={item.files} />}
           </CardMedia>
