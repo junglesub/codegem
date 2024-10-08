@@ -61,7 +61,7 @@ export default function FeedCard({ loading, item, watchSeen = false }) {
     fetch("/feeduser/seen", "POST", { subjectId: item.subjectId }).then(() =>
       setFeedCount((prev) => prev - 1)
     );
-  }, [item, isScrolledUpOut]);
+  }, [item, isScrolledUpOut, fetch, setFeedCount]);
 
   return (
     <Card ref={cardRef} className="FeedCard" sx={{ my: 2 }}>

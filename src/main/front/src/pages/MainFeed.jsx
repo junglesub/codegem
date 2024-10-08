@@ -31,7 +31,7 @@ function MainFeed() {
   return (
     <MainDisplay>
       {!hasMore && allFeeds.length === 0 && (
-        <Card>
+        <Card sx={{ my: 2 }}>
           <CardContent>
             <Typography variant="h5" component="div" align="center">
               모든 피드를 읽었어요!

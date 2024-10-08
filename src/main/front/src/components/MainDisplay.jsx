@@ -17,7 +17,7 @@ function MainDisplay({ children }) {
       <MainDrawer />
       <Box
         component="main"
-        sx={{ flexGrow: 1, px: 1.5, pb: 6, maxWidth: 700, m: "auto" }}
+        sx={{ flexGrow: 1, px: 1.5, pb: 6, maxWidth: 700, mx: "auto" }}
       >
         {children}
       </Box>
