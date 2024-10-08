@@ -1,14 +1,12 @@
-import { useState } from "react";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilValue } from "recoil";
 import { authJwtAtom } from "../recoil/authAtom";
 import { Navigate } from "react-router-dom";
-import { userDetailAtom } from "../recoil/userAtom";
 
 function LoginProtected({ comp: Comp }) {
   const jwtValue = useRecoilValue(authJwtAtom);
-  const [userData, setUserData] = useRecoilState(userDetailAtom);
-  const [userDataLoading, setUserDataLoading] = useState(true);
-  const [userDataError, setUserDataError] = useState();
+  // const [userData, setUserData] = useRecoilState(userDetailAtom);
+  // const [userDataLoading, setUserDataLoading] = useState(true);
+  // const [userDataError, setUserDataError] = useState();
 
   // useEffect(() => {
   //   fetchBe(jwtValue, "/userDetail/get")
