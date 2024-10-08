@@ -20,4 +20,10 @@ public interface TbKaFeedService {
     List<TbmessageDto.Detail> scrollList(String userId);
 
     List<TbmessageDto.Detail> scrollList(int afterSentAt, String userId);
+
+    int count(int afterSentAt, String userId);
+
+    int count(String userId);
+
 }
+

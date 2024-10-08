@@ -117,4 +117,14 @@ public class TbKaFeedServiceImpl implements TbKaFeedService {
                 .sorted((m1, m2) -> Integer.compare(m2.getSentAt(), m1.getSentAt()))  // Sorting in descending order
                 .collect(Collectors.toList());
     }
+
+    public int count(int afterSentAt, String userId) {
+        return tbmessageMapper.countAll(afterSentAt, userId);
+    }
+
+    public int count(String userId) {
+        return count(Integer.MAX_VALUE, userId);
+    }
+
+
 }

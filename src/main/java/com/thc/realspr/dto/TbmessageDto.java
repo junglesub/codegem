@@ -1,10 +1,7 @@
 package com.thc.realspr.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.List;
 
@@ -21,6 +18,17 @@ public class TbmessageDto {
         private int sentAt;
         private String message;
         private List<String> files;
+    }
+
+    @Schema
+    @Getter
+    @Setter
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class Count {
+        @Schema(description = "title", example = "")
+        private int count;
     }
 
     @Schema

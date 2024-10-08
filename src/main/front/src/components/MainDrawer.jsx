@@ -20,28 +20,7 @@ import {
 } from "@mui/material";
 import { Link, useLocation } from "react-router-dom";
 import MyAppbar from "./MyAppbar";
-
-const MENUS = [
-  {
-    name: "신규피드",
-    icon: (
-      <Badge badgeContent={4} color="primary">
-        <InboxIcon />
-      </Badge>
-    ),
-    link: "/new",
-  },
-  {
-    name: "찜한피드",
-    icon: <FavoriteIcon />,
-    link: "/favorite",
-  },
-  {
-    name: "전체피드",
-    icon: <ViewListIcon />,
-    link: "/all",
-  },
-];
+import { useFeedCount } from "../hooks/useFeed";
 
 const drawerWidth = 240;
 
@@ -104,8 +83,31 @@ const Drawer = styled(MuiDrawer, {
 export default function MainDrawer() {
   // eslint-disable-next-line unused-imports/no-unused-vars
   const [open, setOpen] = React.useState(false);
-
   const location = useLocation();
+  const [feedNumber] = useFeedCount();
+
+  const MENUS = [
+    {
+      name: "신규피드",
+      icon: (
+        <Badge badgeContent={feedNumber} color="primary">
+          <InboxIcon />
+        </Badge>
+      ),
+      link: "/new",
+    },
+    {
+      name: "찜한피드",
+      icon: <FavoriteIcon />,
+      link: "/favorite",
+    },
+    {
+      name: "전체피드",
+      icon: <ViewListIcon />,
+      link: "/all",
+    },
+  ];
+
   const currentMenuIndex = MENUS.findIndex(
     (menu) => menu.link === location.pathname
   );
