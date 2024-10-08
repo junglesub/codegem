@@ -47,7 +47,15 @@ function MainFeed() {
 
   return (
     <MainDisplay>
-      <InfiniteScroll loadMore={loadData} hasMore={hasMore}>
+      <InfiniteScroll
+        loadMore={loadData}
+        hasMore={hasMore}
+        loader={Array(3)
+          .fill()
+          .map((_, index) => (
+            <FeedCard key={index} loading />
+          ))}
+      >
         {allFeedsToDisplay.map((item) => (
           // <FeedItemNew
           //   key={item.id}

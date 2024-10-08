@@ -12,6 +12,7 @@ function AllFeed() {
   const [allFeeds, setAllFeed] = useState([]);
   const [allSeenFeedId, setAllSeenFeedId] = useState(new Set());
   const [hasMore, setHasMore] = useState(true);
+  const [firstLoading, setFirstLoading] = useState(true);
   const fetch = useFetchBe();
 
   const loadData = async () => {
@@ -39,6 +40,7 @@ function AllFeed() {
       )
     );
     if (data.length === 0) setHasMore(false);
+    setFirstLoading(false);
   };
 
   const allFeedsToDisplay = allFeeds.filter(
@@ -47,7 +49,15 @@ function AllFeed() {
 
   return (
     <MainDisplay>
-      <InfiniteScroll loadMore={loadData} hasMore={hasMore}>
+      <InfiniteScroll
+        loadMore={loadData}
+        hasMore={hasMore}
+        loader={Array(3)
+          .fill()
+          .map((_, index) => (
+            <FeedCard key={index} loading />
+          ))}
+      >
         {allFeedsToDisplay.map((item) => (
           // <FeedItemNew
           //   key={item.id}
