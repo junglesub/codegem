@@ -1,11 +1,11 @@
-import * as React from "react";
+import { useEffect, useRef, useState } from "react";
 import Card from "@mui/material/Card";
 import CardHeader from "@mui/material/CardHeader";
 import CardMedia from "@mui/material/CardMedia";
 import CardContent from "@mui/material/CardContent";
 import Avatar from "@mui/material/Avatar";
 import IconButton from "@mui/material/IconButton";
-import { deepOrange } from "@mui/material/colors";
+import { deepOrange, green } from "@mui/material/colors";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import { convertTextToLinks, formatTimestamp } from "../tools/tools";
 import ReactShowMoreText from "react-show-more-text";
@@ -13,17 +13,58 @@ import ReactShowMoreText from "react-show-more-text";
 import "./FeedCard.css";
 import FeedCardGallery from "./FeedCardGallery";
 import { Skeleton } from "@mui/material";
+import { useFetchBe } from "../tools/api";
+import { useSetRecoilState } from "recoil";
+import { feedCountAtom } from "../recoil/feedAtom";
 
-export default function FeedCard({ loading, item }) {
-  const [expanded, setExpanded] = React.useState(false);
+export default function FeedCard({ loading, item, watchSeen = false }) {
+  const fetch = useFetchBe();
+  const setFeedCount = useSetRecoilState(feedCountAtom);
+  const [expanded, setExpanded] = useState(false);
+  const [isScrolledUpOut, setIsScrolledUpOut] = useState(false);
 
   // eslint-disable-next-line unused-imports/no-unused-vars
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
 
+  const cardRef = useRef(null);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (!watchSeen) return;
+
+      const elementTarget = cardRef.current;
+      if (elementTarget) {
+        const elementBottom =
+          elementTarget.offsetTop + elementTarget.offsetHeight;
+
+        // Check if the user has scrolled past the card
+        if (window.scrollY > elementBottom) {
+          // alert("You've scrolled past the card");
+          setIsScrolledUpOut(true);
+        }
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    // Cleanup the scroll event listener on component unmount
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [watchSeen]);
+
+  useEffect(() => {
+    if (!isScrolledUpOut) return;
+    console.log(isScrolledUpOut, item.id);
+    fetch("/feeduser/seen", "POST", { subjectId: item.subjectId }).then(() =>
+      setFeedCount((prev) => prev - 1)
+    );
+  }, [item, isScrolledUpOut]);
+
   return (
-    <Card className="FeedCard" sx={{ my: 2 }}>
+    <Card ref={cardRef} className="FeedCard" sx={{ my: 2 }}>
       {loading ? (
         <>
           {" "}
@@ -44,7 +85,12 @@ export default function FeedCard({ loading, item }) {
         <>
           <CardHeader
             avatar={
-              <Avatar sx={{ bgcolor: deepOrange[500] }} aria-label="recipe">
+              <Avatar
+                sx={{
+                  bgcolor: !isScrolledUpOut ? deepOrange[500] : green[700],
+                }}
+                aria-label="recipe"
+              >
                 실카
               </Avatar>
             }

@@ -1,11 +1,14 @@
 import { useState } from "react";
 import { useFetchBe } from "../tools/api";
 import { removeDuplicates } from "../tools/tools";
+import { useFeedCount } from "./useFeed";
 
 const useLoadData = ({ all } = {}) => {
+  const fetch = useFetchBe();
+  const [_, getCount] = useFeedCount();
+
   const [allFeeds, setAllFeed] = useState([]);
   const [hasMore, setHasMore] = useState(true);
-  const fetch = useFetchBe();
 
   const getData = async () => {
     const lastTimestamp = allFeeds.at(-1)?.sentAtEpoch || -1;
@@ -32,6 +35,9 @@ const useLoadData = ({ all } = {}) => {
       )
     );
     if (data.length === 0) setHasMore(false);
+
+    // Also update watch seen data on init request
+    if (lastTimestamp === -1) getCount();
   };
 
   return [allFeeds, hasMore, getData];
