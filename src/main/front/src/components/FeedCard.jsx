@@ -22,6 +22,7 @@ export default function FeedCard({ loading, item, watchSeen = false }) {
   const setFeedCount = useSetRecoilState(feedCountAtom);
   const [expanded, setExpanded] = useState(false);
   const [isScrolledUpOut, setIsScrolledUpOut] = useState(false);
+  const [updateSeenServer, setUpdateSeenServer] = useState(false);
 
   // eslint-disable-next-line unused-imports/no-unused-vars
   const handleExpandClick = () => {
@@ -56,12 +57,13 @@ export default function FeedCard({ loading, item, watchSeen = false }) {
   }, [watchSeen]);
 
   useEffect(() => {
-    if (!isScrolledUpOut) return;
+    if (!isScrolledUpOut || updateSeenServer) return;
+    setUpdateSeenServer(true);
     console.log(isScrolledUpOut, item.id);
     fetch("/feeduser/seen", "POST", { subjectId: item.subjectId }).then(() =>
       setFeedCount((prev) => prev - 1)
     );
-  }, [item, isScrolledUpOut, fetch, setFeedCount]);
+  }, [item, isScrolledUpOut, fetch, setFeedCount, updateSeenServer]);
 
   return (
     <Card ref={cardRef} className="FeedCard" sx={{ my: 2 }}>
