@@ -7,6 +7,7 @@ import { useFeedCount } from "../hooks/useFeed";
 import { useFetchBe } from "../tools/api";
 import { useSetRecoilState } from "recoil";
 import { feedCountAtom } from "../recoil/feedAtom";
+import { Card, CardContent, Typography } from "@mui/material";
 
 function MainFeed() {
   const fetch = useFetchBe();
@@ -25,10 +26,19 @@ function MainFeed() {
         setFeedCount(0)
       );
     });
-  }, [hasMore, feedNumber, allFeeds, fetch, setFeedCount]);
+  }, [hasMore, feedNumber, allFeeds, fetch, setFeedCount, doingBulkDelete]);
 
   return (
     <MainDisplay>
+      {!hasMore && allFeeds.length === 0 && (
+        <Card>
+          <CardContent>
+            <Typography variant="h5" component="div" align="center">
+              모든 피드를 읽었어요!
+            </Typography>
+          </CardContent>
+        </Card>
+      )}
       <InfiniteScroll
         loadMore={loadData}
         hasMore={hasMore}
