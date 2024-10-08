@@ -1,4 +1,3 @@
-import React from "react";
 import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
 import { googleClientId } from "../constants";
 import { useRecoilValue, useResetRecoilState, useSetRecoilState } from "recoil";

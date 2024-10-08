@@ -1,4 +1,3 @@
-import React from "react";
 
 import "./FeedCardGallery.css";
 import { getExtensionFromUrl, isImage, isVideo } from "../tools/tools";

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import MainDisplay from "../components/MainDisplay";
 import FeedCard from "../components/FeedCard";
 import InfiniteScroll from "react-infinite-scroller";

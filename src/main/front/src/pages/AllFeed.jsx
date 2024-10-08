@@ -1,12 +1,7 @@
-import { Box, Button, CssBaseline, Typography } from "@mui/material";
-import React, { useState } from "react";
-import MyAppbar from "../components/MyAppbar";
-import MainDrawer from "../components/MainDrawer";
+import { useState } from "react";
 import MainDisplay from "../components/MainDisplay";
 import FeedCard from "../components/FeedCard";
-import { useFetchBe } from "../tools/api";
 import InfiniteScroll from "react-infinite-scroller";
-import { removeDuplicates } from "../tools/tools";
 import useLoadData from "../hooks/useLoadData";
 
 function AllFeed() {

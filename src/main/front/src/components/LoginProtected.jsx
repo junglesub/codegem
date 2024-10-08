@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from "react";
+import { useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { authJwtAtom } from "../recoil/authAtom";
 import { Navigate } from "react-router-dom";
 import { userDetailAtom } from "../recoil/userAtom";
-import { fetchBe } from "../tools/api";
 
 function LoginProtected({ comp: Comp }) {
   const jwtValue = useRecoilValue(authJwtAtom);

@@ -1,6 +1,4 @@
-import React from "react";
-import { Box, Button, CssBaseline, Typography } from "@mui/material";
-import MyAppbar from "../components/MyAppbar";
+import { Box, CssBaseline } from "@mui/material";
 import MainDrawer from "../components/MainDrawer";
 
 function MainDisplay({ children }) {
