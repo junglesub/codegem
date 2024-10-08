@@ -11,16 +11,16 @@ function LoginProtected({ comp: Comp }) {
   const [userDataLoading, setUserDataLoading] = useState(true);
   const [userDataError, setUserDataError] = useState();
 
-  useEffect(() => {
-    fetchBe(jwtValue, "/userDetail/get")
-      .then((json) => {
-        console.log("Got User Data", json);
-        if (json.weight) setUserData(json);
-        else setUserData(null);
-        setUserDataLoading(false);
-      })
-      .catch((e) => setUserDataError(e.message));
-  }, [jwtValue]);
+  // useEffect(() => {
+  //   fetchBe(jwtValue, "/userDetail/get")
+  //     .then((json) => {
+  //       console.log("Got User Data", json);
+  //       if (json.weight) setUserData(json);
+  //       else setUserData(null);
+  //       setUserDataLoading(false);
+  //     })
+  //     .catch((e) => setUserDataError(e.message));
+  // }, [jwtValue]);
 
   if (jwtValue) {
     if (typeof Comp === "object") return <>{Comp}</>;

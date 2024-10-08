@@ -7,6 +7,10 @@ import LoginProtected from "./components/LoginProtected";
 import MainScreen from "./pages/MainScreen";
 
 import { register as registerServiceWorker } from "./serviceWorkerRegistration";
+import { createTheme, ThemeProvider } from "@mui/material";
+import MainFeed from "./pages/MainFeed";
+import AllFeed from "./pages/AllFeed";
+import FavFeed from "./pages/FavFeed";
 
 const router = createBrowserRouter([
   {
@@ -14,21 +18,34 @@ const router = createBrowserRouter([
     element: <MainScreen />,
   },
   {
-    path: "/feed",
-    element: <LoginProtected comp={<div>Feed</div>} />,
+    path: "/new",
+    element: <LoginProtected comp={MainFeed} />,
   },
   {
-    path: "/feedall",
-    element: <LoginProtected comp={<div>Feed All</div>} />,
+    path: "/all",
+    element: <LoginProtected comp={AllFeed} />,
+  },
+  {
+    path: "/favorite",
+    element: <LoginProtected comp={FavFeed} />,
   },
 ]);
+
+const theme = createTheme({
+  typography: {
+    fontFamily:
+      '-apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Pretendard Variable", Pretendard, Roboto, "Noto Sans KR", "Segoe UI", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;',
+  },
+});
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <RecoilRoot>
-      <RouterProvider router={router} />
-    </RecoilRoot>
+    <ThemeProvider theme={theme}>
+      <RecoilRoot>
+        <RouterProvider router={router} />
+      </RecoilRoot>
+    </ThemeProvider>
   </React.StrictMode>
 );
 
