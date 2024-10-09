@@ -14,11 +14,11 @@ import FavFeed from "./pages/FavFeed";
 
 const router = createBrowserRouter([
   {
-    path: "/",
+    path: "/land",
     element: <MainScreen />,
   },
   {
-    path: "/new",
+    path: "/",
     element: <LoginProtected comp={MainFeed} />,
   },
   {

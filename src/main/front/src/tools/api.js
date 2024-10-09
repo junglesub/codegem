@@ -23,8 +23,7 @@ export const fetchBe = (jwtValue, path, method = "GET", body) =>
         if (doc.status === 401) {
           // user not logged in
           localStorage.clear();
-          alert("로그인을 다시 해주세요");
-          window.location.href = "/"; // back to home screen.
+          window.location.href = "/land"; // back to home screen.
           return rej({ errorMsg: "로그인을 다시해주세요." });
         }
         doc.json().then((json) => {
