@@ -17,9 +17,9 @@ public interface TbKaFeedService {
 //    public void delete(String id);
     public List<Map<String, Object>> getAll();
 
-    List<TbmessageDto.Detail> scrollList(String userId);
+    List<TbmessageDto.Detail> scrollList(String type, String userId);
 
-    List<TbmessageDto.Detail> scrollList(int afterSentAt, String userId);
+    List<TbmessageDto.Detail> scrollList(String type, int afterSentAt, String userId);
 
     int count(int afterSentAt, String userId);
 

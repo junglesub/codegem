@@ -16,9 +16,15 @@
         FROM TbSubject s
         WHERE last_sent_at &lt; #{afterSentAt}
         AND last_sent_at &gt; (UNIX_TIMESTAMP() - (3 * 24 * 60 * 60))
-        <if test="userId != null and userId != ''">
+        <if test="fetchType == 'unseen' and userId != null and userId != ''">
             AND NOT EXISTS (SELECT 1
             FROM mydb_TbUserInteraction m
+            WHERE s.id = m.subjectId
+            AND #{userId} = m.userId)
+        </if>
+        <if test="fetchType == 'like' and userId != null and userId != ''">
+            AND EXISTS (SELECT 1
+            FROM mydb_TbUserLike m
             WHERE s.id = m.subjectId
             AND #{userId} = m.userId)
         </if>

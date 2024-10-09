@@ -12,7 +12,7 @@ import { Card, CardContent, Typography } from "@mui/material";
 function MainFeed() {
   const fetch = useFetchBe();
   const setFeedCount = useSetRecoilState(feedCountAtom);
-  const [allFeeds, hasMore, loadData] = useLoadData();
+  const [allFeeds, hasMore, loadData] = useLoadData({ type: "unseen" });
   const [feedNumber] = useFeedCount();
   const [doingBulkDelete, setDoingBulkDelete] = useState(false);
 

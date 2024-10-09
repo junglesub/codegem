@@ -3,7 +3,7 @@ import { useFetchBe } from "../tools/api";
 import { removeDuplicates } from "../tools/tools";
 import { useFeedCount } from "./useFeed";
 
-const useLoadData = ({ all } = {}) => {
+const useLoadData = ({ type = "" } = {}) => {
   const fetch = useFetchBe();
   const [_, getCount] = useFeedCount();
 
@@ -13,7 +13,7 @@ const useLoadData = ({ all } = {}) => {
   const getData = async () => {
     const lastTimestamp = allFeeds.at(-1)?.sentAtEpoch || -1;
     const data = await fetch(
-      `/kafeed/scrolllist?afterSentAt=${lastTimestamp}&all=${all ? "y" : "n"}`
+      `/kafeed/scrolllist?afterSentAt=${lastTimestamp}&type=${type}`
     );
     if (!Array.isArray(data)) return;
     setAllFeed((prev) =>

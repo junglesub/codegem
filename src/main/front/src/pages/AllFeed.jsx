@@ -4,7 +4,7 @@ import InfiniteScroll from "react-infinite-scroller";
 import useLoadData from "../hooks/useLoadData";
 
 function AllFeed() {
-  const [allFeeds, hasMore, loadData] = useLoadData({ all: true });
+  const [allFeeds, hasMore, loadData] = useLoadData();
 
   return (
     <MainDisplay>
