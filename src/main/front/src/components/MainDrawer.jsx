@@ -95,7 +95,7 @@ export default function MainDrawer() {
           <InboxIcon />
         </Badge>
       ),
-      link: "/new",
+      link: "/",
     },
     {
       name: "찜한피드",
