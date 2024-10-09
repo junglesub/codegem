@@ -1,14 +1,11 @@
-import React from "react";
 import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
 import { googleClientId } from "../constants";
 import { useRecoilValue, useResetRecoilState, useSetRecoilState } from "recoil";
 import { authJwtAtom } from "../recoil/authAtom";
-import { useNavigate } from "react-router-dom";
 
 import "./MainScreen.scss";
 
 const GoogleLoginComponent = () => {
-  const navigate = useNavigate();
   const setJwt = useSetRecoilState(authJwtAtom);
   const handleLoginSuccess = (credentialResponse) => {
     console.log("Encoded JWT ID token: " + credentialResponse.credential);
@@ -83,7 +80,7 @@ const MainScreen = () => {
             <h1>한동 피드에 오신 것을 환영합니다</h1>
             <p>한동의 모든 정보통을 모아두었습니다</p>
             {authData ? (
-              <a href="/feed" className="cta-btn">
+              <a href="/" className="cta-btn">
                 한동 피드로 이동하기
               </a>
             ) : (

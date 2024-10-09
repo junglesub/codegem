@@ -40,13 +40,27 @@ public class TbKaFeedController {
     public List<TbmessageDto.Detail> getListAll(@RequestParam Map<String, String> param, HttpServletRequest request) {
         String reqUserId = request.getAttribute("reqUserId").toString();
         final String afterSentAt = param.get("afterSentAt");
+        String type = param.get("type");
+
+        if (afterSentAt != null && !afterSentAt.equals("-1"))
+            return tbKaFeedService.scrollList(type, Integer.parseInt(afterSentAt), reqUserId);
+        else return tbKaFeedService.scrollList(type, reqUserId);
+    }
+
+    @GetMapping("/count")
+    public TbmessageDto.Count getCount(@RequestParam Map<String, String> param, HttpServletRequest request) {
+        String reqUserId = request.getAttribute("reqUserId").toString();
+        final String afterSentAt = param.get("afterSentAt");
         final String all = param.get("all");
+
+        int count = 0;
 
         if (all != null && all.equalsIgnoreCase("y")) reqUserId = null;
 
         if (afterSentAt != null && !afterSentAt.equals("-1"))
-            return tbKaFeedService.scrollList(Integer.parseInt(afterSentAt), reqUserId);
-        else return tbKaFeedService.scrollList(reqUserId);
+            count = tbKaFeedService.count(Integer.parseInt(afterSentAt), reqUserId);
+        else count = tbKaFeedService.count(reqUserId);
+        return TbmessageDto.Count.builder().count(count).build();
     }
 
 

@@ -2,40 +2,50 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import NewUI from "./pages/NewUI";
-import Admin from "./pages/Admin";
 import { RecoilRoot } from "recoil";
 import LoginProtected from "./components/LoginProtected";
 import MainScreen from "./pages/MainScreen";
 
 import { register as registerServiceWorker } from "./serviceWorkerRegistration";
-import NewUIAll from "./pages/NewUIAll";
+import { createTheme, ThemeProvider } from "@mui/material";
+import MainFeed from "./pages/MainFeed";
+import AllFeed from "./pages/AllFeed";
+import FavFeed from "./pages/FavFeed";
 
 const router = createBrowserRouter([
   {
-    path: "/",
+    path: "/land",
     element: <MainScreen />,
   },
   {
-    path: "/feed",
-    element: <LoginProtected comp={NewUI} />,
+    path: "/",
+    element: <LoginProtected comp={MainFeed} />,
   },
   {
-    path: "/feedall",
-    element: <LoginProtected comp={NewUIAll} />,
+    path: "/all",
+    element: <LoginProtected comp={AllFeed} />,
   },
   {
-    path: "/admin",
-    element: <Admin />,
+    path: "/favorite",
+    element: <LoginProtected comp={FavFeed} />,
   },
 ]);
+
+const theme = createTheme({
+  typography: {
+    fontFamily:
+      '-apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Pretendard Variable", Pretendard, Roboto, "Noto Sans KR", "Segoe UI", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;',
+  },
+});
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <RecoilRoot>
-      <RouterProvider router={router} />
-    </RecoilRoot>
+    <ThemeProvider theme={theme}>
+      <RecoilRoot>
+        <RouterProvider router={router} />
+      </RecoilRoot>
+    </ThemeProvider>
   </React.StrictMode>
 );
 

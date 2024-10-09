@@ -74,12 +74,12 @@ public class TbKaFeedServiceImpl implements TbKaFeedService {
         return result;
     }
 
-    public List<TbmessageDto.Detail> scrollList(String userId) {
-        return scrollList(Integer.MAX_VALUE, userId);
+    public List<TbmessageDto.Detail> scrollList(String type, String userId) {
+        return scrollList(type, Integer.MAX_VALUE, userId);
     }
 
-    public List<TbmessageDto.Detail> scrollList(int afterSentAt, String userId) {
-        List<TbmessageDto.Detail> result = tbmessageMapper.scrollList(afterSentAt, userId);
+    public List<TbmessageDto.Detail> scrollList(String type, int afterSentAt, String userId) {
+        List<TbmessageDto.Detail> result = tbmessageMapper.scrollList(type, afterSentAt, userId);
 
         // Process each TbmessageDto.Detail asynchronously
         List<CompletableFuture<TbmessageDto.Detail>> futures = result.stream()
@@ -117,4 +117,14 @@ public class TbKaFeedServiceImpl implements TbKaFeedService {
                 .sorted((m1, m2) -> Integer.compare(m2.getSentAt(), m1.getSentAt()))  // Sorting in descending order
                 .collect(Collectors.toList());
     }
+
+    public int count(int afterSentAt, String userId) {
+        return tbmessageMapper.countAll(afterSentAt, userId);
+    }
+
+    public int count(String userId) {
+        return count(Integer.MAX_VALUE, userId);
+    }
+
+
 }

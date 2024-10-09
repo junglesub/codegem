@@ -23,5 +23,15 @@ public class UserInteractionController {
         return userInteractionService.seen(param, request.getAttribute("reqUserId").toString());
     }
 
+    @PostMapping("/like")
+    public String postLike(@Valid @RequestBody UserInteractionDto.SeenSubjectReqDto param, HttpServletRequest request) {
+        return userInteractionService.like(param, request.getAttribute("reqUserId").toString());
+    }
+
+    @PostMapping("/unlike")
+    public String postUnLike(@Valid @RequestBody UserInteractionDto.SeenSubjectReqDto param, HttpServletRequest request) {
+        return userInteractionService.unLike(param, request.getAttribute("reqUserId").toString());
+    }
+
 
 }

@@ -45,7 +45,7 @@ jobs:
         with:
           arguments: build
         env:
-          REACT_APP_WEATHER_KEY: ${{ secrets.REACT_APP_WEATHER_KEY }}
+          REACT_APP_WEATHER_KEY: ${{ secrets.VITE_WEATHER_KEY }}
       
       # 현재 날짜와 시간을 가져오기
       - name: Get current date and time
