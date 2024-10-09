@@ -23,6 +23,7 @@ export default function FeedCard({ loading, item, watchSeen = false }) {
   const [expanded, setExpanded] = useState(false);
   const [isScrolledUpOut, setIsScrolledUpOut] = useState(false);
   const [updateSeenServer, setUpdateSeenServer] = useState(false);
+  const [like, setLike] = useState(item?.like);
 
   // eslint-disable-next-line unused-imports/no-unused-vars
   const handleExpandClick = () => {
@@ -97,8 +98,21 @@ export default function FeedCard({ loading, item, watchSeen = false }) {
               </Avatar>
             }
             action={
-              <IconButton aria-label="settings">
-                <FavoriteIcon />
+              <IconButton
+                aria-label="settings"
+                onClick={() => {
+                  if (like) {
+                    fetch("/feeduser/unlike", "POST", {
+                      subjectId: item.subjectId,
+                    }).then(() => setLike(false));
+                  } else {
+                    fetch("/feeduser/like", "POST", {
+                      subjectId: item.subjectId,
+                    }).then(() => setLike(true));
+                  }
+                }}
+              >
+                <FavoriteIcon style={{ color: like ? "red" : "inherit" }} />
               </IconButton>
             }
             title="실명카톡방"

@@ -29,6 +29,7 @@ const useLoadData = ({ all } = {}) => {
             files: dd.files,
             img: dd.files[0], // Temp just for testing
             subjectId: dd.subjectId,
+            like: dd.like,
           })),
         ],
         "id"

@@ -7,7 +7,11 @@
         SELECT subject.id AS subjectId,
         message.id AS id,
         message.last_sent_at AS sentAt,
-        message.message AS message
+        message.message AS message,
+        CASE
+        WHEN likeDB.deleted = 'n' THEN 1
+        ELSE 0
+        END AS `like`
         FROM (SELECT *
         FROM TbSubject s
         WHERE last_sent_at &lt; #{afterSentAt}
@@ -21,6 +25,7 @@
         ORDER BY last_sent_at DESC
         LIMIT 15) AS subject
         JOIN TbKaMessage AS message ON message.chat_id = subject.last_sent_chat_id
+        LEFT JOIN mydb_TbUserLike AS likeDB ON subject.id = likeDB.subjectId AND #{userId} = likeDB.userId
     </select>
 
     <select id="countAll" parameterType="map" resultType="java.lang.Integer">
