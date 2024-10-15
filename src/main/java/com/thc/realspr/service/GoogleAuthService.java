@@ -27,8 +27,7 @@ public class GoogleAuthService {
             GoogleIdToken idToken = verifier.verify(credential);
             if (idToken != null) {
                 GoogleIdToken.Payload payload = idToken.getPayload();
-                String[] out = {idToken.getPayload().getEmail(), payload.getEmail()};
-                return out;
+                return new String[]{payload.getEmail(), payload.get("name").toString()};
             } else {
                 throw new RuntimeException("Invalid ID token");
             }

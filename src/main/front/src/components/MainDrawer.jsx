@@ -11,6 +11,8 @@ import ListItemText from "@mui/material/ListItemText";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import ViewListIcon from "@mui/icons-material/ViewList";
+import GitHubIcon from "@mui/icons-material/GitHub";
+import InfoIcon from "@mui/icons-material/Info";
 import {
   Badge,
   BottomNavigation,
@@ -212,6 +214,146 @@ export default function MainDrawer() {
                   </ListItem>
                 </Tooltip>
               ))}
+              <Tooltip
+                title="Github"
+                placement="right"
+                arrow
+                slotProps={{
+                  popper: {
+                    modifiers: [
+                      {
+                        name: "offset",
+                        options: {
+                          offset: [0, -14],
+                        },
+                      },
+                    ],
+                  },
+                }}
+              >
+                <ListItem disablePadding sx={{ display: "block" }}>
+                  <ListItemButton
+                    component="a"
+                    href="https://github.com/orgs/handong-app/repositories?q=handong-feed"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    sx={[
+                      {
+                        minHeight: 48,
+                        px: 2.5,
+                        my: 1.1,
+                      },
+                      open
+                        ? {
+                            justifyContent: "initial",
+                          }
+                        : {
+                            justifyContent: "center",
+                          },
+                    ]}
+                  >
+                    <ListItemIcon
+                      sx={[
+                        {
+                          minWidth: 0,
+                          justifyContent: "center",
+                        },
+                        open
+                          ? {
+                              mr: 3,
+                            }
+                          : {
+                              mr: "auto",
+                            },
+                      ]}
+                    >
+                      <GitHubIcon />
+                    </ListItemIcon>
+                    <ListItemText
+                      primary="Github"
+                      sx={[
+                        open
+                          ? {
+                              opacity: 1,
+                            }
+                          : {
+                              opacity: 0,
+                            },
+                      ]}
+                    />
+                  </ListItemButton>
+                </ListItem>
+              </Tooltip>
+              <Tooltip
+                title="Website"
+                placement="right"
+                arrow
+                slotProps={{
+                  popper: {
+                    modifiers: [
+                      {
+                        name: "offset",
+                        options: {
+                          offset: [0, -14],
+                        },
+                      },
+                    ],
+                  },
+                }}
+              >
+                <ListItem disablePadding sx={{ display: "block" }}>
+                  <ListItemButton
+                    component="a"
+                    href="https://board.handong.app/feed"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    sx={[
+                      {
+                        minHeight: 48,
+                        px: 2.5,
+                        my: 1.1,
+                      },
+                      open
+                        ? {
+                            justifyContent: "initial",
+                          }
+                        : {
+                            justifyContent: "center",
+                          },
+                    ]}
+                  >
+                    <ListItemIcon
+                      sx={[
+                        {
+                          minWidth: 0,
+                          justifyContent: "center",
+                        },
+                        open
+                          ? {
+                              mr: 3,
+                            }
+                          : {
+                              mr: "auto",
+                            },
+                      ]}
+                    >
+                      <InfoIcon />
+                    </ListItemIcon>
+                    <ListItemText
+                      primary="Website"
+                      sx={[
+                        open
+                          ? {
+                              opacity: 1,
+                            }
+                          : {
+                              opacity: 0,
+                            },
+                      ]}
+                    />
+                  </ListItemButton>
+                </ListItem>
+              </Tooltip>
             </List>
           </Box>
         </Drawer>

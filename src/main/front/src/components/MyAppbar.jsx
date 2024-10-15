@@ -7,7 +7,10 @@ import Menu from "@mui/material/Menu";
 import Container from "@mui/material/Container";
 import MenuItem from "@mui/material/MenuItem";
 import FeedIcon from "@mui/icons-material/Feed";
-import { Slide, useScrollTrigger } from "@mui/material";
+import GitHubIcon from "@mui/icons-material/GitHub";
+import InfoIcon from "@mui/icons-material/Info";
+
+import { IconButton, Slide, Tooltip, useScrollTrigger } from "@mui/material";
 
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
@@ -69,6 +72,40 @@ function MyAppbar() {
             >
               한동피드
             </Typography>
+
+            <Box
+              sx={{
+                flexGrow: 0,
+                position: "absolute",
+                display: "flex",
+                right: 0,
+              }}
+            >
+              <Tooltip title="Github">
+                <IconButton
+                  color="inherit"
+                  component="a"
+                  href="https://github.com/orgs/handong-app/repositories?q=handong-feed"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Github"
+                >
+                  <GitHubIcon />
+                </IconButton>
+              </Tooltip>
+              <Tooltip title="Website">
+                <IconButton
+                  color="inherit"
+                  component="a"
+                  href="https://board.handong.app/feed"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Website"
+                >
+                  <InfoIcon />
+                </IconButton>
+              </Tooltip>
+            </Box>
 
             {/* <Box
             sx={{

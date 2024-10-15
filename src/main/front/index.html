@@ -15,5 +15,15 @@
     <div id="root"></div>
     <!-- Vite injects your JavaScript here -->
     <script type="module" src="/src/main.jsx"></script>
+    <script>
+      setTimeout(() => {
+        const rootElement = document.getElementById("root");
+        if (rootElement && rootElement.innerText.trim() === "") {
+          document.write(
+            "무언가 잘못되었어요. 새로고침을 하시고 안되시면 <a href='https://board.handong.app/feed' target='_blank' rel='noopener noreferrer'>https://board.handong.app/feed</a> 에서 공지사항을 확인해주세요"
+          );
+        }
+      }, 3000);
+    </script>
   </body>
 </html>
