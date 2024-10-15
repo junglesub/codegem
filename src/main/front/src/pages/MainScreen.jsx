@@ -2,10 +2,12 @@ import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
 import { googleClientId } from "../constants";
 import { useRecoilValue, useResetRecoilState, useSetRecoilState } from "recoil";
 import { authJwtAtom } from "../recoil/authAtom";
+import { useNavigate } from "react-router-dom";
 
 import "./MainScreen.scss";
 
 const GoogleLoginComponent = () => {
+  const navigate = useNavigate();
   const setJwt = useSetRecoilState(authJwtAtom);
   const handleLoginSuccess = (credentialResponse) => {
     console.log("Encoded JWT ID token: " + credentialResponse.credential);
@@ -24,7 +26,7 @@ const GoogleLoginComponent = () => {
         if (data.token) {
           localStorage.setItem("happ_feed_token", JSON.stringify(data.token)); // Incase of strictmode error
           setJwt(data.token);
-          // navigate("/feed");
+          navigate("/");
         } else {
           alert("Login failed: " + data.message);
         }
