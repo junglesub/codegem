@@ -3,16 +3,27 @@ package com.thc.realspr.util;
 
 import com.thc.realspr.exception.InvalidTokenException;
 import com.thc.realspr.exception.NoAuthenticatedException;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import java.util.Arrays;
 
+@Component
 public class TokenFactory {
 
-//    private final String SECRET_KEY = "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";
+    @Value("${TOKEN_KEY:${TOKEN_KEY_DEFAULT:#{null}}}")
+    String tempKey;
 
-    static String temp_key = "21098765432109876543210987654321";
+    private static String staticTempKey;
+
     static int intervalRefreshToken = 86400 * 7; // 7 days
     int intervalAccessToken = 6000;
+
+    @PostConstruct
+    public void init() {
+        staticTempKey = tempKey;
+    }
 
     public static String issueRefreshToken(String tbuserId) {
         return generateToken(tbuserId, intervalRefreshToken);
@@ -33,9 +44,10 @@ public class TokenFactory {
             String due = now.getDue(second);
             System.out.println("tbuserId : " + tbuserId);
             System.out.println("due : " + due);
-            returnVal = aes.AES_Encode(temp_key, tbuserId + "_" + due);
+            returnVal = aes.AES_Encode(staticTempKey, tbuserId + "_" + due);
         } catch (Exception e) {
             System.out.println("error....");
+            e.printStackTrace();
         }
         return returnVal;
     }
@@ -45,9 +57,10 @@ public class TokenFactory {
         AES256Cipher aes = new AES256Cipher();
         try {
             // id_만료일
-            returnVal = aes.AES_Decode(temp_key, token);
+            returnVal = aes.AES_Decode(staticTempKey, token);
         } catch (Exception e) {
             System.out.println("error....");
+            e.printStackTrace();
         }
         if ("".equals(returnVal)) {
             throw new NoAuthenticatedException("Not Authenticated User");
