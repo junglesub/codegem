@@ -63,17 +63,16 @@ public class Tbuser {
     }
 
 
-
-
     @PrePersist
     public void onPrePersist() {
-        this.id = UUID.randomUUID().toString().replace("-", "");
+        if (this.id == null || this.id.isEmpty()) {
+            this.id = UUID.randomUUID().toString().replace("-", "");
+        }
     }
 
     public TbuserDto.CreateResDto toCreateResDto() {
         return TbuserDto.CreateResDto.builder().email(this.getEmail()).build();
     }
-
 
 
 //    public String getRoleKey(){
