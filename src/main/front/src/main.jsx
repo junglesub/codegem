@@ -11,6 +11,7 @@ import { createTheme, ThemeProvider } from "@mui/material";
 import MainFeed from "./pages/MainFeed";
 import AllFeed from "./pages/AllFeed";
 import FavFeed from "./pages/FavFeed";
+import PWAInstallModal from "./components/modals/PWAInstallModal";
 
 const router = createBrowserRouter([
   {
@@ -44,6 +45,7 @@ root.render(
     <ThemeProvider theme={theme}>
       <RecoilRoot>
         <RouterProvider router={router} />
+        <PWAInstallModal />
       </RecoilRoot>
     </ThemeProvider>
   </React.StrictMode>
