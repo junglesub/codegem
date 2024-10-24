@@ -12,6 +12,7 @@ import MainFeed from "./pages/MainFeed";
 import AllFeed from "./pages/AllFeed";
 import FavFeed from "./pages/FavFeed";
 import PWAInstallModal from "./components/modals/PWAInstallModal";
+import UsersTable from "./pages/admin/UsersTable";
 
 const router = createBrowserRouter([
   {
@@ -29,6 +30,10 @@ const router = createBrowserRouter([
   {
     path: "/favorite",
     element: <LoginProtected comp={FavFeed} />,
+  },
+  {
+    path: "/admin/users",
+    element: <LoginProtected comp={UsersTable} />,
   },
 ]);
 

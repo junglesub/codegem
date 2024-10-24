@@ -17,6 +17,7 @@ import {
   Badge,
   BottomNavigation,
   BottomNavigationAction,
+  Divider,
   Paper,
   Tooltip,
 } from "@mui/material";
@@ -131,7 +132,7 @@ export default function MainDrawer() {
             <IconButton onClick={() => null}>
             </IconButton>
           </DrawerHeader> */}
-          <Box sx={{ pt: 16 }}>
+          <Box sx={{ pt: 12 }}>
             <List>
               {MENUS.map((menu, index) => (
                 <Tooltip
@@ -214,6 +215,7 @@ export default function MainDrawer() {
                   </ListItem>
                 </Tooltip>
               ))}
+              <Divider />
               <Tooltip
                 title="Github"
                 placement="right"

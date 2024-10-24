@@ -15,6 +15,7 @@ public class TbadminDto {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class UserDetail {
+        private String id;
         private String name;
         private LocalDateTime createdAt;
         private LocalDateTime lastLoginTime;
