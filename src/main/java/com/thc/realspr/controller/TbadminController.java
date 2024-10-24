@@ -19,6 +19,7 @@ public class TbadminController {
 
     @GetMapping("/users")
     public List<TbadminDto.UserDetail> adminGetUser(@RequestParam Map<String, String> param, HttpServletRequest request) {
-        return tbadminService.adminGetUser(param);
+        String reqUserId = request.getAttribute("reqUserId").toString();
+        return tbadminService.adminGetUser(reqUserId, param);
     }
 }

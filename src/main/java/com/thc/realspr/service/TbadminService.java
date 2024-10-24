@@ -8,5 +8,5 @@ import java.util.Map;
 
 @Service
 public interface TbadminService {
-    public List<TbadminDto.UserDetail> adminGetUser(Map<String, String> param);
+    public List<TbadminDto.UserDetail> adminGetUser(String userId, Map<String, String> param);
 }
