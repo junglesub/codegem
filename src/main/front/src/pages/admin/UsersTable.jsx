@@ -19,6 +19,7 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
+import AdminPage from "./AdminPage";
 
 const columns = [
   {
@@ -83,7 +84,6 @@ const columns = [
 ];
 
 function descendingComparator(a, b, orderBy) {
-  console.log(a[orderBy], b[orderBy]);
   if (!a[orderBy]) return 1;
   if (!b[orderBy]) return -1;
   if (b[orderBy] < a[orderBy]) {
@@ -231,14 +231,15 @@ export default function UsersTable() {
   }, []);
 
   return (
-    <Paper sx={{ width: "100%", overflow: "hidden" }}>
-      <TableContainer
-        sx={{
-          maxHeight: "80vh",
-        }}
-      >
-        <Table stickyHeader aria-label="sticky table">
-          {/* <TableHead>
+    <AdminPage>
+      <Paper sx={{ width: "100%", overflow: "hidden" }}>
+        <TableContainer
+          sx={{
+            maxHeight: "80vh",
+          }}
+        >
+          <Table stickyHeader aria-label="sticky table">
+            {/* <TableHead>
             <TableRow>
               {columns.map((column) => (
                 <TableCell
@@ -251,54 +252,55 @@ export default function UsersTable() {
               ))}
             </TableRow>
           </TableHead> */}
-          <EnhancedTableHead
-            numSelected={selected.length}
-            order={order}
-            orderBy={orderBy}
-            onSelectAllClick={handleSelectAllClick}
-            onRequestSort={handleRequestSort}
-            rowCount={allData.length}
-          />
-          <TableBody>
-            {visibleRows
-              // .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((row) => {
-                return (
-                  <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
-                    {columns.map((column) => {
-                      const value = row[column.id];
-                      return (
-                        <TableCell key={column.id} align={column.align}>
-                          {column.format
-                            ? column.format(row[column.id], row)
-                            : row[column.id]}
-                        </TableCell>
-                      );
-                    })}
-                  </TableRow>
-                );
-              })}
-            {emptyRows > 0 && (
-              <TableRow
-                style={{
-                  height: (dense ? 33 : 53) * emptyRows,
-                }}
-              >
-                <TableCell colSpan={6} />
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
-      </TableContainer>
-      <TablePagination
-        rowsPerPageOptions={[25, 100, 500]}
-        component="div"
-        count={allData.length}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        onPageChange={handleChangePage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
-      />
-    </Paper>
+            <EnhancedTableHead
+              numSelected={selected.length}
+              order={order}
+              orderBy={orderBy}
+              onSelectAllClick={handleSelectAllClick}
+              onRequestSort={handleRequestSort}
+              rowCount={allData.length}
+            />
+            <TableBody>
+              {visibleRows
+                // .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                .map((row) => {
+                  return (
+                    <TableRow hover role="checkbox" tabIndex={-1} key={row.id}>
+                      {columns.map((column) => {
+                        // console.log(row, column.id);
+                        return (
+                          <TableCell key={column.id} align={column.align}>
+                            {column.format
+                              ? column.format(row[column.id], row)
+                              : row[column.id]}
+                          </TableCell>
+                        );
+                      })}
+                    </TableRow>
+                  );
+                })}
+              {emptyRows > 0 && (
+                <TableRow
+                  style={{
+                    height: (dense ? 33 : 53) * emptyRows,
+                  }}
+                >
+                  <TableCell colSpan={6} />
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+        </TableContainer>
+        <TablePagination
+          rowsPerPageOptions={[25, 100, 500]}
+          component="div"
+          count={allData.length}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+        />
+      </Paper>
+    </AdminPage>
   );
 }
