@@ -3,6 +3,7 @@ import FeedIcon from "@mui/icons-material/Feed";
 import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
 
 import UsersTable from "./UsersTable";
+import AdminFeed from "./AdminFeed";
 
 export const ADMINMENU = [
   {
@@ -15,7 +16,7 @@ export const ADMINMENU = [
     title: "게시글 관리",
     icon: <FeedIcon />,
     id: "posts",
-    comp: UsersTable,
+    comp: AdminFeed,
   },
   {
     title: "파일 관리",
