@@ -9,4 +9,6 @@ import java.util.Map;
 @Service
 public interface TbadminService {
     public List<TbadminDto.UserDetail> adminGetUser(String userId, Map<String, String> param);
+
+    public List<String> adminGetFirebaseStorageList(String userId);
 }

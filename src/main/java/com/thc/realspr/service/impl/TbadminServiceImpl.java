@@ -5,6 +5,7 @@ import com.thc.realspr.exception.NoAuthorizationException;
 import com.thc.realspr.id.UserPermId;
 import com.thc.realspr.mapper.TbadminMapper;
 import com.thc.realspr.repository.TbUserPermRepository;
+import com.thc.realspr.service.FirebaseService;
 import com.thc.realspr.service.TbadminService;
 import org.springframework.stereotype.Service;
 
@@ -15,10 +16,12 @@ import java.util.Map;
 public class TbadminServiceImpl implements TbadminService {
     private final TbadminMapper tbadminMapper;
     private final TbUserPermRepository tbUserPermRepository;
+    private final FirebaseService firebaseService;
 
-    public TbadminServiceImpl(TbadminMapper tbadminMapper, TbUserPermRepository tbUserPermRepository) {
+    public TbadminServiceImpl(TbadminMapper tbadminMapper, TbUserPermRepository tbUserPermRepository, FirebaseService firebaseService) {
         this.tbadminMapper = tbadminMapper;
         this.tbUserPermRepository = tbUserPermRepository;
+        this.firebaseService = firebaseService;
     }
 
     public List<TbadminDto.UserDetail> adminGetUser(String userId, Map<String, String> param) {
@@ -26,6 +29,13 @@ public class TbadminServiceImpl implements TbadminService {
         if (tbUserPermRepository.findById(new UserPermId(userId, "adminGetUser")).isEmpty())
             throw new NoAuthorizationException("No Admin Permission");
         return tbadminMapper.allUsers();
+    }
+
+    public List<String> adminGetFirebaseStorageList(String userId) {
+
+        if (tbUserPermRepository.findById(new UserPermId(userId, "adminFirebaseFiles")).isEmpty())
+            throw new NoAuthorizationException("No Admin Permission");
+        return firebaseService.listAllFiles("KaFile");
     }
 
 }

@@ -4,6 +4,7 @@ import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
 
 import UsersTable from "./UsersTable";
 import AdminFeed from "./AdminFeed";
+import AdminFiles from "./AdminFiles";
 
 export const ADMINMENU = [
   {
@@ -22,6 +23,6 @@ export const ADMINMENU = [
     title: "파일 관리",
     icon: <InsertDriveFileIcon />,
     id: "files",
-    comp: UsersTable,
+    comp: AdminFiles,
   },
 ];

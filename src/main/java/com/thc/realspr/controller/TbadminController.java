@@ -22,4 +22,10 @@ public class TbadminController {
         String reqUserId = request.getAttribute("reqUserId").toString();
         return tbadminService.adminGetUser(reqUserId, param);
     }
+
+    @GetMapping("/firebasefilelist")
+    public List<String> adminGetFirebaseStorageList(@RequestParam Map<String, String> param, HttpServletRequest request) {
+        String reqUserId = request.getAttribute("reqUserId").toString();
+        return tbadminService.adminGetFirebaseStorageList(reqUserId);
+    }
 }
