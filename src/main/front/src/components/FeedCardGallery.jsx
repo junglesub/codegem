@@ -1,5 +1,5 @@
 import "./FeedCardGallery.css";
-import { Gallery, Item, useGallery } from "react-photoswipe-gallery";
+import { Gallery, useGallery } from "react-photoswipe-gallery";
 import { getExtensionFromUrl, isImage, isVideo } from "../tools/tools";
 
 import "photoswipe/dist/photoswipe.css";
@@ -29,7 +29,7 @@ const FeedCardGalleryContent = ({ filteredImages, images }) => {
     <div className={`post-images images-${filteredImages.length}`}>
       {filteredImages.slice(0, 3).map((url, index) =>
         isImage(url) ? (
-          <FeedCardImageItem url={url} index={index} />
+          <FeedCardImageItem key={index} url={url} index={index} />
         ) : // <img key={index} src={url} alt={`${index + 1}`} loading="lazy" />
         isVideo(url) ? (
           <video key={index} controls>
@@ -53,7 +53,12 @@ const FeedCardGalleryContent = ({ filteredImages, images }) => {
           )}
           <FeedCardImageItem url={images[3]} index={3} />
           {filteredImages.slice(4).map((url, index) => (
-            <FeedCardImageItem url={url} index={index + 4} hidden={true} />
+            <FeedCardImageItem
+              key={index + 4}
+              url={url}
+              index={index + 4}
+              hidden={true}
+            />
           ))}
 
           {/* <img key={1} src={images[3]} alt={`4`} loading="lazy" /> */}

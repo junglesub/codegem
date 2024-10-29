@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Modal, Box, Typography, Button } from "@mui/material";
 import useDownloadPWA from "../../hooks/useDownloadPWA";
 import { getDateString } from "../../tools/tools";
