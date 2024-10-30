@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0/EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.thc.realspr.mapper.TbmessageMapper">
+<mapper namespace="app.handong.feed.mapper.TbmessageMapper">
 
     <!---->
-    <select id="scrollList" parameterType="map" resultType="com.thc.realspr.dto.TbmessageDto$Detail">
+    <select id="scrollList" parameterType="map" resultType="app.handong.feed.dto.TbmessageDto$Detail">
         SELECT subject.id AS subjectId,
         message.id AS id,
         message.last_sent_at AS sentAt,
@@ -49,7 +49,7 @@
         ORDER BY last_sent_at DESC) AS subject
     </select>
 
-    <select id="fileDetails" parameterType="string" resultType="com.thc.realspr.dto.TbmessageDto$FileDetail">
+    <select id="fileDetails" parameterType="string" resultType="app.handong.feed.dto.TbmessageDto$FileDetail">
         SELECT file.hash AS hash,
                file.ext  AS ext
         FROM TbKaFile AS file

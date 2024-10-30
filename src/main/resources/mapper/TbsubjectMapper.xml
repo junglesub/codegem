@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.thc.realspr.mapper.TbsubjectMapper">
+<mapper namespace="app.handong.feed.mapper.TbsubjectMapper">
 
     <!-- 주제 세부내용 조회 쿼리 -->
-    <select id="getDetailById" parameterType="hashMap" resultType="com.thc.realspr.dto.TbsubjectDto$DetailServDto">
+    <select id="getDetailById" parameterType="hashMap" resultType="app.handong.feed.dto.TbsubjectDto$DetailServDto">
         SELECT
             ts.id AS subjectId,
             CASE
@@ -26,14 +26,14 @@
     </select>
 
     <!-- 주제 마지막 메시지 조회 쿼리 -->
-    <select id="getLastMessageByMessageId" parameterType="hashMap" resultType="com.thc.realspr.dto.TbsubjectDto$LastMessageServDto">
+    <select id="getLastMessageByMessageId" parameterType="hashMap" resultType="app.handong.feed.dto.TbsubjectDto$LastMessageServDto">
         SELECT id, last_sent_at AS sentAt, message
         FROM TbKaMessage
         WHERE id = #{lastMessageId}
     </select>
 
     <!-- 주제 메시지 이력 조회 쿼리 -->
-    <select id="getMessageHistoryById" parameterType="hashMap" resultType="com.thc.realspr.dto.TbsubjectDto$MessageHistoryServDto">
+    <select id="getMessageHistoryById" parameterType="hashMap" resultType="app.handong.feed.dto.TbsubjectDto$MessageHistoryServDto">
         SELECT id, last_sent_at AS sentAt, message
         FROM TbKaMessage
         WHERE subject_id = #{subjectId}
