@@ -44,9 +44,8 @@ const ShareModal = ({ openState, item }) => {
     if (navigator.share) {
       navigator
         .share({
-          title: "한동피드 공유하기",
+          title: "한동피드",
           text: shareText,
-          url: shareLink,
         })
         .then(() => {
           setSnackbarMessage("공유 성공!");
@@ -69,10 +68,17 @@ const ShareModal = ({ openState, item }) => {
     handleClose();
   };
 
-  if (!shareHash) return <></>;
+  if (!shareHash || !item?.content) return <></>;
 
   const shareLink = `${window.location.origin}/k/${shareHash.shortHash}`;
-  const shareText = `${item?.content}`;
+  const prefix = `[한동피드]\n`;
+  const suffix = `\n\n[한동피드] ${shareLink}`;
+  const prefixSuffixLen = prefix.length + suffix.length;
+  const shareText = `${
+    item.content.length + prefixSuffixLen > 430
+      ? item.content.substr(0, 430) + "(...한동피드에서 더보기)"
+      : item.content
+  }${suffix}`;
 
   return (
     <>
@@ -106,7 +112,7 @@ const ShareModal = ({ openState, item }) => {
           <TextField
             multiline
             rows={4}
-            value={`${shareText}\n\n[ 한동피드 ${shareLink} ]`}
+            value={`${shareText}`}
             variant="outlined"
             fullWidth
             inputRef={textFieldRef}
