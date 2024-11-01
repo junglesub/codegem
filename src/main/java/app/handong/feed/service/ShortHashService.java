@@ -7,17 +7,13 @@ import org.springframework.stereotype.Service;
 @Service
 public class ShortHashService {
 
+    public static final int MINLENGTH = 3;
+
     private final JdbcTemplate jdbcTemplate;
 
     // Constructor injection
     public ShortHashService(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
-    }
-
-    private final int MINLENGTH; // Minimum length for the short hash
-
-    {
-        MINLENGTH = 5;
     }
 
     public String getUniqueShortHash(String fullHash, String tableName, String fieldName) {
