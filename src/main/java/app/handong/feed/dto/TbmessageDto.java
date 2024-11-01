@@ -42,4 +42,16 @@ public class TbmessageDto {
         private String hash;
         private String ext;
     }
+
+    @Schema
+    @Getter
+    @Setter
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class ShareHash {
+        @Schema(description = "shortHash", example = "")
+        private String shortHash;
+        private String hash;
+    }
 }

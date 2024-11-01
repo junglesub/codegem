@@ -1,6 +1,7 @@
 package app.handong.feed.controller;
 
 import app.handong.feed.dto.TbmessageDto;
+import app.handong.feed.service.ShortHashService;
 import app.handong.feed.service.TbKaFeedService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.web.bind.annotation.*;
@@ -13,11 +14,13 @@ import java.util.Map;
 public class TbKaFeedController {
 
     private final TbKaFeedService tbKaFeedService;
+    private final ShortHashService shortHashService;
 
     public TbKaFeedController(
-            TbKaFeedService tbKaFeedService
-    ) {
+            TbKaFeedService tbKaFeedService,
+            ShortHashService shortHashService) {
         this.tbKaFeedService = tbKaFeedService;
+        this.shortHashService = shortHashService;
     }
 
 //    @PostMapping("")
@@ -61,6 +64,11 @@ public class TbKaFeedController {
             count = tbKaFeedService.count(Integer.parseInt(afterSentAt), reqUserId);
         else count = tbKaFeedService.count(reqUserId);
         return TbmessageDto.Count.builder().count(count).build();
+    }
+
+    @GetMapping("/sharehash/{hash}")
+    public TbmessageDto.ShareHash shareHash(@PathVariable String hash, HttpServletRequest request) {
+        return TbmessageDto.ShareHash.builder().shortHash(shortHashService.getUniqueShortHash(hash, "TbKaMessage", "id")).hash(hash).build();
     }
 
 
