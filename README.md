@@ -54,7 +54,7 @@ front 에서 `npm start` 이후 http://localhost:3000 바로 접속.
 ## 배포용 JAR 다운로드 방법
 
 ```sh
-wget -O realspr-0.0.1-SNAPSHOT.jar https://github.com/junglesub/handong-feed-prototype/releases/latest/download/realspr-0.0.1-SNAPSHOT.jar
+wget -O handong-feed-0.0.1-SNAPSHOT.jar https://github.com/junglesub/handong-feed-prototype/releases/latest/download/handong-feed-0.0.1-SNAPSHOT.jar
 ```
 
 #2024-하계 웹캠프  
