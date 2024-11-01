@@ -1,0 +1,13 @@
+<urlrewrite>
+    <!-- Exclude all paths that start with /api from forwarding -->
+    <rule>
+        <from>^/api.*</from>
+        <to last="true">-</to>
+    </rule>
+
+    <!-- Forward all other paths to index.html -->
+    <rule>
+        <from>^/.*</from>
+        <to>/index.html</to>
+    </rule>
+</urlrewrite>
