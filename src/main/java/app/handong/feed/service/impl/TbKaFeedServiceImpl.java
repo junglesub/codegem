@@ -123,7 +123,7 @@ public class TbKaFeedServiceImpl implements TbKaFeedService {
         return count(Integer.MAX_VALUE, userId);
     }
 
-    public TbmessageDto.Detail getOne(String hash) {
+    public TbmessageDto.Detail getOneHash(String hash) {
         TbmessageDto.Detail detail = tbmessageMapper.getOneHash(hash);
         List<TbmessageDto.FileDetail> fileDetail = tbmessageMapper.fileDetails(detail.getId());
         if (!fileDetail.isEmpty()) {
