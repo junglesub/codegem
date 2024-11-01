@@ -14,6 +14,9 @@ public interface TbmessageMapper {
 
     List<TbmessageDto.FileDetail> fileDetails(String messageId);
 
+    TbmessageDto.Detail getOneHash(String hash, String userId);
+
+
     @Async
     default CompletableFuture<List<TbmessageDto.FileDetail>> fileDetailsAsync(String messageId) {
         // Call the original fileDetails method asynchronously

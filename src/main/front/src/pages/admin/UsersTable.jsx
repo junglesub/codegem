@@ -12,13 +12,7 @@ import { visuallyHidden } from "@mui/utils";
 
 import { formatDistanceToNow, parseISO } from "date-fns";
 import { ko } from "date-fns/locale";
-import {
-  Box,
-  Checkbox,
-  TableSortLabel,
-  Tooltip,
-  Typography,
-} from "@mui/material";
+import { Box, TableSortLabel, Tooltip, Typography } from "@mui/material";
 import AdminPage from "./AdminPage";
 
 const columns = [

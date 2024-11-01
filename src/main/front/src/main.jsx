@@ -12,8 +12,8 @@ import MainFeed from "./pages/MainFeed";
 import AllFeed from "./pages/AllFeed";
 import FavFeed from "./pages/FavFeed";
 import PWAInstallModal from "./components/modals/PWAInstallModal";
-import UsersTable from "./pages/admin/UsersTable";
 import { ADMINMENU } from "./pages/admin";
+import KafeedDetail from "./pages/KafeedDetail";
 
 const router = createBrowserRouter([
   {
@@ -31,6 +31,10 @@ const router = createBrowserRouter([
   {
     path: "/favorite",
     element: <LoginProtected comp={FavFeed} />,
+  },
+  {
+    path: "/kafeed/:messageId",
+    element: <KafeedDetail />,
   },
   ...ADMINMENU.map((menu) => ({
     path: `/admin/${menu.id}`,

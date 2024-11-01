@@ -18,7 +18,7 @@ import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 
 import { ADMINMENU } from ".";
 import { Link, useLocation } from "react-router-dom";
-import { Button, Tooltip } from "@mui/material";
+import { Tooltip } from "@mui/material";
 
 const drawerWidth = 220;
 

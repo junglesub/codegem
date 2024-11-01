@@ -1,7 +1,13 @@
 <urlrewrite>
     <!-- Exclude all paths that start with /api from forwarding -->
     <rule>
-        <from>^/api.*</from>
+        <from>^/api/.*</from>
+        <to last="true">-</to>
+    </rule>
+
+    <!--  Exclude /kid from forwarding  -->
+    <rule>
+        <from>^/k/.*</from>
         <to last="true">-</to>
     </rule>
 

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta property="og:title" th:content="${title}">
+    <meta property="og:description" content="한동피드에서 확인해보세요">
+    <meta property="og:image" th:content="${imageUrl}">
+    <meta property="og:url" th:content="${finalUrl}">
+    <title>Redirecting...</title>
+    <script>
+        // Redirect to the target URL
+
+        window.onload = function () {
+            setTimeout(function () {
+                document.location.replace("[[${finalUrl}]]")
+            }, 2000); // Redirects after 2 seconds
+        };
+    </script>
+</head>
+<body>
+<h1>Redirecting...</h1>
+<p>If you are not redirected, <a th:href="${finalUrl}">click here</a>.</p>
+</body>
+</html>

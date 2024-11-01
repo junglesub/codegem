@@ -25,6 +25,7 @@ function AdminFeed() {
           //   setAllSeenFeedId={setAllSeenFeedId}
           // />
           <Box
+            key={item.id}
             sx={{
               display: "flex",
             }}

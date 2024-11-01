@@ -1,57 +1,10 @@
-import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
-import { googleClientId } from "../constants";
-import { useRecoilValue, useResetRecoilState, useSetRecoilState } from "recoil";
+import { useRecoilValue, useResetRecoilState } from "recoil";
 import { authJwtAtom } from "../recoil/authAtom";
-import { useNavigate } from "react-router-dom";
 
 import "./MainScreen.scss";
+import GoogleLoginComponent from "../components/GoogleLogin";
 
-const GoogleLoginComponent = () => {
-  const navigate = useNavigate();
-  const setJwt = useSetRecoilState(authJwtAtom);
-  const handleLoginSuccess = (credentialResponse) => {
-    console.log("Encoded JWT ID token: " + credentialResponse.credential);
-
-    // Send the Google ID token to the server
-    fetch("/api/tbuser/login/google", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ credential: credentialResponse.credential }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log("Response from server:", data);
-        if (data.token) {
-          localStorage.setItem("happ_feed_token", JSON.stringify(data.token)); // Incase of strictmode error
-          setJwt(data.token);
-          navigate("/");
-        } else {
-          alert("Login failed: " + data.message);
-        }
-      })
-      .catch((error) => console.error("Error:", error));
-  };
-
-  const handleLoginError = () => {
-    console.log("Login Failed");
-  };
-
-  return (
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      <GoogleLogin onSuccess={handleLoginSuccess} onError={handleLoginError} />
-    </div>
-  );
-};
-
-const MainScreen = () => {
+const MainScreen = ({ noRedirect = false }) => {
   const authData = useRecoilValue(authJwtAtom);
   const logout = useResetRecoilState(authJwtAtom);
   // if (authData) return <>Welcome</>;
@@ -87,9 +40,7 @@ const MainScreen = () => {
               </a>
             ) : (
               <span className="glogin">
-                <GoogleOAuthProvider clientId={googleClientId}>
-                  <GoogleLoginComponent />
-                </GoogleOAuthProvider>
+                <GoogleLoginComponent noRedirect={noRedirect} />
               </span>
             )}
           </div>
