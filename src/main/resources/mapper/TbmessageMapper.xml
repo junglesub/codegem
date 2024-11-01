@@ -66,4 +66,15 @@
         ORDER BY fml.appear_order;
     </select>
 
+    <select id="getOneHash" parameterType="string" resultType="app.handong.feed.dto.TbmessageDto$Detail">
+        SELECT message.subject_id   AS subjectId,
+               message.id           AS id,
+               message.last_sent_at AS sentAt,
+               message.message      AS message
+        FROM TbKaMessage message
+        WHERE message.id LIKE CONCAT(#{hash}, '%')
+        ORDER BY message.created_at
+        LIMIT 1
+    </select>
+
 </mapper>

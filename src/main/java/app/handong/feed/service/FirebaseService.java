@@ -18,6 +18,10 @@ import java.util.concurrent.TimeUnit;
 public class FirebaseService {
 
     public String getSignedUrl(String filePath) {
+        return getSignedUrl(filePath, 30);
+    }
+
+    public String getSignedUrl(String filePath, int durationMin) {
         Storage storage = StorageClient.getInstance().bucket().getStorage();
         String bucketName = StorageClient.getInstance().bucket().getName();
 
@@ -28,7 +32,7 @@ public class FirebaseService {
             throw new RuntimeException("File not found: " + filePath);
         }
 
-        return blob.signUrl(30, TimeUnit.MINUTES).toString();
+        return blob.signUrl(durationMin, TimeUnit.MINUTES).toString();
     }
 
     @Async

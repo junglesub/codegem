@@ -8,10 +8,7 @@ import app.handong.feed.service.FirebaseService;
 import app.handong.feed.service.TbKaFeedService;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
@@ -124,6 +121,16 @@ public class TbKaFeedServiceImpl implements TbKaFeedService {
 
     public int count(String userId) {
         return count(Integer.MAX_VALUE, userId);
+    }
+
+    public TbmessageDto.Detail getOne(String hash) {
+        TbmessageDto.Detail detail = tbmessageMapper.getOneHash(hash);
+        List<TbmessageDto.FileDetail> fileDetail = tbmessageMapper.fileDetails(detail.getId());
+        if (!fileDetail.isEmpty()) {
+            detail.setFiles(Collections.singletonList(firebaseService.getSignedUrl("KaFile/" + fileDetail.get(0).getHash() + "." + fileDetail.get(0).getExt(), 60 * 24)));
+        }
+        return detail;
+
     }
 
 
