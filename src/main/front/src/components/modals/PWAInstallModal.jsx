@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { Modal, Box, Typography, Button } from "@mui/material";
 import useDownloadPWA from "../../hooks/useDownloadPWA";
 import { getDateString } from "../../tools/tools";
+import { useRecoilValue } from "recoil";
+import { authJwtAtom } from "../../recoil/authAtom";
 
 const style = {
   position: "fixed",
@@ -15,6 +17,8 @@ const style = {
 };
 
 const PWAInstallModal = () => {
+  const jwtValue = useRecoilValue(authJwtAtom);
+
   const [open, setOpen] = useState(false);
   const [deferredPrompt, handleDownload] = useDownloadPWA({
     onAccept: () => setOpen(false),
@@ -32,11 +36,11 @@ const PWAInstallModal = () => {
   };
 
   useEffect(() => {
-    // Check if the app is running as a PWA
-    if (!isPWAInstalled()) {
+    // Check if the app is running as a PWA & Only when user is logged in
+    if (!isPWAInstalled() && jwtValue) {
       setOpen(true); // Show modal if PWA is not installed
     }
-  }, []);
+  }, [jwtValue]);
 
   const handleInstallClick = () => {
     // Trigger the installation prompt if applicable
