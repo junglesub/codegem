@@ -1,6 +1,7 @@
 import { useRecoilValue } from "recoil";
 import { serverRootUrl } from "../constants";
 import { authJwtAtom } from "../recoil/authAtom";
+import { useMemo } from "react";
 
 export const fetchBe = (jwtValue, path, method = "GET", body) =>
   new Promise((res, rej) => {
@@ -45,5 +46,10 @@ export const fetchBe = (jwtValue, path, method = "GET", body) =>
 
 export const useFetchBe = () => {
   const jwtValue = useRecoilValue(authJwtAtom);
-  return (path, method = "GET", body) => fetchBe(jwtValue, path, method, body);
+  return useMemo(
+    () =>
+      (path, method = "GET", body) =>
+        fetchBe(jwtValue, path, method, body),
+    [jwtValue]
+  );
 };
