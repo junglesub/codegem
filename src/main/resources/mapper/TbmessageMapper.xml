@@ -66,12 +66,19 @@
         ORDER BY fml.appear_order;
     </select>
 
-    <select id="getOneHash" parameterType="string" resultType="app.handong.feed.dto.TbmessageDto$Detail">
-        SELECT message.subject_id   AS subjectId,
-               message.id           AS id,
-               message.last_sent_at AS sentAt,
-               message.message      AS message
+    <select id="getOneHash" parameterType="map" resultType="app.handong.feed.dto.TbmessageDto$Detail">
+        SELECT message.subject_id AS subjectId,
+        message.id AS id,
+        message.last_sent_at AS sentAt,
+        <if test="userId != null and userId != ''">
+            i.userId AS `like`,
+        </if>
+        message.message AS message
         FROM TbKaMessage message
+        <if test="userId != null and userId != ''">
+            LEFT JOIN mydb_TbUserLike i
+            ON message.subject_id = i.subjectId AND #{userId} = i.userId
+        </if>
         WHERE message.id LIKE CONCAT(#{hash}, '%')
         ORDER BY message.created_at
         LIMIT 1

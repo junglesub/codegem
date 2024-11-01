@@ -27,5 +27,7 @@ public interface TbKaFeedService {
 
     TbmessageDto.Detail getOneHash(String hash);
 
+    TbmessageDto.Detail getOne(String messageId, String userId);
+
 }
 

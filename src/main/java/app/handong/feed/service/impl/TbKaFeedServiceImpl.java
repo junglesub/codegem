@@ -2,6 +2,7 @@ package app.handong.feed.service.impl;
 
 import app.handong.feed.domain.TbKaFeed;
 import app.handong.feed.dto.TbmessageDto;
+import app.handong.feed.exception.NotFoundException;
 import app.handong.feed.mapper.TbmessageMapper;
 import app.handong.feed.repository.TbKaFeedRepository;
 import app.handong.feed.service.FirebaseService;
@@ -124,13 +125,44 @@ public class TbKaFeedServiceImpl implements TbKaFeedService {
     }
 
     public TbmessageDto.Detail getOneHash(String hash) {
-        TbmessageDto.Detail detail = tbmessageMapper.getOneHash(hash);
+        TbmessageDto.Detail detail = tbmessageMapper.getOneHash(hash, null);
         List<TbmessageDto.FileDetail> fileDetail = tbmessageMapper.fileDetails(detail.getId());
         if (!fileDetail.isEmpty()) {
             detail.setFiles(Collections.singletonList(firebaseService.getSignedUrl("KaFile/" + fileDetail.get(0).getHash() + "." + fileDetail.get(0).getExt(), 60 * 24)));
         }
         return detail;
 
+    }
+
+    public TbmessageDto.Detail getOne(String messageId, String userId) {
+        // TODO: Need to change getOneHash to messageId Check
+        TbmessageDto.Detail detail = tbmessageMapper.getOneHash(messageId, userId);
+        if (detail == null) throw new NotFoundException("GetOne Not Found: " + messageId);
+
+        // Fetch file details asynchronously
+        CompletableFuture<List<TbmessageDto.FileDetail>> fileDetailsFuture = tbmessageMapper.fileDetailsAsync(detail.getId());
+
+        // Wait for the file details to complete
+        List<TbmessageDto.FileDetail> fileDetails = fileDetailsFuture.join();
+
+        // Fetch signed URLs for each file
+        List<CompletableFuture<String>> fileFutures = fileDetails.stream()
+                .map(file -> firebaseService.getSignedUrlAsync("KaFile/" + file.getHash() + "." + file.getExt()))
+                .toList();
+
+        // Wait for all signed URLs to complete
+        CompletableFuture<Void> allSignedUrlsFuture = CompletableFuture.allOf(fileFutures.toArray(new CompletableFuture[0]));
+        allSignedUrlsFuture.join(); // Block until all signed URL fetches complete
+
+        // Collect the signed URLs
+        List<String> signedUrls = fileFutures.stream()
+                .map(CompletableFuture::join) // Join to get the actual signed URL values
+                .collect(Collectors.toList());
+
+        // Set the signed URLs to the detail object
+        detail.setFiles(signedUrls);
+
+        return detail;  // Return the populated message detail
     }
 
 

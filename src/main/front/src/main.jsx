@@ -33,7 +33,7 @@ const router = createBrowserRouter([
     element: <LoginProtected comp={FavFeed} />,
   },
   {
-    path: "/kafeed/:hash",
+    path: "/kafeed/:messageId",
     element: <KafeedDetail />,
   },
   ...ADMINMENU.map((menu) => ({

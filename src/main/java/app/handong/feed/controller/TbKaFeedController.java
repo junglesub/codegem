@@ -50,6 +50,12 @@ public class TbKaFeedController {
         else return tbKaFeedService.scrollList(type, reqUserId);
     }
 
+    @GetMapping("/get/{messageId}")
+    public TbmessageDto.Detail getOne(@PathVariable String messageId, HttpServletRequest request) {
+        String reqUserId = request.getAttribute("reqUserId").toString();
+        return tbKaFeedService.getOne(messageId, reqUserId);
+    }
+
     @GetMapping("/count")
     public TbmessageDto.Count getCount(@RequestParam Map<String, String> param, HttpServletRequest request) {
         String reqUserId = request.getAttribute("reqUserId").toString();
