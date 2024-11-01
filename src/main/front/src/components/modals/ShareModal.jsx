@@ -35,7 +35,7 @@ const ShareModal = ({ openState, item }) => {
     if (textFieldRef.current) {
       textFieldRef.current.select();
       document.execCommand("copy"); // Deprecated but still works in most browsers
-      setSnackbarMessage("Text copied to clipboard!");
+      setSnackbarMessage("클립보드에 복사되었습니다");
       setSnackbarOpen(true);
     }
   };
@@ -49,12 +49,12 @@ const ShareModal = ({ openState, item }) => {
           url: shareLink,
         })
         .then(() => {
-          setSnackbarMessage("Shared successfully!");
+          setSnackbarMessage("공유 성공!");
           setSnackbarOpen(true);
         })
         .catch((error) => {
           console.error("Error sharing:", error);
-          setSnackbarMessage("Sharing failed.");
+          setSnackbarMessage("공유 실패!");
           setSnackbarOpen(true);
         });
     } else {
@@ -92,7 +92,12 @@ const ShareModal = ({ openState, item }) => {
                 readOnly: true,
               },
             }}
-            onClick={() => linkFieldRef.current?.select()}
+            onClick={() => {
+              linkFieldRef.current?.select();
+              document.execCommand("copy"); // Deprecated but still works in most browsers
+              setSnackbarMessage("클립보드에 복사되었습니다");
+              setSnackbarOpen(true);
+            }}
             sx={{ mb: 2 }}
           />
           <Typography variant="subtitle2" gutterBottom>
