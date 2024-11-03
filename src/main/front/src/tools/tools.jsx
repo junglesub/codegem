@@ -52,7 +52,18 @@ export const getExtensionFromUrl = (url) => {
 
 // Function to check if the URL is an image
 export const isImage = (url) => {
-  const imageExtensions = ["jpg", "jpeg", "png", "gif", "bmp", "svg"];
+  const imageExtensions = [
+    "jpg",
+    "jpeg",
+    "png",
+    "gif",
+    "webp",
+    "bmp",
+    "svg",
+    "apng",
+    "ico",
+  ];
+
   const extension = getExtensionFromUrl(url); // Get cleaned extension
   return imageExtensions.includes(extension);
 };
