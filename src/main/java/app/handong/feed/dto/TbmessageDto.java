@@ -19,6 +19,7 @@ public class TbmessageDto {
         private String message;
         private List<String> files;
         private boolean like;
+        private int messageCount;
     }
 
     @Schema
