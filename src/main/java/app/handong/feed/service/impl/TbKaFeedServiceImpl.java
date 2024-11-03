@@ -6,6 +6,7 @@ import app.handong.feed.exception.NotFoundException;
 import app.handong.feed.mapper.TbmessageMapper;
 import app.handong.feed.repository.TbKaFeedRepository;
 import app.handong.feed.service.FirebaseService;
+import app.handong.feed.service.ShortHashService;
 import app.handong.feed.service.TbKaFeedService;
 import org.springframework.stereotype.Service;
 
@@ -125,7 +126,9 @@ public class TbKaFeedServiceImpl implements TbKaFeedService {
     }
 
     public TbmessageDto.Detail getOneHash(String hash) {
+        if (hash.length() < ShortHashService.MINLENGTH) return null;
         TbmessageDto.Detail detail = tbmessageMapper.getOneHash(hash, null);
+        if (detail == null) return null;
         List<TbmessageDto.FileDetail> fileDetail = tbmessageMapper.fileDetails(detail.getId());
         if (!fileDetail.isEmpty()) {
             detail.setFiles(Collections.singletonList(firebaseService.getSignedUrl("KaFile/" + fileDetail.get(0).getHash() + "." + fileDetail.get(0).getExt(), 60 * 24)));
@@ -136,6 +139,7 @@ public class TbKaFeedServiceImpl implements TbKaFeedService {
 
     public TbmessageDto.Detail getOne(String messageId, String userId) {
         // TODO: Need to change getOneHash to messageId Check
+        if (messageId.length() != 32) throw new NotFoundException("GetOne Not Found: " + messageId);
         TbmessageDto.Detail detail = tbmessageMapper.getOneHash(messageId, userId);
         if (detail == null) throw new NotFoundException("GetOne Not Found: " + messageId);
 

@@ -22,7 +22,6 @@ public class ShareMetaPageController {
 
     @GetMapping("/{hash}")
     public String page(@PathVariable("hash") String hash, Model model) {
-        if (hash.length() < ShortHashService.MINLENGTH) return "sharemeta_notfound.html";
         TbmessageDto.Detail detail = tbKaFeedService.getOneHash(hash);
         if (detail == null) return "sharemeta_notfound.html";
         String message = detail.getMessage().replaceAll("\\s+", " ");
