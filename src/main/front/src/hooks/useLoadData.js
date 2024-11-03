@@ -30,6 +30,7 @@ const useLoadData = ({ type = "" } = {}) => {
             img: dd.files[0], // Temp just for testing
             subjectId: dd.subjectId,
             like: dd.like,
+            messageCount: dd.messageCount,
           })),
         ],
         "id"

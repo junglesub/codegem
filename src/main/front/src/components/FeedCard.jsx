@@ -13,7 +13,7 @@ import ReactShowMoreText from "react-show-more-text";
 
 import "./FeedCard.css";
 import FeedCardGallery from "./FeedCardGallery";
-import { Skeleton } from "@mui/material";
+import { Link, Skeleton, Typography } from "@mui/material";
 import { useFetchBe } from "../tools/api";
 import { useSetRecoilState } from "recoil";
 import { feedCountAtom } from "../recoil/feedAtom";
@@ -75,7 +75,6 @@ export default function FeedCard({ loading, item, watchSeen = false }) {
       <Card ref={cardRef} className="FeedCard" sx={{ my: 2 }}>
         {loading ? (
           <>
-            {" "}
             <CardHeader
               avatar={<Skeleton variant="circular" width={40} height={40} />}
               // action={<Skeleton variant="rectangular" width={24} height={24} />}
@@ -130,8 +129,20 @@ export default function FeedCard({ loading, item, watchSeen = false }) {
                   </IconButton>
                 </>
               }
-              title="실명카톡방"
-              subheader={formatTimestamp(item.createdAt)}
+              title={<Typography variant="body1">실명카톡방</Typography>}
+              subheader={
+                <Typography variant="body2">
+                  {formatTimestamp(item.createdAt)}{" "}
+                  {item.messageCount && item.messageCount > 1 && (
+                    <Link
+                      onClick={() => handleClick(item.createdAt)} // Define your onClick handler
+                      style={{ textDecoration: "none", cursor: "pointer" }} // Optional styling
+                    >
+                      (+{item.messageCount - 1})
+                    </Link>
+                  )}
+                </Typography>
+              }
             />
             <CardMedia sx={{ width: "100%" }}>
               {item.files && (

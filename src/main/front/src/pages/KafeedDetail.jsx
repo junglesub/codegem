@@ -40,6 +40,7 @@ function KafeedDetail() {
             img: doc.files[0], // Temp just for testing
             subjectId: doc.subjectId,
             like: doc.like,
+            messageCount: doc.messageCount,
           }}
         />
       ) : (
