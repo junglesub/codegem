@@ -8,16 +8,20 @@ import IconButton from "@mui/material/IconButton";
 import { deepOrange, green } from "@mui/material/colors";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import ShareIcon from "@mui/icons-material/Share";
-import { convertTextToLinks, formatTimestamp } from "../tools/tools";
+import {
+  convertTextToLinks,
+  formatRelativeOrAbsoluteTimestamp,
+} from "../tools/tools";
 import ReactShowMoreText from "react-show-more-text";
 
 import "./FeedCard.css";
 import FeedCardGallery from "./FeedCardGallery";
-import { Skeleton } from "@mui/material";
+import { Link, Skeleton, Typography } from "@mui/material";
 import { useFetchBe } from "../tools/api";
 import { useSetRecoilState } from "recoil";
 import { feedCountAtom } from "../recoil/feedAtom";
 import ShareModal from "./modals/ShareModal";
+import HistoryModal from "./modals/HistoryModal";
 
 export default function FeedCard({ loading, item, watchSeen = false }) {
   const fetch = useFetchBe();
@@ -26,6 +30,7 @@ export default function FeedCard({ loading, item, watchSeen = false }) {
   const [isScrolledUpOut, setIsScrolledUpOut] = useState(false);
   const [updateSeenServer, setUpdateSeenServer] = useState(false);
   const openState = useState(false);
+  const historyOpenState = useState(false);
   const [like, setLike] = useState(item?.like);
 
   // eslint-disable-next-line unused-imports/no-unused-vars
@@ -71,11 +76,11 @@ export default function FeedCard({ loading, item, watchSeen = false }) {
 
   return (
     <>
+      <HistoryModal openState={historyOpenState} item={item} />
       <ShareModal openState={openState} item={item} />
       <Card ref={cardRef} className="FeedCard" sx={{ my: 2 }}>
         {loading ? (
           <>
-            {" "}
             <CardHeader
               avatar={<Skeleton variant="circular" width={40} height={40} />}
               // action={<Skeleton variant="rectangular" width={24} height={24} />}
@@ -130,8 +135,22 @@ export default function FeedCard({ loading, item, watchSeen = false }) {
                   </IconButton>
                 </>
               }
-              title="실명카톡방"
-              subheader={formatTimestamp(item.createdAt)}
+              title={<Typography variant="body1">실명카톡방</Typography>}
+              subheader={
+                <Typography variant="body2">
+                  {formatRelativeOrAbsoluteTimestamp(item.createdAt)}{" "}
+                  {item.messageCount && item.messageCount > 1 && (
+                    <Link
+                      onClick={() => {
+                        historyOpenState[1](true);
+                      }} // Define your onClick handler
+                      style={{ textDecoration: "none", cursor: "pointer" }} // Optional styling
+                    >
+                      (+{item.messageCount - 1})
+                    </Link>
+                  )}
+                </Typography>
+              }
             />
             <CardMedia sx={{ width: "100%" }}>
               {item.files && (
