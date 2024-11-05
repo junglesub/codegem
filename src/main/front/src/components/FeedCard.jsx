@@ -8,7 +8,10 @@ import IconButton from "@mui/material/IconButton";
 import { deepOrange, green } from "@mui/material/colors";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import ShareIcon from "@mui/icons-material/Share";
-import { convertTextToLinks, formatTimestamp } from "../tools/tools";
+import {
+  convertTextToLinks,
+  formatRelativeOrAbsoluteTimestamp,
+} from "../tools/tools";
 import ReactShowMoreText from "react-show-more-text";
 
 import "./FeedCard.css";
@@ -135,7 +138,7 @@ export default function FeedCard({ loading, item, watchSeen = false }) {
               title={<Typography variant="body1">실명카톡방</Typography>}
               subheader={
                 <Typography variant="body2">
-                  {formatTimestamp(item.createdAt)}{" "}
+                  {formatRelativeOrAbsoluteTimestamp(item.createdAt)}{" "}
                   {item.messageCount && item.messageCount > 1 && (
                     <Link
                       onClick={() => {

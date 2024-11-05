@@ -46,7 +46,7 @@ const HistoryModal = ({ openState, item }) => {
         doc?.messageHistory
           ?.map((entry, idx, arr) => ({
             id: entry.id,
-            time: formatTimestamp(entry.sentAt * 1000),
+            time: formatTimestamp(entry.sentAt * 1000, true),
             diff: {
               oldValue: arr.length > idx + 1 ? arr[idx + 1].message : "",
               newValue: entry.message,
@@ -86,6 +86,7 @@ const HistoryModal = ({ openState, item }) => {
                   <ListItem
                     button="true"
                     onClick={() => handleToggle(revision.id)}
+                    style={{ cursor: "pointer" }}
                   >
                     <Grid container alignItems="center">
                       <Grid xs={8}>
