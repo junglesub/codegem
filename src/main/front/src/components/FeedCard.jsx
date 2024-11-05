@@ -18,6 +18,7 @@ import { useFetchBe } from "../tools/api";
 import { useSetRecoilState } from "recoil";
 import { feedCountAtom } from "../recoil/feedAtom";
 import ShareModal from "./modals/ShareModal";
+import HistoryModal from "./modals/HistoryModal";
 
 export default function FeedCard({ loading, item, watchSeen = false }) {
   const fetch = useFetchBe();
@@ -26,6 +27,7 @@ export default function FeedCard({ loading, item, watchSeen = false }) {
   const [isScrolledUpOut, setIsScrolledUpOut] = useState(false);
   const [updateSeenServer, setUpdateSeenServer] = useState(false);
   const openState = useState(false);
+  const historyOpenState = useState(false);
   const [like, setLike] = useState(item?.like);
 
   // eslint-disable-next-line unused-imports/no-unused-vars
@@ -71,6 +73,7 @@ export default function FeedCard({ loading, item, watchSeen = false }) {
 
   return (
     <>
+      <HistoryModal openState={historyOpenState} item={item} />
       <ShareModal openState={openState} item={item} />
       <Card ref={cardRef} className="FeedCard" sx={{ my: 2 }}>
         {loading ? (
@@ -135,7 +138,9 @@ export default function FeedCard({ loading, item, watchSeen = false }) {
                   {formatTimestamp(item.createdAt)}{" "}
                   {item.messageCount && item.messageCount > 1 && (
                     <Link
-                      onClick={() => handleClick(item.createdAt)} // Define your onClick handler
+                      onClick={() => {
+                        historyOpenState[1](true);
+                      }} // Define your onClick handler
                       style={{ textDecoration: "none", cursor: "pointer" }} // Optional styling
                     >
                       (+{item.messageCount - 1})

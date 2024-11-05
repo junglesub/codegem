@@ -1,3 +1,5 @@
+import { diffWords } from "diff";
+
 export function formatTimestamp(timestamp) {
   // Parse the timestamp into a Date object
   const date = new Date(timestamp);
@@ -82,4 +84,30 @@ export const getDateString = () => {
   const day = String(date.getDate()).padStart(2, "0");
 
   return `${year}-${month}-${day}`;
+};
+
+export const calculateDiffChange = (oldValue, newValue) => {
+  const changes = diffWords(oldValue, newValue);
+
+  let added = 0;
+  let removed = 0;
+
+  // Iterate over the diff chunks to calculate additions and deletions
+  changes.forEach((part) => {
+    if (part.added) {
+      added += part.value.length;
+    } else if (part.removed) {
+      removed += part.value.length;
+    }
+  });
+
+  // Format the result with added and removed changes
+  let result = "";
+  if (added > 0) result += `+${added}`;
+  if (removed > 0) result += (result.length > 0 ? " " : "") + `-${removed}`;
+
+  const diff = added - removed;
+  if (diff === 0) return 0;
+  return `${diff > 0 ? "+" : ""}${diff}`;
+  // return result || "No changes";
 };
