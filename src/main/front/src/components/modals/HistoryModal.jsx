@@ -68,6 +68,7 @@ const HistoryModal = ({ openState, item }) => {
 
   const handleClose = () => {
     setOpen(false);
+    setOpenRevisionId(null);
   };
   return (
     <>
