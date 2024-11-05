@@ -1,12 +1,10 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useEffect } from "react";
 import {
   Dialog,
   DialogTitle,
   DialogContent,
   DialogActions,
   Button,
-  TextField,
-  Snackbar,
   List,
   ListItem,
   ListItemText,
@@ -43,7 +41,6 @@ const HistoryModal = ({ openState, item }) => {
 
   useEffect(() => {
     if (!open || !item?.subjectId) return;
-    console.log(item?.subjectId);
     fetchBe(`/subject/${item.subjectId}`).then((doc) => {
       setHistoryData(
         doc?.messageHistory
@@ -81,7 +78,10 @@ const HistoryModal = ({ openState, item }) => {
             <List>
               {historyData.map((revision) => (
                 <div key={revision.id}>
-                  <ListItem button onClick={() => handleToggle(revision.id)}>
+                  <ListItem
+                    button="true"
+                    onClick={() => handleToggle(revision.id)}
+                  >
                     <Grid container alignItems="center">
                       <Grid xs={8}>
                         <ListItemText primary={revision.time} />
