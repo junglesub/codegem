@@ -116,7 +116,8 @@ export const calculateDiffChange = (oldValue, newValue) => {
   if (removed > 0) result += (result.length > 0 ? " " : "") + `-${removed}`;
 
   const diff = added - removed;
-  if (diff === 0) return 0;
+  if (added === 0 && removed === 0) return "일치";
+  if (diff === 0) return "0";
   return `${diff > 0 ? "+" : ""}${diff}`;
   // return result || "No changes";
 };

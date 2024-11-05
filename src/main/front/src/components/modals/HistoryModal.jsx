@@ -22,9 +22,9 @@ import { calculateDiffChange, formatTimestamp } from "../../tools/tools";
 const getColor = (diffChange) => {
   return diffChange === "최초" || diffChange === "일치"
     ? "lightgray"
-    : diffChange.startsWith("+")
-    ? "green"
-    : "red";
+    : diffChange.startsWith("-")
+    ? "red"
+    : "green";
 };
 
 const HistoryModal = ({ openState, item }) => {
@@ -58,8 +58,7 @@ const HistoryModal = ({ openState, item }) => {
             diffChange:
               idx === arr.length - 1
                 ? "최초"
-                : calculateDiffChange(item.diff.oldValue, item.diff.newValue) ||
-                  "일치",
+                : calculateDiffChange(item.diff.oldValue, item.diff.newValue),
           }))
       );
     });
