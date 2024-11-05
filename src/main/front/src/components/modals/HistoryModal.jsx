@@ -72,7 +72,12 @@ const HistoryModal = ({ openState, item }) => {
   return (
     <>
       <Dialog fullWidth open={open} onClose={handleClose}>
-        <DialogTitle>기록보기</DialogTitle>
+        <DialogTitle>
+          기록보기
+          <Typography variant="body2" color="textSecondary">
+            (11월 6일 이전에 작성된 동일 메세지는 별도로 표시되지 않습니다.)
+          </Typography>
+        </DialogTitle>
         <DialogContent>
           {historyData && (
             <List>
@@ -109,9 +114,12 @@ const HistoryModal = ({ openState, item }) => {
                     in={openRevisionId === revision.id}
                     timeout="auto"
                     unmountOnExit
+                    sx={{
+                      px: 2,
+                    }}
                   >
                     <Typography variant="body2" color="textSecondary">
-                      Diff Details:
+                      수정된 메세지:
                     </Typography>
                     <Box
                       sx={{
@@ -136,7 +144,7 @@ const HistoryModal = ({ openState, item }) => {
         <DialogActions>
           <Box display="flex" flexDirection="column" gap={1} width="100%">
             <Button onClick={handleClose} color="secondary" fullWidth>
-              취소
+              확인
             </Button>
           </Box>
         </DialogActions>
