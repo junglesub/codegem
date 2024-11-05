@@ -11,6 +11,7 @@ import {
   Typography,
   Collapse,
   Box,
+  useMediaQuery,
 } from "@mui/material";
 
 import DiffViewer from "react-diff-viewer-continued";
@@ -22,16 +23,19 @@ import { calculateDiffChange, formatTimestamp } from "../../tools/tools";
 const getColor = (diffChange) => {
   return diffChange === "최초" || diffChange === "일치"
     ? "lightgray"
-    : diffChange.startsWith("+")
-    ? "green"
-    : "red";
+    : diffChange.startsWith("-")
+    ? "red"
+    : "green";
 };
 
 const HistoryModal = ({ openState, item }) => {
   const [open, setOpen] = openState;
 
+  const isSmUp = useMediaQuery((theme) => theme.breakpoints.up("sm"));
+
   const [openRevisionId, setOpenRevisionId] = useState(null);
   const [historyData, setHistoryData] = useState(null);
+  const [splitView, setSplitView] = useState(isSmUp);
 
   const handleToggle = (id) => {
     setOpenRevisionId(openRevisionId === id ? null : id);
@@ -58,8 +62,7 @@ const HistoryModal = ({ openState, item }) => {
             diffChange:
               idx === arr.length - 1
                 ? "최초"
-                : calculateDiffChange(item.diff.oldValue, item.diff.newValue) ||
-                  "일치",
+                : calculateDiffChange(item.diff.oldValue, item.diff.newValue),
           }))
       );
     });
@@ -68,12 +71,36 @@ const HistoryModal = ({ openState, item }) => {
 
   const handleClose = () => {
     setOpen(false);
+    setOpenRevisionId(null);
   };
   return (
     <>
-      <Dialog fullWidth open={open} onClose={handleClose}>
+      <Dialog fullWidth maxWidth={"md"} open={open} onClose={handleClose}>
         <DialogTitle>
-          기록보기
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              cursor: "pointer",
+              gap: 1,
+            }}
+            onClick={() => setSplitView((prev) => !prev)}
+          >
+            <Box>기록보기</Box>
+            <Typography
+              variant="button"
+              sx={{
+                // fontWeight: "bold",
+                color: "primary.main",
+                cursor: "pointer",
+                // "&:hover": {
+                //   textDecoration: "underline",
+                // },
+              }}
+            >
+              [ {splitView ? "분할보기" : "통합보기"} ]
+            </Typography>
+          </Box>
           <Typography variant="body2" color="textSecondary">
             (11월 6일 이전에 작성된 동일 메세지는 별도로 표시되지 않습니다.)
           </Typography>
@@ -132,7 +159,7 @@ const HistoryModal = ({ openState, item }) => {
                       <DiffViewer
                         oldValue={revision.diff.oldValue}
                         newValue={revision.diff.newValue}
-                        splitView={false}
+                        splitView={splitView}
                         hideLineNumbers
                       />
                     </Box>
