@@ -6,4 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface TbAlgProblemRepository extends JpaRepository<TbAlgProblem, Long> {
     TbAlgProblem findByPpsNo(String ppsNo);
+
+    TbAlgProblem findByLink(String link);
 }

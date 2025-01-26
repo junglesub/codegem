@@ -72,7 +72,7 @@ function FileList({ setSelectedFiles }) {
             {allFiles
               .filter(
                 (file) =>
-                  file.type === "blob" && solvedFiles.includes(file.path)
+                  file.type === "blob" && !solvedFiles.includes(file.path)
               )
               .map((repo, index) => (
                 <ActionList.Item

@@ -1,14 +1,17 @@
 package app.handong.codegem.service;
 
+import app.handong.codegem.domain.TbAlgProblem;
 import app.handong.codegem.domain.TbAlgSolution;
 import app.handong.codegem.dto.AlgorithmDto;
 import app.handong.codegem.exception.NotFoundException;
 import app.handong.codegem.mapper.TbAlgSolutionMapper;
+import app.handong.codegem.repository.TbAlgProblemRepository;
 import app.handong.codegem.repository.TbAlgSolutionRepository;
 import app.handong.codegem.util.GHAppHandler;
 import app.handong.codegem.util.JWTFactory;
 import org.springframework.stereotype.Service;
 
+import java.util.Base64;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -17,10 +20,12 @@ public class AlgSolutionService {
 
     private final TbAlgSolutionRepository tbAlgSolutionRepository;
     private final TbAlgSolutionMapper tbAlgSolutionMapper;
+    private final TbAlgProblemRepository tbAlgProblemRepository;
 
-    public AlgSolutionService(TbAlgSolutionRepository tbAlgSolutionRepository, TbAlgSolutionMapper tbAlgSolutionMapper) {
+    public AlgSolutionService(TbAlgSolutionRepository tbAlgSolutionRepository, TbAlgSolutionMapper tbAlgSolutionMapper, TbAlgProblemRepository tbAlgProblemRepository) {
         this.tbAlgSolutionRepository = tbAlgSolutionRepository;
         this.tbAlgSolutionMapper = tbAlgSolutionMapper;
+        this.tbAlgProblemRepository = tbAlgProblemRepository;
     }
 
     public AlgorithmDto.SolutionResDto create(AlgorithmDto.SolutionReqDto solutionReqDto, String githubUserId) {
@@ -33,7 +38,16 @@ public class AlgSolutionService {
             // Todo: Get information from db not user
             GHAppHandler.addLabel(accessToken, repo, solutionReqDto.getPlatform());
 
-            String body = solutionReqDto.getProblemUrl();
+            TbAlgProblem problem = tbAlgProblemRepository.findByLink(solutionReqDto.getProblemUrl());
+            String problemPpsCode = "";
+            if (problem != null) {
+                problemPpsCode = problem.getPpsNo();
+            }
+
+            String body = "";
+            body += "<!-- CODEGEM_PPS " + problemPpsCode + " -->\n" +
+                    "<!-- CODEGEM_PATH " + Base64.getEncoder().encodeToString(solutionReqDto.getGithubFilePath().getBytes()) + " -->\n";
+            body += solutionReqDto.getProblemUrl();
             body += "\n";
             body += "```" + solutionReqDto.getExt() + " showLineNumbers";
             body += "\n";
