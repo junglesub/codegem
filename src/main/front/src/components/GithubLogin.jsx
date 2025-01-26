@@ -18,7 +18,7 @@ const GithubLogin = ({ noRedirect = false }) => {
 
   const ghLogin = () => {
     const myWindow = window.open(
-      `https://github.com/login/oauth/authorize?client_id=${ghOauthClientId}`,
+      `https://github.com/login/oauth/authorize?client_id=${ghOauthClientId}&redirect_uri=${window.location.origin}/api/tbuser/gh`,
       "_blank",
       "width=600,height=800"
     );
