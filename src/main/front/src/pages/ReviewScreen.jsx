@@ -37,7 +37,10 @@ function ReviewScreenPage({ selectedFiles, setSelectedFiles, repo }) {
       )}&sort=created&per_page=100`
     ).then((doc) => {
       setAllIssues(doc.items);
-      setSelectedIssue(doc.items.find((item) => `${item.number}` === issueId));
+      !selectedIssue &&
+        setSelectedIssue(
+          doc.items.find((item) => `${item.number}` === issueId)
+        );
     });
 
     fetchGh(
