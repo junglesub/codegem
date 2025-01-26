@@ -1,0 +1,76 @@
+name: Build Spring Boot Artifact
+
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - '**/*.md'
+
+permissions:
+  contents: write
+
+# Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
+# However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
+concurrency:
+  group: "build-and-release"
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    environment: SPRING_BOOT
+
+    # 깃허브에서 제공하는 checkout 엑션 사용
+    steps:
+      - uses: actions/checkout@v3
+
+      # JDK 17 설정한당
+      # temurin = Adoptium에서 제공하는 JDK
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      # gradle wrapper 파일에 실행 권한을 부여
+      # gradle wrapper = 개발자가 특정 버전의 Gradle을 미리 설치하지 않고도 Gradle 빌드를 실행할 수 있게 해주는 편리한 도구
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      # Gradle 빌드 엑션을 이용해서 프로젝트 빌드
+      - name: Build with Gradle
+        uses: gradle/gradle-build-action@v2.6.0
+        with:
+          arguments: build
+        env:
+          REACT_APP_WEATHER_KEY: ${{ secrets.VITE_WEATHER_KEY }}
+      
+      # 현재 날짜와 시간을 가져오기
+      - name: Get current date and time
+        id: date
+        run: echo "CURRENT_DATE=$(TZ=Asia/Seoul date +"%Y%m%d_%H%M%S")" >> $GITHUB_ENV
+
+      # 릴리즈 생성
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ env.CURRENT_DATE }}
+          release_name: 'Release ${{ env.CURRENT_DATE }}'
+          draft: false
+          prerelease: false
+
+      # 릴리즈 아티팩트 업로드
+      - name: Upload Release Asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: build/libs/handong-codegem-0.0.1-SNAPSHOT.jar
+          asset_name: handong-codegem-0.0.1-SNAPSHOT.jar
+          asset_content_type: application/java-archive
