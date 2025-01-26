@@ -1,7 +1,13 @@
 {
-  "short_name": "한동피드",
-  "name": "한동피드",
+  "short_name": "Codgem",
+  "name": "Codgem",
   "icons": [
+    {
+      "purpose": "maskable",
+      "sizes": "980x980",
+      "src": "maskable_icon.png",
+      "type": "image/png"
+    },
     {
       "purpose": "maskable",
       "sizes": "48x48",

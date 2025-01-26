@@ -64,7 +64,7 @@ root.render(
         <BaseStyles>
           <RecoilRoot>
             <RouterProvider router={router} />
-            <PWAInstallModal />
+            {/* <PWAInstallModal /> */}
           </RecoilRoot>
         </BaseStyles>
       </PrimereThemeProvider>
