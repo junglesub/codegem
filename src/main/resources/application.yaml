@@ -28,7 +28,7 @@ spring:
       hibernate.jdbc.time_zone: Asia/Seoul
     hibernate:
       naming:
-        physical-strategy: app.handong.feed.TablePrefix
+        physical-strategy: app.handong.codegem.TablePrefix
   thymeleaf:
     cache: false
   devtools:

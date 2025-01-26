@@ -1,0 +1,51 @@
+package app.handong.codegem.interceptor;
+
+
+import app.handong.codegem.dto.GHOauthDto;
+import app.handong.codegem.exception.NoAuthenticatedException;
+import app.handong.codegem.util.GHOauthHandler;
+import app.handong.codegem.util.TokenFactory;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.web.servlet.HandlerInterceptor;
+import org.springframework.web.servlet.ModelAndView;
+
+public class DefaultInterceptor implements HandlerInterceptor {
+
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+
+    //컨트롤러 진입 전에 호출되는 메서드
+    @Override
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        if (request.getHeader("Authorization") != null) {
+            String ghUserToken = request.getHeader("Authorization").replaceAll("Bearer ", "");
+            System.out.println(ghUserToken);
+            request.setAttribute(GHOauthDto.User.class.getName(), GHOauthHandler.getGhUser(ghUserToken));
+        } else {
+            throw new NoAuthenticatedException("Not Authenticated User");
+        }
+        //logger.info("preHandle / refreshToken [{}]", response.getHeader("refreshToken"));
+
+        String requestURI = request.getRequestURI();
+        String requestMethod = request.getMethod();
+        String ipAddr = request.getHeader("X-Forwarded-For");
+        if (ipAddr == null || ipAddr.isEmpty()) {
+            ipAddr = request.getRemoteAddr();
+        }
+        logger.info("preHandle [{} {}] : {} / {}", requestMethod, requestURI, ipAddr, request.getAttribute("reqUserId"));
+        return true;
+    }
+
+    //컨트롤러 실행 후에 호출되는 메서드
+    @Override
+    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
+//        logger.info("postHandle / request [{}]", request);
+    }
+
+    //모든것을 마친 후 실행되는 메서드
+    @Override
+    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
+    }
+}
