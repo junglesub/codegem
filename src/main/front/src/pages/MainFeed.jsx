@@ -78,7 +78,7 @@ const MainScreen = ({ noRedirect = false }) => {
             </Typography>
             <Box display="flex" sx={{ mt: 3 }} gap={2} justifyContent="center">
               <Button component={Link} variant="contained" to="/repo">
-                파일 추가!
+                파일 추가
               </Button>
               <Box textAlign="center">
                 {!authData ? (
