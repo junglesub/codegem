@@ -4,10 +4,14 @@ import { TextField, Typography, Box, Button, Link } from "@mui/material";
 import MarkdownPreview from "@uiw/react-markdown-preview";
 import { useFetchBe, useFetchGh } from "../../tools/api";
 import CommentBoxUi from "../CommentBoxUi";
+import { authJwtAtom } from "../../recoil/authAtom";
+import { useRecoilValue } from "recoil";
 
 const FileLinkItem = ({ repo, filename, addItem, addedData, ghUser }) => {
   const fetchBe = useFetchBe();
   const fetchGh = useFetchGh();
+
+  const jwtValue = useRecoilValue(authJwtAtom);
 
   const [saving, setSaving] = useState(false);
 
@@ -20,10 +24,21 @@ const FileLinkItem = ({ repo, filename, addItem, addedData, ghUser }) => {
   const [fileContent, setFileContent] = useState("");
   const [additionalContent, setAdditionalContent] = useState("");
 
-  useEffect(() => {
-    fetchGh(`https://api.github.com/repos/${repo}/contents/${filename}`).then(
-      (data) => setFileContent(decodeURIComponent(atob(data.content)))
+  async function fetchFileContent() {
+    const response = await fetch(
+      `https://api.github.com/repos/${repo}/contents/${filename}`,
+      {
+        headers: {
+          Accept: "application/vnd.github.raw+json",
+          Authorization: "Bearer " + jwtValue,
+        },
+      }
     );
+    setFileContent(await response.text());
+  }
+
+  useEffect(() => {
+    fetchFileContent();
   }, []);
 
   useEffect(() => {
@@ -114,6 +129,7 @@ ${fileContent}
         disabled={addedData}
         additionalContent={additionalContent}
         setAdditionalContent={setAdditionalContent}
+        placeholder="이 코드에 대한 간략한 설명이나 피드백을 받고 싶은 부분을 적어주세요."
       />
       {addedData?.githubIssueId && (
         <Link

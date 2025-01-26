@@ -111,6 +111,7 @@ export default function ReviewCommentNew({
               <CommentBoxUi
                 additionalContent={additionalContent}
                 setAdditionalContent={setAdditionalContent}
+                placeholder="혹시 코드에서 개선할 점이나 더 효율적인 방법이 있다면 알려주세요."
               />
               <Button
                 disabled={writeLoading}

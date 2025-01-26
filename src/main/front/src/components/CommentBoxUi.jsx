@@ -39,6 +39,7 @@ export default function CommentBoxUi({
   additionalContent,
   setAdditionalContent,
   disabled,
+  placeholder,
 }) {
   const [value, setValue] = React.useState(disabled ? 1 : 0);
 
@@ -70,6 +71,7 @@ export default function CommentBoxUi({
           multiline
           fullWidth
           rows={4}
+          placeholder={placeholder}
         />
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
