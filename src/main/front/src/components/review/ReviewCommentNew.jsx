@@ -36,7 +36,6 @@ export default function ReviewCommentNew({
   selectedIssue,
 }) {
   const userDetail = useRecoilValue(userDetailAtom);
-  console.log(userDetail.gh);
   const [expanded, setExpanded] = useState(false);
   const [additionalContent, setAdditionalContent] = useState("");
   const [writeLoading, setWriteLoading] = useState(false);
