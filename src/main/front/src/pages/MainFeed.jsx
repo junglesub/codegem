@@ -1,59 +1,124 @@
-import { useEffect, useState } from "react";
-import MainDisplay from "../components/MainDisplay";
-import FeedCard from "../components/FeedCard";
-import InfiniteScroll from "react-infinite-scroller";
-import useLoadData from "../hooks/useLoadData";
-import { useFeedCount } from "../hooks/useFeed";
-import { useFetchBe } from "../tools/api";
-import { useSetRecoilState } from "recoil";
-import { feedCountAtom } from "../recoil/feedAtom";
-import { Card, CardContent, Typography } from "@mui/material";
+import { useRecoilValue, useResetRecoilState } from "recoil";
+import { authJwtAtom } from "../recoil/authAtom";
 
-function MainFeed() {
-  const fetch = useFetchBe();
-  const setFeedCount = useSetRecoilState(feedCountAtom);
-  const [allFeeds, hasMore, loadData] = useLoadData({ type: "unseen" });
-  const [feedNumber] = useFeedCount();
-  const [doingBulkDelete, setDoingBulkDelete] = useState(false);
+import React, { useEffect, useState } from "react";
+import MainDisplay from "../components/MainDisplay";
+import {
+  Card,
+  CardContent,
+  Typography,
+  TextField,
+  Button,
+  Box,
+} from "@mui/material";
+import { fetchBe, useFetchBe, useFetchGh } from "../tools/api";
+import FeedCard from "../components/FeedCard";
+import { ghOauthClientId } from "../constants";
+import { userDetailAtom } from "../recoil/userAtom";
+import { Link } from "react-router-dom";
+import { getMaxTimestamp } from "../tools/tools";
+
+const MainScreen = ({ noRedirect = false }) => {
+  const authData = useRecoilValue(authJwtAtom);
+  const userDetail = useRecoilValue(userDetailAtom);
+
+  const fetchGh = useFetchGh();
+
+  const [dashboardData, setDashBoardData] = useState(null);
+  const [githubAllIssues, setGithubAllIssues] = useState(null);
+  const logout = useResetRecoilState(authJwtAtom);
+  // if (authData) return <>Welcome</>;
 
   useEffect(() => {
-    if (doingBulkDelete || hasMore || feedNumber < 1) return;
-    setDoingBulkDelete(true);
-    console.log(feedNumber);
-    allFeeds.slice(-feedNumber).map((item) => {
-      console.log("bulk delete", item.id);
-      fetch("/feeduser/seen", "POST", { subjectId: item.subjectId }).then(() =>
-        setFeedCount(0)
-      );
-    });
-  }, [hasMore, feedNumber, allFeeds, fetch, setFeedCount, doingBulkDelete]);
+    // fetchBe("/solution/aggregateAllSolutions").then((doc) =>
+    //   setDashBoardData(doc)
+    // );
+
+    fetchGh(
+      `https://api.github.com/search/issues?q=${encodeURIComponent(
+        `is:issue author:app/codegem-app`
+      )}&sort=created&per_page=100`
+    ).then((doc) =>
+      setGithubAllIssues((prev) => {
+        return doc.items.reduce(
+          (prev, item) => {
+            const kstDate = new Date(
+              new Date(item.created_at).toLocaleString("en-US", {
+                timeZone: "Asia/Seoul",
+              })
+            ).toLocaleDateString();
+
+            const repo = item.repository_url.replace(
+              "https://api.github.com/repos/",
+              ""
+            );
+            const repoData = prev[kstDate]?.[repo] || [];
+            return {
+              ...prev,
+              [kstDate]: {
+                ...(prev[kstDate] || []),
+                [repo]: [...repoData, { ...item, repo, kstDate }],
+              },
+            };
+          },
+          /*prev ||*/ {}
+        );
+      })
+    );
+  }, []);
+  console.log(githubAllIssues);
 
   return (
-    <MainDisplay>
-      {!hasMore && allFeeds.length === 0 && (
+    <>
+      <MainDisplay>
         <Card sx={{ my: 2 }}>
           <CardContent>
             <Typography variant="h5" component="div" align="center">
-              모든 피드를 읽었어요!
+              CodeGem
             </Typography>
+            <Box display="flex" sx={{ mt: 3 }} gap={2} justifyContent="center">
+              <Button component={Link} variant="contained" to="/repo">
+                파일 추가!
+              </Button>
+              <Box textAlign="center">
+                {!authData ? (
+                  <Button variant="contained" onClick={ghLogin}>
+                    깃허브로 로그인
+                  </Button>
+                ) : (
+                  <Button
+                    variant="contained"
+                    color="secondary"
+                    onClick={logout}
+                  >
+                    로그아웃
+                  </Button>
+                )}
+              </Box>
+            </Box>
           </CardContent>
         </Card>
-      )}
-      <InfiniteScroll
-        loadMore={loadData}
-        hasMore={hasMore}
-        loader={Array(1)
-          .fill()
-          .map((_, index) => (
-            <FeedCard key={index} loading />
-          ))}
-      >
-        {allFeeds.map((item) => (
-          <FeedCard key={item.id} item={item} watchSeen={true} />
-        ))}
-      </InfiniteScroll>
-    </MainDisplay>
-  );
-}
 
-export default MainFeed;
+        {githubAllIssues ? (
+          Object.keys(githubAllIssues)
+            .sort()
+            .reverse()
+            .map((date) => {
+              const sortedList = Object.values(githubAllIssues[date]).sort(
+                (a, b) =>
+                  getMaxTimestamp(a.map((item) => item.created_at)) >
+                  getMaxTimestamp(b.map((item) => item.created_at))
+              );
+              return sortedList.map((items) => (
+                <FeedCard key={`${date}-${items[0]?.repo}`} items={items} />
+              ));
+            })
+        ) : (
+          <FeedCard loading />
+        )}
+      </MainDisplay>
+    </>
+  );
+};
+
+export default MainScreen;

@@ -1,7 +1,9 @@
 package app.handong.feed.interceptor;
 
 
+import app.handong.feed.dto.GHOauthDto;
 import app.handong.feed.exception.NoAuthenticatedException;
+import app.handong.feed.util.GHOauthHandler;
 import app.handong.feed.util.TokenFactory;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -18,9 +20,9 @@ public class DefaultInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         if (request.getHeader("Authorization") != null) {
-            TokenFactory tokenFactory = new TokenFactory();
-            String reqUserId = tokenFactory.verifyToken(request.getHeader("Authorization").replaceAll("Bearer ", ""));
-            request.setAttribute("reqUserId", reqUserId);
+            String ghUserToken = request.getHeader("Authorization").replaceAll("Bearer ", "");
+            System.out.println(ghUserToken);
+            request.setAttribute(GHOauthDto.User.class.getName(), GHOauthHandler.getGhUser(ghUserToken));
         } else {
             throw new NoAuthenticatedException("Not Authenticated User");
         }

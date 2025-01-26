@@ -53,3 +53,47 @@ export const useFetchBe = () => {
     [jwtValue]
   );
 };
+
+export const fetchGh = (jwtValue, url, method = "GET", body, etc = {}) =>
+  new Promise((res, rej) => {
+    const initStuff = {
+      headers: {},
+      method,
+      cache: "no-cache",
+      ...etc,
+    };
+    if (body && !["GET", "HEAD"].includes(method)) {
+      if (body instanceof FormData) {
+        initStuff["body"] = body;
+      } else {
+        initStuff.headers["Content-Type"] = "application/json";
+        initStuff["body"] = JSON.stringify(body);
+      }
+    }
+    if (jwtValue) initStuff.headers.Authorization = `Bearer ${jwtValue}`;
+
+    fetch(url, initStuff)
+      .then((doc) => {
+        if (doc.status === 401) {
+          // user not logged in
+          localStorage.clear();
+          window.location.href = "/land"; // back to home screen.
+          return rej({ errorMsg: "로그인을 다시해주세요." });
+        } else if (doc.status === 204) return res({ status: "ok" });
+        doc.json().then((json) => {
+          return res(json);
+        });
+      })
+
+      .catch((err) => rej(err));
+  });
+
+export const useFetchGh = () => {
+  const jwtValue = useRecoilValue(authJwtAtom);
+  return useMemo(
+    () =>
+      (url, method = "GET", body, etc = {}) =>
+        fetchGh(jwtValue, url, method, body, etc),
+    [jwtValue]
+  );
+};

@@ -1,0 +1,22 @@
+meta {
+  name: Create Comment
+  type: http
+  seq: 6
+}
+
+post {
+  url: https://api.github.com/repos/han220/actiontest/issues/1/comments
+  body: json
+  auth: none
+}
+
+headers {
+  Accept: application/vnd.github.raw+json
+  Authorization: token {{GH_ACCESS_TOKEN}}
+}
+
+body:json {
+  {
+    "body": "바디"
+  }
+}

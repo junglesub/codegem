@@ -12,20 +12,25 @@ export function formatTimestamp(timestamp, dayWeek = false) {
 }
 
 export function formatRelativeOrAbsoluteTimestamp(timestamp) {
-  const now = new Date();
-  const date = new Date(timestamp);
-  const diffMs = now - date;
-  const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+  try {
+    const now = new Date();
+    const date = new Date(timestamp);
+    const diffMs = now - date;
+    const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
 
-  if (diffHours < 24) {
-    return formatDistanceToNowStrict(date, { addSuffix: true, locale: ko });
-  } else {
-    return formatTimestamp(timestamp);
+    if (diffHours < 24) {
+      return formatDistanceToNowStrict(date, { addSuffix: true, locale: ko });
+    } else {
+      return formatTimestamp(timestamp);
+    }
+  } catch {
+    return "Error";
   }
 }
 
 // Function to detect URLs and convert them to hyperlinks
 export const convertTextToLinks = (text) => {
+  if (!text) return;
   // Regular expression to detect URLs
   const urlRegex = /(https?:\/\/[^\s]+)/g;
 
@@ -121,3 +126,10 @@ export const calculateDiffChange = (oldValue, newValue) => {
   return `${diff > 0 ? "+" : ""}${diff}`;
   // return result || "No changes";
 };
+
+export function getMaxTimestamp(list) {
+  if (!list || list.length === 0) return null;
+  return list.reduce((max, item) =>
+    new Date(item.timestamp) > new Date(max.timestamp) ? item : max
+  );
+}

@@ -1,0 +1,28 @@
+meta {
+  name: Create
+  type: http
+  seq: 3
+}
+
+post {
+  url: http://localhost:8080/api/solution/create
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "githubRepoId": "han220/actiontest",
+    "githubFilePath": "/path/to/file",
+  //   "githubIssueId": "issue456",
+  //   "userId": "user789",
+    "title": "백준문제 테스트",
+    "platform": "백준",
+    "problemUrl": "https://feed.handong.app",
+    "code": "print(\"Hello World\")",
+    "message": "This is a sample message",
+    "ext": "py"
+  }
+  
+  
+}

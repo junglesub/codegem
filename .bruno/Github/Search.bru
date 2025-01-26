@@ -1,0 +1,17 @@
+meta {
+  name: Search
+  type: http
+  seq: 15
+}
+
+get {
+  url: https://api.github.com/search/issues?q=is:issue author:app/codegem-app repo:han220/hgu_pps commenter:@me&sort=created&per_page=100
+  body: none
+  auth: none
+}
+
+params:query {
+  q: is:issue author:app/codegem-app repo:han220/hgu_pps commenter:@me
+  sort: created
+  per_page: 100
+}

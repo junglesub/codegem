@@ -1,0 +1,15 @@
+meta {
+  name: Tree
+  type: http
+  seq: 7
+}
+
+get {
+  url: https://api.github.com/repos/han220/actiontest/git/trees/HEAD?recursive=true
+  body: none
+  auth: none
+}
+
+params:query {
+  recursive: true
+}

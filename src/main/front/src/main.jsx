@@ -8,13 +8,16 @@ import MainScreen from "./pages/MainScreen";
 
 import { register as registerServiceWorker } from "./serviceWorkerRegistration";
 import { createTheme, ThemeProvider } from "@mui/material";
+import {
+  ThemeProvider as PrimereThemeProvider,
+  BaseStyles,
+} from "@primer/react";
+
 import MainFeed from "./pages/MainFeed";
-import AllFeed from "./pages/AllFeed";
-import FavFeed from "./pages/FavFeed";
 import PWAInstallModal from "./components/modals/PWAInstallModal";
-import { ADMINMENU } from "./pages/admin";
-import KafeedDetail from "./pages/KafeedDetail";
-import LabScreen from "./pages/LabScreen";
+import GithubLoginCb from "./components/GithubLoginCb";
+import RepoSettingPage from "./pages/RepoSetting";
+import ReviewScreenPage from "./pages/ReviewScreen";
 
 const router = createBrowserRouter([
   {
@@ -26,28 +29,27 @@ const router = createBrowserRouter([
     element: <LoginProtected comp={MainFeed} />,
   },
   {
-    path: "/all",
-    element: <LoginProtected comp={AllFeed} />,
+    path: "/repo",
+    element: <LoginProtected comp={RepoSettingPage} />,
   },
   {
-    path: "/favorite",
-    element: <LoginProtected comp={FavFeed} />,
+    path: "/review/:uid",
+    element: <LoginProtected comp={ReviewScreenPage} />,
   },
   {
-    path: "/kafeed/:messageId",
-    element: <KafeedDetail />,
+    path: "/review/:uid/:issueId",
+    element: <LoginProtected comp={ReviewScreenPage} />,
   },
   {
-    path: "/lab",
-    element: <LabScreen />,
+    path: "/gh",
+    element: <GithubLoginCb />,
   },
-  ...ADMINMENU.map((menu) => ({
-    path: `/admin/${menu.id}`,
-    element: <LoginProtected comp={menu.comp} />,
-  })),
 ]);
 
 const theme = createTheme({
+  palette: {
+    mode: "dark",
+  },
   typography: {
     fontFamily:
       '-apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Pretendard Variable", Pretendard, Roboto, "Noto Sans KR", "Segoe UI", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;',
@@ -58,10 +60,14 @@ const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     <ThemeProvider theme={theme}>
-      <RecoilRoot>
-        <RouterProvider router={router} />
-        <PWAInstallModal />
-      </RecoilRoot>
+      <PrimereThemeProvider colorMode="dark">
+        <BaseStyles>
+          <RecoilRoot>
+            <RouterProvider router={router} />
+            <PWAInstallModal />
+          </RecoilRoot>
+        </BaseStyles>
+      </PrimereThemeProvider>
     </ThemeProvider>
   </React.StrictMode>
 );

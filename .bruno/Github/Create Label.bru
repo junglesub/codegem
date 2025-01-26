@@ -1,0 +1,22 @@
+meta {
+  name: Create Label
+  type: http
+  seq: 13
+}
+
+post {
+  url: https://api.github.com/repos/han220/actiontest/labels
+  body: json
+  auth: none
+}
+
+headers {
+  Authorization: Bearer ghs_sCtM450SsPTGkTLU2ESiLgOBEpdbi81OBU66
+}
+
+body:json {
+  {
+    "name": "백준",
+    "color": "333333"
+  }
+}

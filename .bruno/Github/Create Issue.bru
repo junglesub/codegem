@@ -1,0 +1,23 @@
+meta {
+  name: Create Issue
+  type: http
+  seq: 4
+}
+
+post {
+  url: https://api.github.com/repos/han220/actiontest/issues
+  body: json
+  auth: none
+}
+
+headers {
+  Accept: application/json
+  Authorization: Bearer {{GH_ACCESS_TOKEN}}
+}
+
+body:json {
+  {
+    "title": "TEST",
+    "body": "바디"
+  }
+}

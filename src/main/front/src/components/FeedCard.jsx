@@ -11,27 +11,25 @@ import ShareIcon from "@mui/icons-material/Share";
 import {
   convertTextToLinks,
   formatRelativeOrAbsoluteTimestamp,
+  getMaxTimestamp,
 } from "../tools/tools";
 import ReactShowMoreText from "react-show-more-text";
 
 import "./FeedCard.css";
 import FeedCardGallery from "./FeedCardGallery";
 import { Link, Skeleton, Typography } from "@mui/material";
-import { useFetchBe } from "../tools/api";
+import { Link as RouterLink } from "react-router-dom";
+import { useFetchBe, useFetchGh } from "../tools/api";
 import { useSetRecoilState } from "recoil";
 import { feedCountAtom } from "../recoil/feedAtom";
 import ShareModal from "./modals/ShareModal";
 import HistoryModal from "./modals/HistoryModal";
+import SolvedList from "./SolvedList";
 
-export default function FeedCard({ loading, item, watchSeen = false }) {
-  const fetch = useFetchBe();
-  const setFeedCount = useSetRecoilState(feedCountAtom);
+export default function FeedCard({ loading, items, watchSeen = false }) {
+  const fetchGh = useFetchGh();
+  const [author, setAuthor] = useState();
   const [expanded, setExpanded] = useState(false);
-  const [isScrolledUpOut, setIsScrolledUpOut] = useState(false);
-  const [updateSeenServer, setUpdateSeenServer] = useState(false);
-  const openState = useState(false);
-  const historyOpenState = useState(false);
-  const [like, setLike] = useState(item?.like);
 
   // eslint-disable-next-line unused-imports/no-unused-vars
   const handleExpandClick = () => {
@@ -41,45 +39,21 @@ export default function FeedCard({ loading, item, watchSeen = false }) {
   const cardRef = useRef(null);
 
   useEffect(() => {
-    const handleScroll = () => {
-      if (!watchSeen) return;
-
-      const elementTarget = cardRef.current;
-      if (elementTarget) {
-        const elementBottom =
-          elementTarget.offsetTop + elementTarget.offsetHeight;
-
-        // Check if the user has scrolled past the card
-        if (window.scrollY > elementBottom) {
-          // alert("You've scrolled past the card");
-          setIsScrolledUpOut(true);
-        }
+    if (!items || items?.length == 0) return;
+    fetchGh(
+      `https://api.github.com/users/${items[0]?.repo.split("/")[0]}`,
+      "get",
+      null,
+      {
+        cache: "force-cache",
       }
-    };
-
-    window.addEventListener("scroll", handleScroll);
-
-    // Cleanup the scroll event listener on component unmount
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, [watchSeen]);
-
-  useEffect(() => {
-    if (!isScrolledUpOut || updateSeenServer) return;
-    setUpdateSeenServer(true);
-    console.log(isScrolledUpOut, item.id);
-    fetch("/feeduser/seen", "POST", { subjectId: item.subjectId }).then(() =>
-      setFeedCount((prev) => prev - 1)
-    );
-  }, [item, isScrolledUpOut, fetch, setFeedCount, updateSeenServer]);
+    ).then((doc) => setAuthor(doc));
+  }, [items]);
 
   return (
     <>
-      <HistoryModal openState={historyOpenState} item={item} />
-      <ShareModal openState={openState} item={item} />
       <Card ref={cardRef} className="FeedCard" sx={{ my: 2 }}>
-        {loading ? (
+        {!author || loading ? (
           <>
             <CardHeader
               avatar={<Skeleton variant="circular" width={40} height={40} />}
@@ -99,75 +73,49 @@ export default function FeedCard({ loading, item, watchSeen = false }) {
             <CardHeader
               avatar={
                 <Avatar
-                  sx={{
-                    bgcolor: !isScrolledUpOut ? deepOrange[500] : green[700],
-                  }}
-                  aria-label="recipe"
-                >
-                  실카
-                </Avatar>
+                  src={`https://avatars.githubusercontent.com/u/${author.id}`}
+                ></Avatar>
               }
-              action={
-                <>
-                  <IconButton
-                    aria-label="Share"
-                    onClick={() => {
-                      openState[1](true);
-                    }}
-                  >
-                    <ShareIcon />
-                  </IconButton>
-                  <IconButton
-                    aria-label="settings"
-                    onClick={() => {
-                      if (like) {
-                        fetch("/feeduser/unlike", "POST", {
-                          subjectId: item.subjectId,
-                        }).then(() => setLike(false));
-                      } else {
-                        fetch("/feeduser/like", "POST", {
-                          subjectId: item.subjectId,
-                        }).then(() => setLike(true));
-                      }
-                    }}
-                  >
-                    <FavoriteIcon style={{ color: like ? "red" : "inherit" }} />
-                  </IconButton>
-                </>
+              title={
+                <Typography variant="body1">
+                  <Link component={RouterLink} to={`/review/${author.id}`}>
+                    {author.login}
+                  </Link>
+                  님이 문제를 풀었습니다!
+                </Typography>
               }
-              title={<Typography variant="body1">실명카톡방</Typography>}
               subheader={
                 <Typography variant="body2">
-                  {formatRelativeOrAbsoluteTimestamp(item.createdAt)}{" "}
-                  {item.messageCount && item.messageCount > 1 && (
-                    <Link
-                      onClick={() => {
-                        historyOpenState[1](true);
-                      }} // Define your onClick handler
-                      style={{ textDecoration: "none", cursor: "pointer" }} // Optional styling
-                    >
-                      (+{item.messageCount - 1})
-                    </Link>
-                  )}
+                  {formatRelativeOrAbsoluteTimestamp(
+                    getMaxTimestamp(items.map((item) => item.created_at))
+                  )}{" "}
                 </Typography>
               }
             />
-            <CardMedia sx={{ width: "100%" }}>
+            {/* <CardMedia sx={{ width: "100%" }}>
               {item.files && (
                 <FeedCardGallery images={item.files} id={item.id} />
               )}
-            </CardMedia>
+            </CardMedia> */}
             <CardContent
               sx={{
                 whiteSpace: "pre-wrap",
                 wordWrap: "break-word",
                 wordBreak: "break-all",
                 overflowWrap: "break-word",
+                pt: 0,
               }}
             >
-              <ReactShowMoreText lines={3} truncatedEndingComponent="">
-                {convertTextToLinks(item.content.trim())}
-              </ReactShowMoreText>
+              {items.map((item) => (
+                <SolvedList
+                  key={item.id}
+                  item={{ ...item, userId: author.id }}
+                />
+              ))}
+
+              {/* <ReactShowMoreText lines={3} truncatedEndingComponent="">
+                {convertTextToLinks(item.message?.trim())}
+              </ReactShowMoreText> */}
             </CardContent>
             {/* <CardActions disableSpacing>
         <IconButton aria-label="add to favorites">

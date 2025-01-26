@@ -33,20 +33,21 @@ public class TbuserDto {
 //    @AllArgsConstructor
 //    @NoArgsConstructor
 //    public static class CreateReqDto{
-////        @Schema(description = "username", example="")
-////        @NotNull
-////        @NotEmpty
-////        @Size(max=400)
-////        private String username;
-////        @Schema(description = "password", example="")
-////        @NotNull
-////        @NotEmpty
-////        @Size(max=100)
-////        private String password;
-////
-////        public Tbuser toEntity(){
-////            return Tbuser.of(username, password);
-////        }
+
+    /// /        @Schema(description = "username", example="")
+    /// /        @NotNull
+    /// /        @NotEmpty
+    /// /        @Size(max=400)
+    /// /        private String username;
+    /// /        @Schema(description = "password", example="")
+    /// /        @NotNull
+    /// /        @NotEmpty
+    /// /        @Size(max=100)
+    /// /        private String password;
+    /// /
+    /// /        public Tbuser toEntity(){
+    /// /            return Tbuser.of(username, password);
+    /// /        }
 //
 //        @Schema(description = "사용자 이메일", example = "")
 //        @NotNull(message = "email cannot be null")
@@ -249,6 +250,14 @@ public class TbuserDto {
         public GoogleLoginResponse(String token) {
             this.token = token;
         }
+    }
+
+    @Getter
+    @AllArgsConstructor
+    public static class GithubRepo {
+        private String repo;
+        private long githubUserId;
+        private String githubUsername;
     }
 
 }

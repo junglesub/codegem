@@ -1,0 +1,17 @@
+meta {
+  name: Me
+  type: http
+  seq: 1
+}
+
+post {
+  url: http://localhost:8080/api/tbuser/ghRepo
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "repo": "abcd"
+  }
+}

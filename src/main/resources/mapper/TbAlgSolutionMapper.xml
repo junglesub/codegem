@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="app.handong.feed.mapper.TbAlgSolutionMapper">
+
+    <!-- 로그인 쿼리: 사용자 아이디와 비밀번호를 사용하여 인증 -->
+    <select id="aggregateAllSolutions" parameterType="map"
+            resultType="app.handong.feed.dto.AlgorithmDto$AlgSolutionDashboardDto">
+        SELECT t.userId,
+               u.githubName,
+               CAST(t.createdDate AS DATE) AS createdDate,
+               t.id                        AS lastPostId,
+               t.problemUrl                AS lastProblemUrl,
+               t.githubRepoId              AS lastGithubRepoId,
+               t.githubIssueId             AS lastGithubIssueId,
+               t.createdDate               AS lastCreatedDate,
+               p.ppsNo                     AS lastPPSNo,
+               p.source                    AS lastPPSSource,
+               p.title                     AS lastPPSTitle,
+               sub.number
+        FROM mydb_TbAlgSolution t
+                 JOIN (SELECT userId,
+                              CAST(createdDate AS DATE) AS createdDate,
+                              MAX(createdDate)          AS lastPostDate,
+                              COUNT(*)                  AS number
+                       FROM mydb_TbAlgSolution
+                       GROUP BY CAST(createdDate AS DATE), userId) sub ON t.userId = sub.userId
+            AND CAST(t.createdDate AS DATE) = sub.createdDate
+            AND t.createdDate = sub.lastPostDate
+                 JOIN mydb_Tbuser u ON t.userId = u.githubId
+                 JOIN mydb_TbAlgProblem p ON t.problemUrl = p.link
+        ORDER BY t.createdDate DESC;
+    </select>
+
+
+</mapper>

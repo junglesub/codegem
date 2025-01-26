@@ -40,6 +40,14 @@ dependencies {
     //firebase stuff
     implementation group: 'com.google.firebase', name: 'firebase-admin', version: '8.1.0'
 
+    // Crypto Stuff
+    // https://mvnrepository.com/artifact/org.bouncycastle/bcprov-jdk16
+    implementation group: 'org.bouncycastle', name: 'bcprov-jdk16', version: '1.46'
+
+
+    // JWT Stuff
+    implementation group: 'com.auth0', name: 'java-jwt', version: '4.4.0'
+
     // https://mvnrepository.com/artifact/org.tuckey/urlrewritefilter
     implementation group: 'org.tuckey', name: 'urlrewritefilter', version: '5.1.3'
 
@@ -67,7 +75,7 @@ sourceSets {
     }
 }
 
-processResources { dependsOn "copyReactBuildFiles" }
+//processResources { dependsOn "copyReactBuildFiles" }
 
 task installReact(type: Exec) {
     workingDir "$frontendDir"

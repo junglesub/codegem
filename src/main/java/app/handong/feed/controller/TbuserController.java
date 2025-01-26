@@ -1,110 +1,66 @@
 package app.handong.feed.controller;
 
-import app.handong.feed.dto.GoogleLoginRequest;
-import app.handong.feed.dto.GoogleLoginResponse;
+import app.handong.feed.dto.GHOauthDto;
+import app.handong.feed.dto.TbuserDto;
+import app.handong.feed.repository.TbuserRepository;
 import app.handong.feed.service.GoogleAuthService;
-import app.handong.feed.service.TbuserService;
+import app.handong.feed.service.UserAuthService;
+import app.handong.feed.service.UserService;
 import app.handong.feed.util.TokenFactory;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.RequestAttributes;
 
+import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 
 @RequestMapping("/api/tbuser")
 @RestController
 public class TbuserController {
 
-    private final TbuserService tbuserService;
+    private final TbuserRepository tbuserRepository;
+    private final UserService userService;
+    @Value("${GH_LOGIN_REDIRECT_FRONTEND:${GH_LOGIN_REDIRECT_FRONTEND_DEFAULT:#{null}}}")
+    String ghLoginRedirectFrontend;
 
-    private final GoogleAuthService googleAuthService;
+    private final UserAuthService userAuthService;
 
+    public TbuserController(UserAuthService userAuthService, TbuserRepository tbuserRepository, UserService userService) {
+        this.userAuthService = userAuthService;
+        this.tbuserRepository = tbuserRepository;
+        this.userService = userService;
+    }
 
-    public TbuserController(TbuserService tbuserService, GoogleAuthService googleAuthService) {
-        this.tbuserService = tbuserService;
-        this.googleAuthService = googleAuthService;
+    // Todo: Temporary debug
+    @GetMapping("/me")
+    public HashMap<String, Object> getMe(HttpServletRequest request) {
+        HashMap<String, Object> response = new HashMap<>();
+        GHOauthDto.User GHUser = (GHOauthDto.User) request.getAttribute(GHOauthDto.User.class.getName());
+        response.put("gh", GHUser);
+        response.put("db", tbuserRepository.findByGithubId(GHUser.getId()));
+        return response;
+    }
+
+    @GetMapping("/ghRepo/{githubId}")
+    public ResponseEntity<TbuserDto.GithubRepo> getGithubRepo(@PathVariable("githubId") String githubId) {
+        return ResponseEntity.ok(userService.getRepo(Long.parseLong(githubId)));
+    }
+
+    @PostMapping("/ghRepo")
+    public String setGhRepo(@RequestBody HashMap<String, String> body, HttpServletRequest request) {
+        GHOauthDto.User GHUser = (GHOauthDto.User) request.getAttribute(GHOauthDto.User.class.getName());
+        userAuthService.setRepo(GHUser.getId(), body.get("repo"));
+        return "{}";
     }
 
 
-    // CREATE: POST 요청으로 새로운 사용자 생성
-    @GetMapping("")
-    public Map<String, Object> create(@RequestParam Map<String, Object> params) {
-        return tbuserService.create(params);
+    @GetMapping("/gh")
+    public void getGithub(@RequestParam String code, HttpServletResponse response) throws IOException {
+        String token = userAuthService.resolveGHAccess(code);
+        response.sendRedirect(ghLoginRedirectFrontend + "/gh?code=" + token);
     }
-
-//    @PutMapping("")
-//    public Map<String, Object> update(@RequestBody Map<String, Object> param){
-//        System.out.println(param);
-//        return tbuserService.update(param);
-//    }
-//    @GetMapping("/get/{id}")
-//    public ResponseEntity<Tbuser> detail(@PathVariable("id") String id) {
-//        System.out.println(id);
-//        Tbuser response = tbuserService.get(id);
-//        return ResponseEntity.ok(response);
-//    }
-
-
-    //  Google 로그인 처리
-//    @PostMapping("/login/google")
-//    public ResponseEntity<GoogleLoginResponse> loginWithGoogle(@RequestBody GoogleLoginRequest request) {
-//        String email = googleAuthService.verifyGoogleToken(request.getCredential());
-//        String name = googleAuthService.verifyGoogleToken(request.getCredential());
-//        LocalDateTime now = LocalDateTime.now();
-//        String uuid = UUID.randomUUID().toString().replace("-", "");
-//        Tbuser tbuser = Tbuser.of(uuid, name, now, now);
-//
-//        System.out.println("동작중입니다.");
-//        System.out.println("이메일: " + email);
-//        System.out.println("이름: " + name);
-//        System.out.println("UUID: " + uuid);
-//
-//
-//        System.out.println("동작중입니다. ");
-//
-//        if (email == null || !email.endsWith("@handong.ac.kr")) {
-//            throw new NoAuthorizationException("Unauthorized user");
-//        }
-//
-//
-//        String refreshToken = TokenFactory.issueRefreshToken(email);  // 리프레시 토큰 발급
-//
-//        System.out.println(refreshToken);
-//        return ResponseEntity.ok(new GoogleLoginResponse(refreshToken));
-//
-//    }
-
-
-    @PostMapping("/login/google")
-    public ResponseEntity<GoogleLoginResponse> loginWithGoogle(@RequestBody GoogleLoginRequest request) {
-        String userId = tbuserService.loginWithGoogle(request.getCredential()).getUid();
-        // 서비스 계층에서 유저 로그인 처리
-
-        // 리프레시 토큰 발급
-        String refreshToken = TokenFactory.issueRefreshToken(userId);
-
-        // 응답 리턴
-        return ResponseEntity.ok(new GoogleLoginResponse(refreshToken));
-    }
-
-//    @ResponseBody
-//    @GetMapping(value = "/auth/login/google/callback")
-//    public ResponseEntity<GoogleLoginResponse> callback (
-//            @PathVariable(name = "socialLoginType") String socialLoginPath,
-//            @RequestParam(name = "code") String code)throws IOException{
-//        System.out.println(">> 소셜 로그인 API 서버로부터 받은 code :"+ code);
-//        ResponseEntity socialLoginType= ResponseEntity.valueOf(socialLoginPath.toUpperCase());
-//        GetSocialOAuthRes getSocialOAuthRes=oAuthService.oAuthLogin(socialLoginType,code);
-//        return new BaseResponse<>(getSocialOAuthRes);
-//    }
-
-
-//    @PostMapping("/token/refresh")
-//    public ResponseEntity<String> refreshAccessToken(@RequestBody String refreshToken) {
-//        // 리프레시 토큰 검증 후 액세스 토큰 생성
-//        String email = TokenFactory.extractEmail(refreshToken);
-//        String accessToken = TokenFactory.generateToken(email);  // 액세스 토큰 발급
-//        return ResponseEntity.ok(accessToken);
-//    }
-
-
 }

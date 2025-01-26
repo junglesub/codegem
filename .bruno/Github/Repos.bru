@@ -1,0 +1,30 @@
+meta {
+  name: Repos
+  type: http
+  seq: 3
+}
+
+get {
+  url: https://api.github.com/user/repos?visibility=public&affiliation=owner&sort=updated
+  body: none
+  auth: none
+}
+
+params:query {
+  visibility: public
+  affiliation: owner
+  sort: updated
+}
+
+headers {
+  Accept: application/json
+  Authorization: Bearer {{GH_ACCESS_TOKEN}}
+}
+
+body:json {
+  {
+    "client_id": "Ov23liqQBKydVeVouExN",
+    "client_secret": "1a5709f426ab6984bee875f11f305809aade9ee7",
+    "code": "5575efa0d05b5d695ba2"
+  }
+}

@@ -1,0 +1,23 @@
+meta {
+  name: AccessToken
+  type: http
+  seq: 1
+}
+
+post {
+  url: https://github.com/login/oauth/access_token
+  body: json
+  auth: none
+}
+
+headers {
+  Accept: application/json
+}
+
+body:json {
+  {
+    "client_id": "Ov23liqQBKydVeVouExN",
+    "client_secret": "1a5709f426ab6984bee875f11f305809aade9ee7",
+    "code": "5575efa0d05b5d695ba2"
+  }
+}

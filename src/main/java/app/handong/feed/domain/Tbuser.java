@@ -2,49 +2,41 @@ package app.handong.feed.domain;
 
 import app.handong.feed.dto.TbuserDto;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.checkerframework.common.aliasing.qual.Unique;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+@Builder
 @Getter
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
 public class Tbuser {
-    /*
-    * - email
-- uuid
-- 이름
-- last login time
-- modified_at
-- created_at*/
-    @Id
-    @Setter @Column(nullable = false) private String id; // 사용자아이디
-    @Unique @Setter @Column(nullable = false) private String email; // 이메일
-    @Setter @Column(nullable = false) private String name;
+    @Id @Setter @Column(nullable = false) private String id; // 사용자아이디
+    @Unique @Setter @Column(nullable = false) private Long githubId;
+    @Setter @Column(nullable = true) private String email; // 이메일
+    @Setter @Column(nullable = false) private String githubName;
+    @Setter @Column(nullable = true) private String githubRepo;
     @Setter @Column(nullable = false) private LocalDateTime last_login_time; // 최근 로그인 시간
     @Setter @Column(nullable = false) private LocalDateTime modified_at; // 수정날짜
     @Setter @Column(nullable = false) private LocalDateTime created_at; // 생성 날짜
 
 
-    protected Tbuser() {
-    }
-
-
-    private Tbuser(String email, String uuid, String name, LocalDateTime last_login_time, LocalDateTime modified_at, LocalDateTime created_at) {
+    private Tbuser(String email, String uuid, String githubName, LocalDateTime last_login_time, LocalDateTime modified_at, LocalDateTime created_at) {
         this.email = email;
         this.id = uuid;
-        this.name = name;
+        this.githubName = githubName;
         this.last_login_time = last_login_time;
         this.modified_at = modified_at;
         this.created_at = created_at;
     }
 
-    public Tbuser(String email, String uuid, String name, LocalDateTime last_login_time, LocalDateTime created_at) {
+    public Tbuser(String email, String uuid, String githubName, LocalDateTime last_login_time, LocalDateTime created_at) {
         this.email = email;
         this.id = uuid;
-        this.name = name;
+        this.githubName = githubName;
         this.last_login_time = last_login_time;
         this.created_at = created_at;
     }
@@ -55,8 +47,8 @@ public class Tbuser {
 
 
     // TODO: role 추가 해야 함 .
-    public static Tbuser of(String email, String uuid, String name, LocalDateTime last_login_time, LocalDateTime modified_at, LocalDateTime created_at) {
-        return new Tbuser(email, uuid, name, last_login_time, modified_at, created_at);
+    public static Tbuser of(String email, String uuid, String githubName, LocalDateTime last_login_time, LocalDateTime modified_at, LocalDateTime created_at) {
+        return new Tbuser(email, uuid, githubName, last_login_time, modified_at, created_at);
     }
 
 
